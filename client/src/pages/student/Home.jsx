@@ -1,0 +1,1 @@
+// in home we will display profile only and also add forgot password here only
