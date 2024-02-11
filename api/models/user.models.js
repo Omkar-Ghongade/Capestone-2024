@@ -1,8 +1,12 @@
-import mongoose from "mongoose";
+import mongoose, { model } from "mongoose";
 
-const User= mongoose.model('User', {
-    email:{typeof:String, required:true,unique:true},
-    role:{typeof:String, required:true},
+const User=new mongoose.Schema({
+    emailid: {type:String, required: true, unique: true},
+    role: {type:String, required: true},
 });
 
-  
+const user=mongoose.model('User',User);
+
+user.createIndexes();
+
+export default user;
