@@ -10,10 +10,24 @@ export default function SignIn() {
     const handleClick =()=>{
         signInWithPopup(auth,provider).then((data)=>{
             setValue(data.user.email)
-            if(data.user.email.endsWith('@srmap.edu.in')){
-              localStorage.setItem("email",data.user.email)
-            }
+            setData(data.user.email)
         })
+    }
+
+    const setData =async (email)=>{
+      try{
+        const res=await fetch('http://localhost:3000/api/auth/getdata', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({emailid:email}),
+        })
+        const data=await res.json()
+        
+      }catch(error){
+        console.log(error)
+      }
     }
 
     useEffect(()=>{
