@@ -7,7 +7,7 @@ import AHome from './admin/Home';
 import CryptoJS from 'crypto-js';
 
 // Encryption/decryption key (should be kept secret and not hardcoded like this in production)
-const ENCRYPTION_KEY = "YourEncryptionKey";
+const ENCRYPTION_KEY = "c%r2n8#FqPb6@vKt5^hMw9&sGzYp3!dA";
 
 export default function SignIn() {
   const [email, setEmail] = useState('');
