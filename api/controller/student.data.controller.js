@@ -1,8 +1,8 @@
 import studentdata from '../models/student.models.js';
 
 export const getstudentdata = async (req, res) => {
-    console.log(req);
     const email = req.body.emailid;
+    console.log(email);
     try{
         const user= await studentdata.findOne({emailid:email});
         if(!user) 
