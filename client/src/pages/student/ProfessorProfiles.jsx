@@ -32,7 +32,7 @@ export default function ProfessorProfiles() {
       {professorData && professorData.map((professor, index) => (
         <div key={index}>
           <p>Name: {professor.name}</p>
-          {/* Add more professor properties here */}
+          <img src={professor.profilephoto}/>
         </div>
       ))}
     </div>
