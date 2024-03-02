@@ -29,7 +29,7 @@ export default function MainHome() {
   }
 
   const fetchStudentData = async (email) => {
-    console.log(email);
+    // console.log(email);
     try {
       const res = await fetch('http://localhost:3000/api/student/getstudentdata', {
         method: 'POST',
@@ -39,7 +39,7 @@ export default function MainHome() {
         body: JSON.stringify({ emailid: email }),
       });
       const data = await res.json();
-      console.log(data);
+      // console.log(data);
       setStudentData(data);
     } catch (error) {
       console.log(error);

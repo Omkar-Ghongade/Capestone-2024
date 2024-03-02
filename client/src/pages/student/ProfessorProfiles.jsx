@@ -20,7 +20,7 @@ export default function ProfessorProfiles() {
         },
       });
       const data = await res.json();
-      console.log(data);
+      // console.log(data);
       setProfessorData(data);
     } catch (error) {
       console.log(error);
