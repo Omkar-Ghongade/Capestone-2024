@@ -2,16 +2,12 @@ import mongoose, { model } from "mongoose";
 
 const professordata=new mongoose.Schema({
     name:{type:String,required:true},
-    email:{type:String,required:true, unique:true},
-    password:{type:String,required:true},
-    school: {type:String, required: true},
-    department:{type:String,required:true},
-    designation:{type:String,required:true},
-    contactNumber:{type:String,required:true,unique:true}
+    profilelink:{type:String,required:true},
+    profilephoto:{type:String,required:true}
 });
 
 const user=mongoose.model('professordata',professordata);
 
-professordata.createIndexes();
+user.createIndexes();
 
-export default professordata;
+export default user;
