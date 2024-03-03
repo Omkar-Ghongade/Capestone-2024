@@ -74,7 +74,7 @@ export default function ProjectsList() {
       applyReason: applyReason,
       studentId: localStorage.getItem('rollNumber'),
     }
-    // console.log(data);
+    console.log(data);
     try {
       const res = await fetch('http://localhost:3000/api/project/applyproject', {
         method: 'POST',
@@ -89,6 +89,7 @@ export default function ProjectsList() {
     } catch (error) {
       // console.log(error);
       alert('Error in applying project. Please try again.');
+      cancelApply
     }
   }
 

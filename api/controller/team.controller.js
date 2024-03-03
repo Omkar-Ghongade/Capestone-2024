@@ -46,3 +46,12 @@ export const deleteTeam = async (req, res) => {
         res.status(404).json({message:err.message});
     }
 }
+
+export const isinTeam = async (req, res) => {
+    try{
+        const teamFind=await team.findOne({teammembers:req.body.studentId});
+        res.status(200).json(teamFind);
+    }catch(err){
+        res.status(404).json({message:err.message});
+    }
+}
