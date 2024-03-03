@@ -24,3 +24,13 @@ export const applyproject = async (req, res) => {
         res.status(500).json({ message: err.message });
     }
 }
+
+export const getappliedproject = async (req, res) => {
+    // console.log(req);
+    try{
+        const allappliedproject = await Appliedproject.find({studentId:req.body.studentId});
+        res.status(200).json(allappliedproject);
+    }catch(err){
+        res.status(404).json({message:err.message});
+    }
+}
