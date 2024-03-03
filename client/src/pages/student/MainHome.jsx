@@ -39,7 +39,8 @@ export default function MainHome() {
         body: JSON.stringify({ emailid: email }),
       });
       const data = await res.json();
-      // console.log(data);
+      // console.log(data.rollNumber);
+      localStorage.setItem('rollNumber', data.rollNumber);
       setStudentData(data);
     } catch (error) {
       console.log(error);
