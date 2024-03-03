@@ -21,7 +21,7 @@ export default function AppliedProjects() {
         body: JSON.stringify({ studentId: studentId })
       });
       const data = await res.json();
-      console.log(data);
+      // console.log(data);
       setAppliedProjects(data);
     } catch (error) {
       console.log(error);

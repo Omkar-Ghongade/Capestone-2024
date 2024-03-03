@@ -17,6 +17,7 @@ export default function Navbar() {
         <li><Link to="/projects-list">Projects List</Link></li>
         <li><Link to="/submit-reports">Submit Reports</Link></li>
         <li><Link to="/my-projects">My Projects</Link></li>
+        <li><Link to="/team-formation">Team Formation</Link></li>
         <li><button onClick={handleLogout}>Logout</button></li>
       </ul>
     </nav>
