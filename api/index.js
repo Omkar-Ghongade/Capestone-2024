@@ -5,6 +5,7 @@ import cors from 'cors';
 import userRouter from './routes/user.route.js';
 import studentRouter from './routes/student.route.js';
 import professortRouter from './routes/professor.route.js';
+import projectRouter from './routes/project.route.js';
 dotenv.config();
 
 mongoose.connect(process.env.MONGO).then(()=>{
@@ -26,3 +27,4 @@ app.use(cors());
 app.use('/api/auth',userRouter)
 app.use('/api/student',studentRouter)
 app.use('/api/professor',professortRouter)
+app.use('/api/project',projectRouter)
