@@ -14,7 +14,8 @@ export const applyproject = async (req, res) => {
     const { projectId, rollNumber } = req.body;
     try {
         const existingProject = await Appliedproject.findOne({ projectId, rollNumber });
-        if (existingProject) {
+        console.log(existingProject);
+        if (existingProject.projectId === projectId && existingProject.studentId === rollNumber) {
             return res.status(409).json({ message: "Project with the same projectId and rollNumber already exists" });
         }
         const appliedproject = new Appliedproject(req.body);
@@ -26,7 +27,7 @@ export const applyproject = async (req, res) => {
 }
 
 export const getappliedproject = async (req, res) => {
-    // console.log(req);
+    console.log(req);
     try{
         const allappliedproject = await Appliedproject.find({studentId:req.body.studentId});
         res.status(200).json(allappliedproject);
@@ -34,3 +35,4 @@ export const getappliedproject = async (req, res) => {
         res.status(404).json({message:err.message});
     }
 }
+
