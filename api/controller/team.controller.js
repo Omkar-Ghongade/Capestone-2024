@@ -55,3 +55,15 @@ export const isinTeam = async (req, res) => {
         res.status(404).json({message:err.message});
     }
 }
+
+export const submitTeam = async (req, res) => {
+    try{
+        const teamFind=await team.findOne({teamcode:req.body.teamcode});
+        console.log(teamFind);
+        teamFind.submitted=true;
+        const newteam = await teamFind.save();
+        res.status(201).json(newteam);
+    }catch(err){
+        res.status(404).json({message:err.message});
+    }
+}

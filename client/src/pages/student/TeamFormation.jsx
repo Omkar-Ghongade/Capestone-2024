@@ -4,6 +4,8 @@ export default function TeamFormation() {
   const [teamData, setTeamData] = useState(null);
   const [teamCode, setTeamCode] = useState('');
   const [teamCreatedOrJoined, setTeamCreatedOrJoined] = useState(false);
+  const [teamSubmitButton, setTeamSubmitButton] = useState(false);
+  const [teamDeleteButton, setTeamDeleteButton] = useState(false);
 
   useEffect(() => {
     isinTeam();
@@ -39,7 +41,6 @@ export default function TeamFormation() {
         body: JSON.stringify({studentId:rollNumber,teamcode:teamCode}),
       });
       const data = await response.json();
-      console.log(data);
       setTeamData(data);
       setTeamCreatedOrJoined(true);
     }catch(err){
@@ -60,6 +61,11 @@ export default function TeamFormation() {
       const data = await response.json();
       if(data){
         setTeamData(data);
+        console.log(data);
+        if(data.submitted===false && data.teammembers[0]===rollNumber && data.teammembers.length>=2)
+          setTeamSubmitButton(true);
+        if(data.submitted===false && data.teammembers[0]===rollNumber)
+          setTeamDeleteButton(true);
         setTeamCreatedOrJoined(true);
       }
     }catch(err){
@@ -79,7 +85,28 @@ export default function TeamFormation() {
       const data = await response.json();
       console.log(data);
       setTeamData(null);
+      setTeamSubmitButton(false);
       setTeamCreatedOrJoined(false);
+    }catch(err){
+      console.log(err);
+    }
+  }
+
+  const handleSubmitTeam = async () => {
+    console.log('submitting team');
+    try{
+      const response = await fetch('http://localhost:3000/api/team/submitTeam', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({teamcode:teamData.teamcode}),
+      });
+      const data = await response.json();
+      console.log(data);
+      setTeamSubmitButton(false);
+      setTeamDeleteButton(false);
+      console.log('Team submitted');
     }catch(err){
       console.log(err);
     }
@@ -110,6 +137,16 @@ export default function TeamFormation() {
           {teamData.teammembers.map((member, index) => (
             <p key={index}>Member: {member}</p>
           ))}
+          
+        </div>
+      )}
+      {teamSubmitButton && (
+        <div>
+          <button onClick={handleSubmitTeam}>Submit</button>
+        </div>
+      )}
+      {teamDeleteButton && (
+        <div>
           <button onClick={handleDeleteTeam}>Delete Team</button>
         </div>
       )}

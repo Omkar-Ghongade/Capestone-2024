@@ -6,6 +6,7 @@ const appliedprojectdata=new mongoose.Schema({
     projectName:{type:String,required:true},
     projectDomain:{type:String,required:true},
     projectProfessor:{type:String,required:true},
+    teamcode:{type:String,required:true},
     studentId:{type:String,required:true}
 });
 
