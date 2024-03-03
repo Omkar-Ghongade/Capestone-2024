@@ -2,6 +2,12 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 export default function Navbar() {
+
+  const handleLogout = () => {
+    localStorage.clear();
+    window.location.href = '/';
+  }
+
   return (
     <nav>
       <ul>
@@ -10,7 +16,8 @@ export default function Navbar() {
         <li><Link to="/professor-profiles">Professor Profiles</Link></li>
         <li><Link to="/projects-list">Projects List</Link></li>
         <li><Link to="/submit-reports">Submit Reports</Link></li>
-        <li><Link to="/logout">Logout</Link></li>
+        <li><Link to="/my-projects">My Projects</Link></li>
+        <li><button onClick={handleLogout}>Logout</button></li>
       </ul>
     </nav>
   );
