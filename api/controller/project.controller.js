@@ -1,4 +1,5 @@
 import project from '../models/project.models.js';
+import Finalproject from '../models/finalproject.models.js';
 import Appliedproject from '../models/applied.project.models.js';
 import team from '../models/team.models.js';
 
@@ -45,3 +46,51 @@ export const getappliedproject = async (req, res) => {
     }
 }
 
+export const createproject = async (req, res) => {
+    try{
+        const newproject = new project(req.body);
+        const newprojectdata = await newproject.save();
+        res.status(201).json(newprojectdata);
+    }catch(err){
+        res.status(404).json({message:err.message});
+    }
+}
+
+export const deleteproject = async (req, res) => {
+    try{
+        const projectname = req.body.name;
+        const deletedproject = await project.findOneAndDelete({name:projectname});
+        const deleteapplications = await Appliedproject.deleteMany({projectId:deletedproject._id});
+        res.status(200).json(deletedproject);
+    }catch(err){
+        res.status(404).json({message:err.message});
+    }
+}
+
+export const acceptproject = async (req, res) => {
+    try{
+        const projectid = req.body.projectId;
+        const teamid = req.body.teamcode;
+        const name = req.body.projectName;
+        console.log(req.body)
+        const deleteapplications1 = await Appliedproject.deleteMany({projectId:projectid});
+        const deleteapplications2 = await Appliedproject.deleteMany({teamcode:teamid});
+        const deleteapplications3 = await project.deleteMany({name});
+        const finalproject = new Finalproject(req.body);
+        const newfinalproject = await finalproject.save();
+        res.status(201).json(newfinalproject);
+    }catch(err){
+        res.status(404).json({message:err.message});
+    }
+}
+
+export const rejectproject = async (req, res) => {
+    try{
+        const projectid = req.body.projectId;
+        const teamid = req.body.teamcode;
+        const deleteapplications1 = await Appliedproject.deleteMany({projectId:projectid,teamcode:teamid});
+        res.status(200).json(deleteapplications1);
+    }catch(err){
+        res.status(404).json({message:err.message});
+    }
+}

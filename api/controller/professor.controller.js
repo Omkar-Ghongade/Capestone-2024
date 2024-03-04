@@ -8,3 +8,13 @@ export const getprofessordata = async (req,res) => {
         res.status(404).json({message:err.message});
     }
 }
+
+export const displayprofessordata = async (req,res) => {
+    try{
+        const email = req.body.emailid;
+        const singleprofessordata = await professordata.findOne({emailid:email});
+        res.status(200).json(singleprofessordata);
+    }catch(err){
+        res.status(404).json({message:err.message});
+    }
+}
