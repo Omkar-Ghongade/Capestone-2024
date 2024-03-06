@@ -104,3 +104,14 @@ export const displayacceptedproject = async (req, res) => {
         res.status(404).json({message:err.message});
     }
 }
+
+export const addreportlink = async (req, res) => {
+    try{
+        const teamcode=req.body.teamcode;
+        const reportlink=req.body.reportlink;
+        const allappliedproject = await Finalproject.findOneAndUpdate({ teamcode: teamcode}, { $push: { reports: reportlink } });
+        res.status(200).json(allappliedproject);
+    }catch(err){
+        res.status(404).json({message:err.message});
+    }
+}

@@ -7,7 +7,8 @@ const finalprojectdata=new mongoose.Schema({
     projectDomain:{type:String,required:true},
     projectProfessor:{type:String,required:true},
     teamcode:{type:String,required:true},
-    studentId:{type:String,required:true}
+    studentId:{type:String,required:true},
+    reports:{type:Array}
 });
 
 const Finalproject=mongoose.model('finalprojectdata',finalprojectdata);

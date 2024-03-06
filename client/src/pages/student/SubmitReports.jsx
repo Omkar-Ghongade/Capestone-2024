@@ -53,11 +53,28 @@ export default function SubmitReports() {
         () => {
           getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
             setImgUrl(downloadURL)
+            savetoteam(downloadURL);
           });
         }
       );
     }else{
       alert("Please upload a PDF file")
+    }
+  }
+
+  const savetoteam = async (downloadURL) => {
+    try {
+      const res = await fetch('http://localhost:3000/api/project/addreportlink', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({teamcode:teamId,reportlink:downloadURL}),
+      });
+      const data = await res.json();
+      console.log(data);
+    } catch (error) {
+      console.log(error);
     }
   }
 
@@ -72,10 +89,6 @@ export default function SubmitReports() {
         <div className='outerbar'>
           <div className='innerbar' style={{ width: `${progresspercent}%` }}>{progresspercent}%</div>
         </div>
-      }
-      {
-        imgUrl &&
-        <img src={imgUrl} alt='uploaded file' height={200} />
       }
     </div>
   );
