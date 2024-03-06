@@ -6,6 +6,7 @@ import {createproject} from '../controller/project.controller.js';
 import {deleteproject} from '../controller/project.controller.js';
 import {acceptproject} from '../controller/project.controller.js';
 import {rejectproject} from '../controller/project.controller.js';
+import {displayacceptedproject} from '../controller/project.controller.js';
 
 const router = express.Router();
 
@@ -16,5 +17,6 @@ router.post('/createproject',createproject);
 router.post('/deleteproject',deleteproject);
 router.post('/acceptproject',acceptproject);
 router.post('/rejectproject',rejectproject);
+router.post('/displayacceptedproject',displayacceptedproject);
 
 export default router;

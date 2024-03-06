@@ -94,3 +94,13 @@ export const rejectproject = async (req, res) => {
         res.status(404).json({message:err.message});
     }
 }
+
+export const displayacceptedproject = async (req, res) => {
+    try{
+        const teamcode=req.body.teamcode;
+        const allappliedproject = await Finalproject.find({ teamcode: teamcode });
+        res.status(200).json(allappliedproject);
+    }catch(err){
+        res.status(404).json({message:err.message});
+    }
+}
