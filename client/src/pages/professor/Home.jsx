@@ -5,6 +5,7 @@ import ManageApplications from './ManageApplications'
 import Navbar from './Navbar'
 import PostProject from './PostProject'
 import ViewReports from './ViewReports'
+import MyProjects from './MyProjects'
 import {BrowserRouter, Routes , Route} from 'react-router-dom'
 
 export default function PHome() {
@@ -16,6 +17,7 @@ export default function PHome() {
         <Route path="/post-project" element={<PostProject />} />
         <Route path="/manage-applications" element={<ManageApplications />} />
         <Route path="/view-reports" element={<ViewReports />} />
+        <Route path="/my-projects" element={<MyProjects />} />
       </Routes>
     </BrowserRouter>
   )
