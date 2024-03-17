@@ -5,6 +5,10 @@ import SHome from './student/Home';
 import PHome from './professor/Home';
 import AHome from './admin/Home';
 import CryptoJS from 'crypto-js';
+import { useAuthState } from 'react-firebase-hooks/auth';
+import { onAuthStateChanged } from "firebase/auth";
+
+
 
 // Encryption/decryption key (should be kept secret and not hardcoded like this in production)
 const ENCRYPTION_KEY = "c%r2n8#FqPb6@vKt5^hMw9&sGzYp3!dA";
@@ -13,9 +17,11 @@ export default function SignIn() {
   const [email, setEmail] = useState('');
   const [role, setRole] = useState(null);
 
+
   const handleClick = () => {
     signInWithPopup(auth, provider)
       .then((data) => {
+        console.log(data);
         setEmail(data.user.email);
         setData(data.user.email);
       })
@@ -62,6 +68,17 @@ export default function SignIn() {
     }
   }, []);
 
+  useEffect(() => {
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        console.log('user signed in');
+      }else
+      {
+        console.log('user signed out');
+      }
+    });
+  }, []);
+
   // Render different components based on the role
   const renderHomeComponent = () => {
     // Retrieve and decrypt email and role from localStorage
@@ -88,10 +105,12 @@ export default function SignIn() {
   };
 
   return (
-    <div className='p-3 max-w-lg mx-auto'>
-      {role ? ( // Check if role is fetched
+    <div>
+      {/* {user.email} */}
+      {role ? (
         renderHomeComponent()
       ) : (
+
         <button onClick={handleClick}>Signin With Google</button>
       )}
     </div>

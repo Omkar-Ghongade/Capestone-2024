@@ -1,11 +1,20 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { signOut } from "firebase/auth";
+import {auth} from '../config';
 
 export default function Navbar() {
 
   const handleLogout = () => {
-    localStorage.clear();
-    window.location.href = '/';
+    signOut(auth)
+      .then(() => {
+        localStorage.removeItem('email');
+        localStorage.removeItem('role');
+        window.location.href = '/';
+      })
+      .catch(error => {
+        console.log(error.message);
+      });
   }
 
   return (
