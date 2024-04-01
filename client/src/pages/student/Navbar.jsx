@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import Logout from './Logout';
-import { navItems } from './NavItems';
+import { navItems, ProjectDropdown } from './NavItems';
 import { BookOpenIcon, Bars3BottomRightIcon, XMarkIcon } from '@heroicons/react/24/solid'
 import { RiArrowDropDownLine } from "react-icons/ri";
 import Dropdown from './DropDown';
@@ -32,21 +32,34 @@ const Navbar= () => {
             <ul className={`bg-white h-25 items-center md:h-10 md:flex md:items-center md:pb-0 pb-12 absolute md:static md:bg-white md:z-auto z-[-1] left-0 w-full md:w-auto md:pl-0 pl-9 transition-all duration-500 ease-in ${open ? 'top-12' : 'top-[-490px]'}`}>
                 {
                     navItems.map((link) => {
-                      if (link.title === "Projects") {
+                      if(link.title === "Projects" && open ){
                         return (
-                          <li
+                          <React.Fragment key={link.id}>
+                            {ProjectDropdown.map((item) => (
+                              <li key={item.id} className='md:ml-8 md:my-0 my-7 font-semibold'>
+                                <Link to={item.path} className='h-16 text-gray-800 hover:text-blue-400 duration-500'>{item.title}</Link>
+                              </li>
+                            ))}
+                          </React.Fragment>);
+
+                      }
+
+                      else if (link.title === "Projects") {
+                        return (
+                          <li 
                             key={link.id}
-                            className={link.cName}
+                            className=""
                             onMouseEnter={() => setDropdown(true) }
                             onMouseLeave={() => setDropdown(false)}
                             
                           >
                             
-                            <span className='flex flex-row py-0 cursor-pointer text-gray-800 hover:text-blue-400 duration-500 md:ml-8 md:my-0 my-0  font-semibold'>{link.title}<RiArrowDropDownLine className='size-6 mt-0.5' /></span>
-                            {dropdown && <Dropdown />}
+                            <span className='flex flex-row py-5 cursor-pointer text-gray-800 hover:text-blue-400 duration-500 md:ml-8 md:my-0 my-0  font-semibold'>{link.title}<RiArrowDropDownLine className='size-6 mt-0.5' /></span>
+                            {dropdown && <Dropdown className=""/>}
                           </li>
                         );
                       }
+                      
                     return(<li key={link.id} className='md:ml-8 md:my-0 my-7 font-semibold'>
                         <a href={link.path} className=' h-16 text-gray-800 hover:text-blue-400 duration-500'>{link.title}</a>
                     </li>)})
