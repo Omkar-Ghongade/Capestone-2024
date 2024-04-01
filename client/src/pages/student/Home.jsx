@@ -10,9 +10,11 @@ import Navbar from './Navbar'
 import MainHome from './MainHome'
 import {BrowserRouter, Routes , Route} from 'react-router-dom'
 
+
 export default function SHome() {
   return (
     <BrowserRouter>
+    <div className='flex flex-col'>
       <Navbar />
       <Routes>
         <Route path="/" element={<MainHome />} />
@@ -22,7 +24,9 @@ export default function SHome() {
         <Route path="/submit-reports" element={<SubmitReports />} />
         <Route path="/team-formation" element={<TeamFormation />} />
         <Route path="/my-projects" element={<MyProjects />} />
+        
       </Routes>
+      </div>
     </BrowserRouter>
   )
 }

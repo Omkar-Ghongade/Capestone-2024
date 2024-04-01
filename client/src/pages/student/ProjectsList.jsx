@@ -1,10 +1,36 @@
 import React, { useState, useEffect } from 'react';
+import "./Navbar.css"
+
+
+const ProjectFilter = ({ handleFilterChange }) => {
+  return (
+    <div className="bg-gray-100 p-4">
+      <h2 className="text-lg font-semibold mb-2">Filter Projects</h2>
+      <div className="flex flex-col space-y-2">
+        <label className="inline-flex items-center">
+          <input type="checkbox" className="form-checkbox h-4 w-4 text-indigo-600" onChange={(e) => handleFilterChange('filter1', e.target.checked)} />
+          <span className="ml-2">Filter 1</span>
+        </label>
+        <label className="inline-flex items-center">
+          <input type="checkbox" className="form-checkbox h-4 w-4 text-indigo-600" onChange={(e) => handleFilterChange('filter2', e.target.checked)} />
+          <span className="ml-2">Filter 2</span>
+        </label>
+        {/* Add more filters as needed */}
+      </div>
+    </div>
+  );
+};
 
 export default function ProjectsList() {
   const [projectData, setProjectsData] = useState(null);
   const [selectedProject, setSelectedProject] = useState(null);
   const [isApply, setIsApply] = useState(false);
   const [applyReason, setApplyReason] = useState('');
+  const [filters, setFilters] = useState({
+    filter1: false,
+    filter2: false,
+    // Add more filters here
+  });
 
   useEffect(() => {
     const fetchData = async () => {
@@ -66,6 +92,11 @@ export default function ProjectsList() {
       return;
     }
 
+    const handleFilterChange = (filterName, isChecked) => {
+      setFilters({ ...filters, [filterName]: isChecked });
+      // You can add filtering logic here based on the selected filters
+    };
+
     const data = {
       projectId: selectedProject._id,
       projectName: selectedProject.name,
@@ -93,36 +124,46 @@ export default function ProjectsList() {
     }
   }
 
-  return (
-    <div>
-      {isApply ?
-        (
-          <div>
-            <div>
-              <p>Name: {selectedProject.name}</p>
-              <p>Description: {selectedProject.description}</p>
-              <p>Skills: {selectedProject.domains}</p>
-            </div>
-            <div>
-                <label htmlFor="applyReason">Why do you want to apply?</label>
-                <input type="text" id="applyReason" value={applyReason} onChange={handleApplyReasonChange} />
-            </div>
-            <button onClick={handleSubmit}>Submit</button>
-            <button onClick={cancelApply}>Cancel</button>
-          </div>
-        )
-        :
-        (
-          <div>
-            {projectData && projectData.map((project, index) => (
-              <div key={index}>
-                <p>Name: {project.name}</p>
-                <button onClick={() => applyProjectClick(project)}>Apply</button>
+  return(
+      <div className="main-content flex">
+        <div className="w-1/4">
+          {/* <ProjectFilter handleFilterChange={handleFilterChange} /> */}
+        </div>
+        <div className="w-3/4">
+          {isApply ? (
+            <div className='bg-white rounded-lg shadow-md p-6'>
+              <h2 className='text-2xl font-bold mb-4'>Apply for Project</h2>
+              <div className='mb-4'>
+                <p><span className='font-bold'>Name:</span> {selectedProject.name}</p>
+                <p><span className='font-bold'>Description:</span> {selectedProject.description}</p>
+                <p><span className='font-bold'>Skills:</span> {selectedProject.domains}</p>
               </div>
-            ))}
-          </div>
-        )
-      }
-    </div>
-  )
+              <div className='mb-4'>
+                <label htmlFor='applyReason' className='block text-sm font-bold mb-1'>Why do you want to apply?</label>
+                <input type='text' id='applyReason' className='w-full border rounded px-3 py-2' value={applyReason} onChange={handleApplyReasonChange} />
+              </div>
+              <div className='flex flex-col md:flex-row md:justify-between'>
+                <button onClick={handleSubmit} className='bg-blue-500 text-white font-bold py-2 px-4 rounded hover:bg-blue-700 mb-2 md:mb-0 md:mr-2'>Submit</button>
+                <button onClick={cancelApply} className='bg-red-500 text-white font-bold py-2 px-4 rounded hover:bg-red-700'>Cancel</button>
+              </div>
+            </div>
+          ) : (
+            <div>
+              {projectData && projectData.map((project, index) => (
+                <div key={index} className='flex flex-row justify-between bg-white rounded-lg shadow-md p-6 mb-4'>
+                  <div>
+                  <h2 className='text-xl font-bold mb-2'>{project.name}</h2>
+                  <p className='text-gray-600 mb-2'>{project.professor}</p>
+                  <p className='text-gray-600 mb-2'>{project.domains}</p>
+                  </div>
+                  <div className='py-6'>
+                  <button onClick={() => applyProjectClick(project)} className='h-10 bg-blue-500 text-white font-bold py-2 px-4 rounded hover:bg-blue-700'>Apply</button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      </div>
+    );
 }

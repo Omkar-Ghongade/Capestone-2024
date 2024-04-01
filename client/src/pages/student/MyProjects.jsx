@@ -1,7 +1,8 @@
 import React from 'react'
+import "./Navbar.css"
 
 export default function MyProjects() {
   return (
-    <div>MyProjects</div>
+    <div className='main-content'>MyProjects</div>
   )
 }

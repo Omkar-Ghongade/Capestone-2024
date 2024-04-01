@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import "./Navbar.css"
 
 export default function TeamFormation() {
   const [teamData, setTeamData] = useState(null);
@@ -113,7 +114,7 @@ export default function TeamFormation() {
   }
 
   return (
-    <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+    <div className=' main-content flex justify-between'>
       {!teamCreatedOrJoined && (
         <div style={{ marginRight: '10px' }}>
           <button onClick={handleCreateTeam}>Create Team</button>

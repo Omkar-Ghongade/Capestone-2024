@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import "./Navbar.css"
 
 export default function AppliedProjects() {
   const [appliedProjects, setAppliedProjects] = useState([]);
@@ -29,7 +30,7 @@ export default function AppliedProjects() {
   }
 
   return (
-    <div>
+    <div className='main-content'>
       <h2>Applied Projects</h2>
       {appliedProjects.map((project, index) => (
         <div key={index}>
