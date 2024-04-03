@@ -49,8 +49,11 @@ export default function MainHome() {
     <div>
       {professorData && (
         <div>
-          <p>Name: {professorData.name}</p>
-        </div>
+        <p>Name: {professorData.name}</p>
+        <p>Email: {professorData.emailid}</p>
+        <p>Profile Photo: <img  src={professorData.profilephoto} alt="Professor" /></p>
+        <p>ID: {professorData._id}</p>
+      </div>
       )}
     </div>
   )
