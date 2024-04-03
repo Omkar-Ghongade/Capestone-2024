@@ -38,7 +38,8 @@ export default function MainHome() {
         body: JSON.stringify({ emailid: email }),
       });
       const data = await res.json();
-      console.log(data);
+      // console.log(data);
+      localStorage.setItem('professorName', data.name);
       setProfessorData(data);
     } catch (error) {
       console.log(error);
