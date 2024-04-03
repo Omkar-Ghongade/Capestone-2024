@@ -9,6 +9,7 @@ const projectdata=new mongoose.Schema({
     maxteamsize : {type:String,required:true},
 });
 
+
 const project=mongoose.model('projectdata',projectdata);
 project.createIndexes();
 

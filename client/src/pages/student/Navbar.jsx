@@ -36,7 +36,7 @@ const Navbar= () => {
                         return (
                           <React.Fragment key={link.id}>
                             {ProjectDropdown.map((item) => (
-                              <li key={item.id} className='md:ml-8 md:my-0 my-7 font-semibold'>
+                              <li onClick={()=>setOpen(!open)} key={item.id} className='md:ml-8 md:my-0 my-7 font-semibold'>
                                 <Link to={item.path} className='h-16 text-gray-800 hover:text-blue-400 duration-500'>{item.title}</Link>
                               </li>
                             ))}
@@ -54,14 +54,15 @@ const Navbar= () => {
                             
                           >
                             
-                            <span className='flex flex-row py-5 cursor-pointer text-gray-800 hover:text-blue-400 duration-500 md:ml-8 md:my-0 my-0  font-semibold'>{link.title}<RiArrowDropDownLine className='size-6 mt-0.5' /></span>
+                            <span className='flex flex-row py-5 text-md cursor-pointer text-gray-800 hover:text-blue-400 duration-500 md:ml-8 md:my-0 my-0  font-semibold'>{link.title}<RiArrowDropDownLine className='size-6 mt-0' /></span>
                             {dropdown && <Dropdown className=""/>}
                           </li>
                         );
                       }
                       
-                    return(<li key={link.id} className='md:ml-8 md:my-0 my-7 font-semibold'>
-                        <a href={link.path} className=' h-16 text-gray-800 hover:text-blue-400 duration-500'>{link.title}</a>
+                    return(<li key={link.id} className=' text-md mt-5 md:ml-8 md:my-0 my-7 font-semibold'>
+                        <a onClick={()=>setOpen(!open)} href={link.path} className=' h-16 text-gray-800 hover:text-blue-400 duration-500'>{link.title}</a>
+                        
                     </li>)})
                 }
 

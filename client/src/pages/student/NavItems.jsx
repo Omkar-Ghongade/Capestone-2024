@@ -18,13 +18,7 @@ export const navItems = [
       cName: "nav-item",
     },
     {
-      id: 4,
-      title: "My Project",
-      path: "./my-projects",
-      cName: "nav-item",
-    },
-    {
-        id: 5,
+        id: 4,
         title: "Team",
         path: "./team-formation",
         cName: "nav-item",

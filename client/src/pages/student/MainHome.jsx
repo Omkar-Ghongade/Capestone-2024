@@ -48,13 +48,62 @@ export default function MainHome() {
     }
   };
 
-  return (
-    <div className='main-content'>
-      {studentData && (
-        <div>
-          <p>Name: {studentData.name}</p>
+  // return (
+  //   <div className='main-content'>
+  //     {studentData && (
+  //       <div>
+  //         <p>Name: {studentData.name}</p>
+  //       </div>
+  //     )}
+  //   </div>
+  // )
+    return (
+      <div className=" main-content flex justify-center h-full items-center bg-gray-100">
+        <div className="bg-white shadow-md rounded-lg p-4 w-full ">
+          {studentData && (<div>
+          <div className="flex items-center">
+            <img
+              src="https://via.placeholder.com/150"
+              alt="profile"
+              className="h-24 w-24 rounded-full mr-4"
+            />
+            <div>
+              <h1 className="text-2xl font-bold">{studentData.name}</h1>
+              <p className="text-gray-500">{studentData.rollNumber}</p>
+            </div>
+          </div>
+          <div className="mt-8">
+            <h2 className="text-lg font-semibold mb-4">Contact Information</h2>
+            <div>
+              <p className="text-gray-600">
+                Email: {studentData.emailid}
+              </p>
+              <p className="text-gray-600">
+                Phone: {studentData.contactNumber}
+              </p>
+            </div>
+          </div>
+          <div className="mt-8">
+            <h2 className="text-lg font-semibold mb-4">Team</h2>
+            <p className="text-gray-600">
+              {/* {studentData.team} */} ABCD <br/>
+              EFGH <br/>
+              IJKL
+            </p>
+          </div>
+
+          <div className="mt-8">
+            <h2 className="text-lg font-semibold mb-4">Project</h2>
+            <div>
+              <p className="text-gray-600">
+                {/* studentData.Project */}
+                ABCDEFGHIJKL
+              </p>
+            </div>
+          </div>
+          
+          </div>)}
         </div>
-      )}
-    </div>
-  )
+      </div>
+    );
 }
