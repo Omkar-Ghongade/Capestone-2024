@@ -27,6 +27,7 @@ export const applyproject = async (req, res) => {
         }
 
         req.body.teamcode = teamcode;
+        console.log(req.body);
         const appliedproject = new Appliedproject(req.body);
         const newappliedproject = await appliedproject.save();
         res.status(201).json(newappliedproject);
@@ -51,6 +52,16 @@ export const createproject = async (req, res) => {
         const newproject = new project(req.body);
         const newprojectdata = await newproject.save();
         res.status(201).json(newprojectdata);
+    }catch(err){
+        res.status(404).json({message:err.message});
+    }
+}
+
+export const getprofessorproject = async (req, res) => {
+    try{
+        console.log(req.body);
+        const profproject = await project.find({professor:req.body.name});
+        res.status(200).json(profproject);
     }catch(err){
         res.status(404).json({message:err.message});
     }
