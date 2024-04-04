@@ -36,7 +36,7 @@ export default function MyProjects() {
         body:JSON.stringify({name:projectName})
       })
       const data=await res.json();
-      console.log(data);
+      // console.log(data);
       fetchProjectsFromBackend();
     }catch(err){
         res.status(404).json({message:err.message});

@@ -34,7 +34,7 @@ export default function PostProject() {
       maxteamsize
     };
 
-    console.log(formData);
+    // console.log(formData);
 
     try{
       const res=await fetch('http://localhost:3000/api/project/createproject',{
@@ -45,7 +45,7 @@ export default function PostProject() {
         body:JSON.stringify(formData)
       })
       const data=await res.json();
-      console.log(data);
+      // console.log(data);
     }catch(err){
       console.log(err);
     }
