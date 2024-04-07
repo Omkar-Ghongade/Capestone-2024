@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import CryptoJS from 'crypto-js'; // Import CryptoJS library
 import "./Navbar.css"
+import { auth } from '../config';
+import { onAuthStateChanged } from 'firebase/auth';
 
 const ENCRYPTION_KEY = "c%r2n8#FqPb6@vKt5^hMw9&sGzYp3!dA";
 
 export default function MainHome() {
 
   const [studentData, setStudentData] = useState(null);
+  const [photoURL, setPhotoURL] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -16,6 +19,12 @@ export default function MainHome() {
       }
     };
     fetchData();
+  }, []);
+
+  useEffect(() => {
+    
+      
+    
   }, []);
 
   const decryptEmailIdFromLocalStorage = () => {
@@ -31,21 +40,23 @@ export default function MainHome() {
 
   const fetchStudentData = async (email) => {
     // console.log(email);
-    try {
-      const res = await fetch('http://localhost:3000/api/student/getstudentdata', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ emailid: email }),
-      });
-      const data = await res.json();
-      // console.log(data.rollNumber);
-      localStorage.setItem('rollNumber', data.rollNumber);
-      setStudentData(data);
-    } catch (error) {
-      console.log(error);
-    }
+    onAuthStateChanged(auth, async (user) => {
+      try {
+        const res = await fetch('http://localhost:3000/api/student/getstudentdata', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ emailid: email, url: user.photoURL }),
+        });
+        const data = await res.json();
+        // console.log(data.rollNumber);
+        localStorage.setItem('rollNumber', data.rollNumber);
+        setStudentData(data);
+      } catch (error) {
+        console.log(error);
+      }
+    });
   };
 
   // return (
@@ -63,7 +74,7 @@ export default function MainHome() {
           <div className="flex flex-col items-center bg-white shadow-md rounded-lg p-10 h-screen w-full max-md:h-full ">
             <div className='w-full flex justify-center items-center'>
             <img
-              src="https://via.placeholder.com/150"
+              src={studentData.photo ? studentData.photo : "https://via.placeholder.com/150"}
               alt="profile"
               className="h-52 w-52 rounded-full m-0"
             />

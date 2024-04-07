@@ -5,3 +5,9 @@
 body{
     background-color: rgb(241, 245, 241);
 }
+.josefin-sans{
+    font-family: "Josefin Sans", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 700;
+    font-style: normal;
+  }
