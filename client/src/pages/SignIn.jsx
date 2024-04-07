@@ -7,8 +7,8 @@ import AHome from './admin/Home';
 import CryptoJS from 'crypto-js';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { onAuthStateChanged } from "firebase/auth";
-
-
+import { BsInfoCircle, BsGoogle } from 'react-icons/bs';
+import { FaGoogle } from 'react-icons/fa';
 
 // Encryption/decryption key (should be kept secret and not hardcoded like this in production)
 const ENCRYPTION_KEY = "c%r2n8#FqPb6@vKt5^hMw9&sGzYp3!dA";
@@ -104,14 +104,44 @@ export default function SignIn() {
     }
   };
 
+  function LoginBox({ children }) {
+    return (
+      <div className="w-100 h-80 bg-white shadow-2xl p-6 rounded-lg justify-center">
+        {children}
+      </div>
+    );
+  }
   return (
-    <div>
-      {/* {user.email} */}
+    <div className="flex flex-col items-center justify-center h-screen">
       {role ? (
         renderHomeComponent()
       ) : (
+        <div className="flex flex-col md:flex-row w-screen">
+          {/* Left side with picture */}
+          <div className="w-full md:w-2/3 h-1/2 md:h-screen bg-cover bg-center" style={{ backgroundImage: 'url(https://s3.ap-southeast-1.amazonaws.com/images.deccanchronicle.com/dc-Cover-6kn3u7utpcqktf72fklu6sr534-20230219004624.Medi.jpeg)' }}></div>
 
-        <button onClick={handleClick}>Signin With Google</button>
+          {/* Right side with login box */}
+          <div className="md:w-1/3 h-screen p-10 md:p-20 bg-white shadow-lg rounded-md flex flex-col justify-center">
+            <div className="flex justify-center items-center">
+              <LoginBox>
+                <h2 className="text-3xl font-semibold mt-4 text-center josefin-sans">LOGIN</h2>
+                <button className="bg-white shadow-lg hover:shadow-xl text-gray-800 font-bold py-3 px-6 rounded mb-4 flex items-center justify-center w-full md:w-[22rem]" onClick={handleClick}>
+                  <FaGoogle className="inline-block mr-2" size={20} color="#494623" /> Sign in with Google
+                </button>
+                <div className="text-sm flex items-center text-gray-500 mb-4">
+                  <BsInfoCircle className="h-4 w-4 mr-1" />
+                  Students must use their college email ID
+                </div>
+                <div className="text-sm mb-4">
+                  <button className="bg-[#494623] hover:bg-gray-600 text-white font-semibold py-3 px-6 w-full md:w-[22rem] rounded-md flex items-center justify-center" onClick={() => console.log('Faculty login clicked')}>Faculty Login</button>
+                </div>
+                <div className="text-sm">
+                  <button className="bg-[#494623] hover:bg-gray-600 text-white font-semibold py-3 px-6 w-full md:w-[22rem] rounded-md mb-4 flex items-center justify-center" onClick={() => console.log('Admin login clicked')}>Admin Login</button>
+                </div>
+              </LoginBox>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );

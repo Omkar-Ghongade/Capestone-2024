@@ -6,6 +6,10 @@ export default {
   ],
   theme: {
     extend: {},
+    color:{
+      olive:'#A8CD9F'
+    },
+  
   },
   plugins: [],
 }
