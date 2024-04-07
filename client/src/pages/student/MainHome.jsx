@@ -58,52 +58,56 @@ export default function MainHome() {
   //   </div>
   // )
     return (
-      <div className=" main-content flex justify-center h-full items-center bg-gray-100">
-        <div className="bg-white shadow-md rounded-lg p-4 w-full ">
-          {studentData && (<div>
-          <div className="flex items-center">
+      <div className="items-center bg-gray-100">
+          {studentData && (<div className='  main-content grid grid-cols-2 max-md:grid-cols-1 gap-3 '>
+          <div className="flex flex-col items-center bg-white shadow-md rounded-lg p-10 h-screen w-full max-md:h-full ">
+            <div className='w-full flex justify-center items-center'>
             <img
               src="https://via.placeholder.com/150"
               alt="profile"
-              className="h-24 w-24 rounded-full mr-4"
+              className="h-52 w-52 rounded-full m-0"
             />
-            <div>
-              <h1 className="text-2xl font-bold">{studentData.name}</h1>
-              <p className="text-gray-500">{studentData.rollNumber}</p>
             </div>
-          </div>
-          <div className="mt-8">
-            <h2 className="text-lg font-semibold mb-4">Contact Information</h2>
-            <div>
-              <p className="text-gray-600">
-                Email: {studentData.emailid}
-              </p>
-              <p className="text-gray-600">
-                Phone: {studentData.contactNumber}
-              </p>
+            <div className='w-full flex flex-col justify-center items-center mt-4'>
+              <h1 className="text-5xl font-bold">{studentData.name}</h1>
+              <p className="text-gray-500 text-4xl mt-4">{studentData.rollNumber}</p>
             </div>
-          </div>
-          <div className="mt-8">
-            <h2 className="text-lg font-semibold mb-4">Team</h2>
-            <p className="text-gray-600">
-              {/* {studentData.team} */} ABCD <br/>
-              EFGH <br/>
-              IJKL
-            </p>
-          </div>
-
-          <div className="mt-8">
-            <h2 className="text-lg font-semibold mb-4">Project</h2>
-            <div>
-              <p className="text-gray-600">
-                {/* studentData.Project */}
-                ABCDEFGHIJKL
-              </p>
-            </div>
-          </div>
           
+            <div className="mt-8 flex flex-col justify-center items-center">
+              <h2 className="text-4xl font-semibold mb-4">Contact Information</h2>
+              <div>
+                <p className="text-gray-600">
+                  <b>Email:</b> {studentData.emailid}
+                </p>
+                <p className="text-gray-600">
+                  <b>Phone:</b> {studentData.contactNumber}
+                </p>
+              </div>
+            </div>
+          </div>
+            <div className="flex flex-col items-center bg-white shadow-md rounded-lg p-4 h-screen w-full max-md:h-full max-md:mt-2">
+              <div className="mt-8">
+                <h2 className="text-4xl font-semibold mb-4">Team</h2>
+                <p className="text-gray-600 text-2xl">
+                  {/* {studentData.team} */} ABCD <br/>
+                  EFGH <br/>
+                  IJKL
+                </p>
+              </div>
+
+              <div className="mt-8">
+                <h2 className="text-4xl font-semibold mb-4">Project</h2>
+                <div>
+                  <p className="text-gray-600 text-2xl">
+                    {/* studentData.Project */}
+                    ABCDEFGHIJKL
+                  </p>
+                </div>
+              </div>
+              
+            </div>
           </div>)}
-        </div>
+        
       </div>
     );
 }

@@ -107,6 +107,9 @@ export default function ProjectsList() {
       applyReason: applyReason,
       studentId: localStorage.getItem('rollNumber'),
     }
+
+    console.log(selectedProject.domains);
+
     console.log(data);
     try {
       const res = await fetch('http://localhost:3000/api/project/applyproject', {
@@ -118,6 +121,8 @@ export default function ProjectsList() {
       });
       const result = await res.json();
       // console.log(result);
+
+
       cancelApply();
     } catch (error) {
       // console.log(error);
