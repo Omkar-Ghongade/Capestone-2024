@@ -128,14 +128,14 @@ export default function ProjectsList() {
 
   return(
       <div className="main-content flex">
-        <div className="w-1/6 position-static ">
+        <div className="w-1/6 position-static md:h-screen ">
           <ProjectFilter/>
         </div>
-        <div className="w-5/6 pr-4">
+        <div className="w-5/6 pr-4 ">
           {isApply ? (
-            <div className='w-3/4 w-full bg-white rounded-lg shadow-md p-6'>
+            <div className='w-3/4 w-full bg-white rounded-lg shadow-md p-6 '>
               <h2 className='text-2xl font-bold mb-4'>Apply for Project</h2>
-              <div className='mb-4'>
+              <div className='mb-4 '>
                 <p><span className='font-bold'>Name:</span> {selectedProject.name}</p>
                 <p><span className='font-bold'>Description:</span> {selectedProject.description}</p>
                 <p><span className='font-bold'>Skills:</span> {selectedProject.domains}</p>

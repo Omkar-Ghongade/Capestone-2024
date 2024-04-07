@@ -112,7 +112,7 @@ export default function SignIn() {
     );
   }
   return (
-    <div className="flex flex-col items-center justify-center h-screen">
+    <div className="flex flex-col">
       {role ? (
         renderHomeComponent()
       ) : (
@@ -130,13 +130,13 @@ export default function SignIn() {
                 </button>
                 <div className="text-sm flex items-center text-gray-500 mb-4">
                   <BsInfoCircle className="h-4 w-4 mr-1" />
-                  Students must use their college email ID
+                  Students must use their University email ID
                 </div>
                 <div className="text-sm mb-4">
-                  <button className="bg-[#494623] hover:bg-gray-600 text-white font-semibold py-3 px-6 w-full md:w-[22rem] rounded-md flex items-center justify-center" onClick={() => console.log('Faculty login clicked')}>Faculty Login</button>
+                  <button className="bg-[#494623] shadow shadow-teal-200 hover:bg-black hover:shadow-md hover:shadow-teal-200 text-white font-semibold py-3 px-6 w-full md:w-[22rem] rounded-md flex items-center justify-center" onClick={() => console.log('Faculty login clicked')}>Faculty Login</button>
                 </div>
                 <div className="text-sm">
-                  <button className="bg-[#494623] hover:bg-gray-600 text-white font-semibold py-3 px-6 w-full md:w-[22rem] rounded-md mb-4 flex items-center justify-center" onClick={() => console.log('Admin login clicked')}>Admin Login</button>
+                  <button className="bg-[#494623] shadow shadow-teal-200 hover:bg-black hover:shadow-md hover:shadow-teal-200 text-white font-semibold py-3 px-6 w-full md:w-[22rem] rounded-md mb-4 flex items-center justify-center" onClick={() => console.log('Admin login clicked')}>Admin Login</button>
                 </div>
               </LoginBox>
             </div>
