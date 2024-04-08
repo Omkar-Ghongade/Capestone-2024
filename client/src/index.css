@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 body{
-    background-color: rgb(241, 245, 241);
+    background-color: rgb(255, 255, 255);
 }
 .josefin-sans{
     font-family: "Josefin Sans", sans-serif;

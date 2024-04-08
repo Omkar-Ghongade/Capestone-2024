@@ -18,10 +18,14 @@ const Navbar= () => {
         <div className='shadow-md w-full fixed top-0 left-0'>
            <div className='md:flex items-center justify-between bg-white h-16 md:px-10 px-7 m-0'>
             {/* logo section */}
+            <a href="/">
             <div className='font-bold text-2xl cursor-pointer flex items-center gap-1'>
-                <BookOpenIcon className='w-7 h-7 text-blue-600'/>
+              
+                <BookOpenIcon className='w-7 h-7 text-lime-950'/>
                 <span>Capstone</span>
+                
             </div>
+            </a>
             {/* Menu icon */}
             <div onClick={()=>setOpen(!open)} className='absolute right-8 top-6 cursor-pointer md:hidden w-7 h-7'>
                 {
@@ -37,7 +41,7 @@ const Navbar= () => {
                           <React.Fragment key={link.id}>
                             {ProjectDropdown.map((item) => (
                               <li onClick={()=>setOpen(!open)} key={item.id} className='md:ml-8 md:my-0 my-7 font-semibold'>
-                                <Link to={item.path} className='h-16 text-gray-800 hover:text-blue-400 duration-500'>{item.title}</Link>
+                                <Link to={item.path} className='h-16 text-gray-800 hover:text-teal-700 duration-500'>{item.title}</Link>
                               </li>
                             ))}
                           </React.Fragment>);
@@ -54,14 +58,14 @@ const Navbar= () => {
                             
                           >
                             
-                            <span className='flex flex-row py-5 text-md cursor-pointer text-gray-800 hover:text-blue-400 duration-500 md:ml-8 md:my-0 my-0  font-semibold'>{link.title}<RiArrowDropDownLine className='size-6 mt-0' /></span>
+                            <span className='flex flex-row py-6 text-md cursor-pointer text-gray-800 hover:text-teal-700 duration-500 md:ml-8 md:my-0 my-0  font-semibold'>{link.title}<RiArrowDropDownLine className='size-6 mt-0' /></span>
                             {dropdown && <Dropdown className=""/>}
                           </li>
                         );
                       }
                       
                     return(<li key={link.id} className=' text-md mt-5 md:ml-8 md:my-0 my-7 font-semibold'>
-                        <a onClick={()=>setOpen(!open)} href={link.path} className=' h-16 text-gray-800 hover:text-blue-400 duration-500'>{link.title}</a>
+                        <a onClick={()=>setOpen(false)} href={link.path} className=' h-16 text-gray-800 hover:text-teal-700 duration-500'>{link.title}</a>
                         
                     </li>)})
                 }
