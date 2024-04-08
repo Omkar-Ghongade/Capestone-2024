@@ -23,6 +23,8 @@ const ProjectFilter = ({ }) => {
 
 export default function ProjectsList() {
   const [projectData, setProjectsData] = useState(null);
+  var count=0;
+  const [finalcount,setFinalCount]=useState(0);
   const [selectedProject, setSelectedProject] = useState(null);
   const [isApply, setIsApply] = useState(false);
   const [applyReason, setApplyReason] = useState('');
@@ -50,6 +52,23 @@ export default function ProjectsList() {
     }
     setIsApply(false);
   }, []);
+
+  useEffect(() => {
+    if (projectData) {
+      let count = 0;
+      for (var i = 0; i < projectData.length; i++) {
+        if (projectData[i].isopen) {
+          count++;
+        }
+      }
+      console.log(count);
+      setFinalCount(count);
+    }
+  }, [projectData]);
+  
+  useEffect(() => {
+    console.log(finalcount);
+  }, [finalcount]);
 
   const fetchProjectData = async () => {
     try {
