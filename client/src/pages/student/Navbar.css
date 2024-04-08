@@ -8,12 +8,12 @@
   }
   
   .services-submenu li {
-    background: rgb(0, 212, 212);
+    background: #14b8a6;
     cursor: pointer;
   }
   
   .services-submenu li a:hover {
-    background: rgb(0, 175, 175);
+    background: #134e4a;
   }
   
   .services-submenu.clicked {
@@ -46,7 +46,7 @@
   }
 
   .pagination li:hover {
-    background-color: #5f5858;
+    background-color: #c5c4c4;  
   }
   
   .pagination li a {
@@ -55,10 +55,10 @@
     border: 1px solid #ccc;
     border-radius: 4px;
     text-decoration: none;
-    color: #333;
+    color: #1a2e05;
   }
   
   .pagination li.active a {
-    background-color: #333;
+    background-color: #1a2e05;
     color: #fff;
   }

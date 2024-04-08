@@ -18,7 +18,7 @@ function Logout() {
 
   return (
     <div>
-      <button className='btn bg-gray-900 hover:bg-gray-600 text-white md:ml-8 font-semibold px-3 py-1 rounded duration-500 md:static' onClick={handleLogout}>Logout</button>
+      <button className='btn bg-lime-950 shadow shadow-teal-200 hover:bg-black hover:shadow-md hover:shadow-teal-200 text-white md:ml-8 font-semibold px-3 py-1 rounded duration-500 md:static' onClick={handleLogout}>Logout</button>
     </div>
   )
 }

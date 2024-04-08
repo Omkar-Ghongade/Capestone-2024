@@ -113,11 +113,11 @@ export default function ProfessorProfiles() {
 
   return (
     <div className='main-content '>
-      <div className='text-center h-8 text-2xl bg-white m-0'><h1>Professor Profiles</h1></div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
+      <div className='text-3xl mt-2 mb-2 text-center josefin-sans'><h1>Professor Profiles</h1></div>
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 px-4">
         
         {currentProfiles.map((professor, index) => (
-          <div className="bg-white shadow-md rounded-md overflow-hidden" key={index}>
+          <div className="bg-white shadow-md hover:shadow-lg hover:shadow-teal-100 rounded-md overflow-hidden" key={index}>
             <img src={professor.profilephoto} alt={professor.name} className="max-w-360px max-h-200px w-full h-41 object-cover" />
             <div className="p-4">
               <h3 className="text-xl font-semibold mb-2">Name: {professor.name}</h3>

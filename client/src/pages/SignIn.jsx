@@ -106,7 +106,10 @@ export default function SignIn() {
 
   function LoginBox({ children }) {
     return (
-      <div className="w-100 h-80 bg-white shadow-2xl p-6 rounded-lg justify-center">
+      <div className="flex flex-col w-100 h-100 bg-white shadow-2xl p-6 rounded-lg justify-center item-center">
+        <div className="flex flex-col w-parent justify-center ml-28 mr-28">
+        <img className="w-32" src="https://srmap.edu.in/file/2019/12/Logo-2.png" alt="SRM Logo" />
+      </div>
         {children}
       </div>
     );
@@ -118,25 +121,25 @@ export default function SignIn() {
       ) : (
         <div className="flex flex-col md:flex-row w-screen">
           {/* Left side with picture */}
-          <div className="w-full md:w-2/3 h-1/2 md:h-screen bg-cover bg-center" style={{ backgroundImage: 'url(https://s3.ap-southeast-1.amazonaws.com/images.deccanchronicle.com/dc-Cover-6kn3u7utpcqktf72fklu6sr534-20230219004624.Medi.jpeg)' }}></div>
+          <div className="w-full md:w-2/3 h-1/2 md:h-screen bg-cover bg-center" style={{ backgroundImage: 'url(https://srmap.edu.in/wp-content/uploads/2020/11/infra12.png)' }}></div>
 
           {/* Right side with login box */}
           <div className="md:w-1/3 h-screen p-10 md:p-20 bg-white shadow-lg rounded-md flex flex-col justify-center">
             <div className="flex justify-center items-center">
               <LoginBox>
-                <h2 className="text-3xl font-semibold mt-4 text-center josefin-sans">LOGIN</h2>
-                <button className="bg-white shadow-lg hover:shadow-xl text-gray-800 font-bold py-3 px-6 rounded mb-4 flex items-center justify-center w-full md:w-[22rem]" onClick={handleClick}>
-                  <FaGoogle className="inline-block mr-2" size={20} color="#494623" /> Sign in with Google
+                <h2 className="text-3xl mt-4 text-center josefin-sans">LOGIN</h2>
+                <button className="bg-white shadow-lg hover:shadow-xl hover:bg-zinc-50 text-gray-800 font-bold py-3 px-6 rounded mb-4 flex items-center justify-center w-full md:w-[22rem]" onClick={handleClick}>
+                  <svg className="w-4 h-4 inline-block mr-2"  xmlns="http://www.w3.org/2000/svg"preserveAspectRatio="xMidYMid" viewBox="0 0 256 262" id="google"><path fill="#4285F4" d="M255.878 133.451c0-10.734-.871-18.567-2.756-26.69H130.55v48.448h71.947c-1.45 12.04-9.283 30.172-26.69 42.356l-.244 1.622 38.755 30.023 2.685.268c24.659-22.774 38.875-56.282 38.875-96.027"></path><path fill="#34A853" d="M130.55 261.1c35.248 0 64.839-11.605 86.453-31.622l-41.196-31.913c-11.024 7.688-25.82 13.055-45.257 13.055-34.523 0-63.824-22.773-74.269-54.25l-1.531.13-40.298 31.187-.527 1.465C35.393 231.798 79.49 261.1 130.55 261.1"></path><path fill="#FBBC05" d="M56.281 156.37c-2.756-8.123-4.351-16.827-4.351-25.82 0-8.994 1.595-17.697 4.206-25.82l-.073-1.73L15.26 71.312l-1.335.635C5.077 89.644 0 109.517 0 130.55s5.077 40.905 13.925 58.602l42.356-32.782"></path><path fill="#EB4335" d="M130.55 50.479c24.514 0 41.05 10.589 50.479 19.438l36.844-35.974C195.245 12.91 165.798 0 130.55 0 79.49 0 35.393 29.301 13.925 71.947l42.211 32.783c10.59-31.477 39.891-54.251 74.414-54.251"></path></svg> Sign in with Google
                 </button>
                 <div className="text-sm flex items-center text-gray-500 mb-4">
                   <BsInfoCircle className="h-4 w-4 mr-1" />
                   Students must use their University email ID
                 </div>
                 <div className="text-sm mb-4">
-                  <button className="bg-[#494623] shadow shadow-teal-200 hover:bg-black hover:shadow-md hover:shadow-teal-200 text-white font-semibold py-3 px-6 w-full md:w-[22rem] rounded-md flex items-center justify-center" onClick={() => console.log('Faculty login clicked')}>Faculty Login</button>
+                  <button className="bg-lime-950 shadow shadow-teal-200 hover:bg-black hover:shadow-md hover:shadow-teal-200 text-white font-semibold py-3 px-6 w-full md:w-[22rem] rounded-md flex items-center justify-center" onClick={() => console.log('Faculty login clicked')}>Faculty Login</button>
                 </div>
                 <div className="text-sm">
-                  <button className="bg-[#494623] shadow shadow-teal-200 hover:bg-black hover:shadow-md hover:shadow-teal-200 text-white font-semibold py-3 px-6 w-full md:w-[22rem] rounded-md mb-4 flex items-center justify-center" onClick={() => console.log('Admin login clicked')}>Admin Login</button>
+                  <button className="bg-lime-950 shadow shadow-teal-200 hover:bg-black hover:shadow-md hover:shadow-teal-200 text-white font-semibold py-3 px-6 w-full md:w-[22rem] rounded-md mb-4 flex items-center justify-center" onClick={() => console.log('Admin login clicked')}>Admin Login</button>
                 </div>
               </LoginBox>
             </div>
