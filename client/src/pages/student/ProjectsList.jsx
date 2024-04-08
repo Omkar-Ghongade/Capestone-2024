@@ -48,6 +48,7 @@ export default function ProjectsList() {
     if (selectedProjectStored) {
       setSelectedProject(JSON.parse(selectedProjectStored));
     }
+    setIsApply(false);
   }, []);
 
   const fetchProjectData = async () => {
