@@ -158,16 +158,17 @@ export default function ProjectsList() {
           ) : (
             <div>
               {projectData && projectData.map((project, index) => (
-                <div key={index} className='flex flex-row justify-between bg-white rounded-lg shadow-md p-6 mb-4'>
-                  <div>
-                  <h2 className='text-xl font-bold mb-2'>{project.name}</h2>
-                  <p className='text-gray-600 mb-2'>{project.professor}</p>
-                  <p className='text-gray-600 mb-2'>{project.domains}</p>
+                project.isopen && 
+                  <div key={index} className='flex flex-row justify-between bg-white rounded-lg shadow-md p-6 mb-4'>
+                    <div>
+                    <h2 className='text-xl font-bold mb-2'>{project.name}</h2>
+                    <p className='text-gray-600 mb-2'>{project.professor}</p>
+                    <p className='text-gray-600 mb-2'>{project.domains}</p>
+                    </div>
+                    <div className='py-6'>
+                    <button onClick={() => applyProjectClick(project)} className='h-10 bg-blue-500 text-white font-bold py-2 px-4 rounded hover:bg-blue-700'>Apply</button>
+                    </div>
                   </div>
-                  <div className='py-6'>
-                  <button onClick={() => applyProjectClick(project)} className='h-10 bg-blue-500 text-white font-bold py-2 px-4 rounded hover:bg-blue-700'>Apply</button>
-                  </div>
-                </div>
               ))}
             </div>
           )}

@@ -7,7 +7,8 @@ const appliedprojectdata=new mongoose.Schema({
     projectDomain:{type:Array,required:true},
     projectProfessor:{type:String,required:true},
     teamcode:{type:String,required:true},
-    studentId:{type:String,required:true}
+    studentId:{type:String,required:true},
+    isaccepted:{type:Boolean,required:true}
 });
 
 const Appliedproject=mongoose.model('appliedprojectdata',appliedprojectdata);

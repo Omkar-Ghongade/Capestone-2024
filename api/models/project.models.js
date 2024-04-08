@@ -7,6 +7,7 @@ const projectdata=new mongoose.Schema({
     domains : {type:Array,required:true},
     minteamsize : {type:String,required:true},
     maxteamsize : {type:String,required:true},
+    isopen:{type:Boolean,required:true}
 });
 
 

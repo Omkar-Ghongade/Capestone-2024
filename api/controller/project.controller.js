@@ -28,6 +28,7 @@ export const applyproject = async (req, res) => {
 
         req.body.teamcode = teamcode;
         console.log(req.body);
+        req.body.isaccepted = false;
         const appliedproject = new Appliedproject(req.body);
         const newappliedproject = await appliedproject.save();
         res.status(201).json(newappliedproject);
@@ -47,9 +48,11 @@ export const getappliedproject = async (req, res) => {
     }
 }
 
+
 export const createproject = async (req, res) => {
     try{
         const newproject = new project(req.body);
+        newproject.isopen=true;
         const newprojectdata = await newproject.save();
         res.status(201).json(newprojectdata);
     }catch(err){
@@ -80,16 +83,51 @@ export const deleteproject = async (req, res) => {
 
 export const acceptproject = async (req, res) => {
     try{
-        const projectid = req.body.projectId;
-        const teamid = req.body.teamcode;
-        const name = req.body.projectName;
-        console.log(req.body)
-        const deleteapplications1 = await Appliedproject.deleteMany({projectId:projectid});
-        const deleteapplications2 = await Appliedproject.deleteMany({teamcode:teamid});
-        const deleteapplications3 = await project.deleteMany({name});
-        const finalproject = new Finalproject(req.body);
-        const newfinalproject = await finalproject.save();
-        res.status(201).json(newfinalproject);
+        const projectName=req.body.projectName;
+        const teamcode=req.body.teamcode;
+
+        // closed the project
+        const findproject = await project.findOne({name:projectName});
+        findproject.isopen = false;
+        await findproject.save();
+
+        // accepted the project
+        const findProject= await Appliedproject.findOne({projectName:projectName, teamcode: teamcode });
+
+        if(findProject.isaccepted){
+            return res.status(400).json({message:"Project already accepted"});
+        }
+
+        findProject.isaccepted = true;
+        await findProject.save();
+
+
+        // rejected all other projects by that team 
+        const teamapplications = await Appliedproject.find({teamcode:teamcode});
+        for(var i=0;i<teamapplications.length;i++){
+            if(teamapplications[i].projectName!==projectName){
+                teamapplications[i].isaccepted = false;
+                await teamapplications[i].save();
+            }
+        }
+
+        // reject all applications for that project
+        const projectapplications = await Appliedproject.find({projectName:projectName});
+        for(var i=0;i<projectapplications.length;i++){
+            if(projectapplications[i].teamcode!==teamcode){
+                projectapplications[i].isaccepted = false;
+                await projectapplications[i].save();
+            }
+        }
+
+
+        const { _id, __v, ...cleanFindProject } = findProject.toObject();
+        cleanFindProject.isaccepted = true;
+        console.log(cleanFindProject);
+        const finalproject = new Finalproject(cleanFindProject);
+        console.log("here");
+        const newfinalProject = await finalproject.save();
+        res.status(200).json(newfinalProject);
     }catch(err){
         res.status(404).json({message:err.message});
     }
@@ -121,6 +159,16 @@ export const addreportlink = async (req, res) => {
         const teamcode=req.body.teamcode;
         const reportlink=req.body.reportlink;
         const allappliedproject = await Finalproject.findOneAndUpdate({ teamcode: teamcode}, { $push: { reports: reportlink } });
+        res.status(200).json(allappliedproject);
+    }catch(err){
+        res.status(404).json({message:err.message});
+    }
+}
+
+export const getmyapplications = async (req, res) => {
+    try{
+        const name=req.body.name;
+        const allappliedproject = await Appliedproject.find({ projectProfessor: name });
         res.status(200).json(allappliedproject);
     }catch(err){
         res.status(404).json({message:err.message});

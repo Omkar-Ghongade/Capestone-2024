@@ -53,9 +53,9 @@ export default function MyProjects() {
               <h3>{project.name}</h3>
               <p>{project.description}</p>
               <p><strong>Domains:</strong> {project.domains.join(', ')}</p>
-              <p><strong>Team Size:</strong> {project.minTeamSize} - {project.maxTeamSize}</p>
+              <p><strong>Team Size:</strong> {project.minteamsize} - {project.maxteamsize}</p>
             </div>
-            <button onClick={() => deleteProject(project.name)}>Delete</button>
+            {project.isopen && <button onClick={() => deleteProject(project.name)}>Delete</button>}
           </li>
         ))}
       </ul>

@@ -8,6 +8,7 @@ const finalprojectdata=new mongoose.Schema({
     projectProfessor:{type:String,required:true},
     teamcode:{type:String,required:true},
     studentId:{type:String,required:true},
+    isaccepted:{type:Boolean,required:true},
     reports:{type:Array}
 });
 
