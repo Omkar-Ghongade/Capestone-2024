@@ -174,3 +174,13 @@ export const getmyapplications = async (req, res) => {
         res.status(404).json({message:err.message});
     }
 }
+
+export const getreportlink = async (req, res) => {
+    try{
+        const professorname=req.body.name;
+        const allappliedproject = await Finalproject.find({ projectProfessor: professorname });
+        res.status(200).json(allappliedproject);
+    }catch(err){
+        res.status(404).json({message:err.message});
+    }
+}

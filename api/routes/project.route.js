@@ -10,6 +10,7 @@ import {displayacceptedproject} from '../controller/project.controller.js';
 import {addreportlink} from '../controller/project.controller.js';
 import {getprofessorproject} from '../controller/project.controller.js';
 import { getmyapplications } from '../controller/project.controller.js';
+import { getreportlink } from '../controller/project.controller.js';
 
 const router = express.Router();
 
@@ -24,5 +25,6 @@ router.post('/displayacceptedproject',displayacceptedproject);
 router.post('/addreportlink',addreportlink);
 router.post('/getprofessorproject',getprofessorproject);
 router.post('/getmyapplications',getmyapplications);
+router.post('/getreportlink',getreportlink);
 
 export default router;
