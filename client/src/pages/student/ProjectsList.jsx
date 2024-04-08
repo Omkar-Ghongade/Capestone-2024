@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import ReactPaginate from 'react-paginate';
 import "./Navbar.css"
 
 
@@ -33,6 +34,9 @@ export default function ProjectsList() {
     filter2: false,
     // Add more filters here
   });
+
+  const [pageNumber, setPageNumber] = useState(0);
+  const [projectsPerPage,setProjectsPerPage] = useState(6); // Number of projects to display per page
 
   useEffect(() => {
     const fetchData = async () => {
@@ -151,6 +155,31 @@ export default function ProjectsList() {
     }
   }
 
+  
+  const handlePageChange = ({ selected }) => {
+    setPageNumber(selected);
+  };
+
+  useEffect(() => {
+    const handleResize = () => {
+      const screenWidth = window.innerWidth;
+      if (screenWidth < 640) {
+        setProjectsPerPage(6); // Small screens
+      } else if (screenWidth >= 640 && screenWidth < 1024) {
+        setProjectsPerPage(8); // Medium screens
+      } else {
+        setProjectsPerPage(10); // Large screens
+      }
+    };
+
+    handleResize(); // Set initial projects per page based on current screen size
+    window.addEventListener('resize', handleResize);
+
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  const pagesVisited = pageNumber * projectsPerPage;
+
   return(
       <div className="main-content flex">
         <div className="w-1/6 position-static md:h-screen ">
@@ -177,7 +206,7 @@ export default function ProjectsList() {
             </div>
           ) : (
             <div>
-              {projectData && projectData.map((project, index) => (
+              {projectData && projectData.slice(pagesVisited, pagesVisited + projectsPerPage).map((project, index) => (
                 project.isopen && 
                   <div key={index} className='flex flex-row justify-between bg-white rounded-lg shadow-md p-6 mb-4'>
                     <div>
@@ -192,6 +221,18 @@ export default function ProjectsList() {
               ))}
             </div>
           )}
+          {projectData && (
+          <ReactPaginate
+            previousLabel={"Previous"}
+            nextLabel={"Next"}
+            pageCount={Math.ceil(finalcount/ projectsPerPage)}
+            onPageChange={handlePageChange}
+            containerClassName="pagination"
+            disabledClassName="pagination__link--disabled"
+            activeClassName={"active"}
+          />
+        )}
+
         </div>
       </div>
     );
