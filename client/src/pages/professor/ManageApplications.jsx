@@ -43,15 +43,34 @@ export default function ManageApplications() {
     }
   }
 
+  const rejectProject = async (projectName, teamcode) => {
+    try{
+      const res=await fetch('http://localhost:3000/api/project/rejectproject',{
+        method:'POST',
+        headers:{
+          'Content-Type':'application/json'
+        },
+        body:JSON.stringify({projectName:projectName,teamcode:teamcode})
+      })
+      fetchProjectsFromBackend();
+    }catch(err){
+      console.log(err);
+    }
+  }
+
 
   return (
     <div>
       <h2>Manage Applications</h2>
       <ul>
-        {projects.map((project,index) => ( project.isopen &&
-          <><li key={index}>
+        {projects.map((project,index) => ( !project.isaccepted && !project.isrejected &&
+          <>
+          <li key={index}>
             <h3>{project.projectName}</h3>
-          </li><button onClick={() => acceptProject(project.projectName, project.teamcode)}>Accept</button></>
+          </li>
+          <button onClick={() => acceptProject(project.projectName, project.teamcode)}>Accept</button>
+          <button onClick={() => rejectProject(project.projectName, project.teamcode)}>Reject</button>
+          </>
         ))}
       </ul>
     </div>
