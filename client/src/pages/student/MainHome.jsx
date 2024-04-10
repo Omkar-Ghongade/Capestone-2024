@@ -21,11 +21,15 @@ export default function MainHome() {
     fetchData();
   }, []);
 
+  // getting team details
   useEffect(() => {
-    
-      
-    
+
   }, []);
+
+  // getting project details
+  useEffect((() => {
+
+  }), []);
 
   const decryptEmailIdFromLocalStorage = () => {
     const encryptedEmail = localStorage.getItem('email');
@@ -50,7 +54,6 @@ export default function MainHome() {
           body: JSON.stringify({ emailid: email, url: user.photoURL }),
         });
         const data = await res.json();
-        // console.log(data.rollNumber);
         localStorage.setItem('rollNumber', data.rollNumber);
         setStudentData(data);
       } catch (error) {
@@ -59,66 +62,75 @@ export default function MainHome() {
     });
   };
 
-  // return (
-  //   <div className='main-content'>
-  //     {studentData && (
-  //       <div>
-  //         <p>Name: {studentData.name}</p>
-  //       </div>
-  //     )}
-  //   </div>
-  // )
-    return (
-      <div className="items-center bg-gray-100">
-          {studentData && (<div className='  main-content grid grid-cols-2 max-md:grid-cols-1 gap-3 '>
-          <div className="flex flex-col items-center bg-white shadow-md rounded-lg p-10 h-screen w-full max-md:h-full ">
-            <div className='w-full flex justify-center items-center'>
-            <img
-              src={studentData.photo ? studentData.photo : "https://via.placeholder.com/150"}
-              alt="profile"
-              className="h-52 w-52 rounded-full m-0"
-            />
-            </div>
-            <div className='w-full flex flex-col justify-center items-center mt-4'>
-              <h1 className="text-5xl font-bold">{studentData.name}</h1>
-              <p className="text-gray-500 text-4xl mt-4">{studentData.rollNumber}</p>
-            </div>
-          
-            <div className="mt-8 flex flex-col justify-center items-center">
-              <h2 className="text-4xl font-semibold mb-4">Contact Information</h2>
-              <div>
-                <p className="text-gray-600">
-                  <b>Email:</b> {studentData.emailid}
-                </p>
-                <p className="text-gray-600">
-                  <b>Phone:</b> {studentData.contactNumber}
-                </p>
-              </div>
-            </div>
-          </div>
-            <div className="flex flex-col items-center bg-white shadow-md rounded-lg p-4 h-screen w-full max-md:h-full max-md:mt-2">
-              <div className="mt-8">
-                <h2 className="text-4xl font-semibold mb-4">Team</h2>
-                <p className="text-gray-600 text-2xl">
-                  {/* {studentData.team} */} ABCD <br/>
-                  EFGH <br/>
-                  IJKL
-                </p>
-              </div>
 
-              <div className="mt-8">
-                <h2 className="text-4xl font-semibold mb-4">Project</h2>
-                <div>
-                  <p className="text-gray-600 text-2xl">
-                    {/* studentData.Project */}
-                    ABCDEFGHIJKL
-                  </p>
+    return (
+      <div className="flex justify-center items-center h-screen bg-gray-100">
+        <div className="items-center  flex justify-center">
+          {studentData && (
+            <div className='main-content grid grid-cols-1 sm:grid-cols-2 gap-3 justify-center'>
+              <div className="flex flex-col items-center bg-white shadow-md rounded-lg p-6 w-full max-w-md">
+                <div className='w-full flex justify-center items-center'>
+                  <img
+                    src={studentData.photo ? studentData.photo : "https://via.placeholder.com/150"}
+                    alt="profile"
+                    className="h-40 w-40 rounded-full m-0"
+                  />
+                </div>
+                <div className='w-full flex flex-col justify-center items-center mt-4'>
+                  <h1 className="text-4xl font-bold">{studentData.name}</h1>
+                  <p className="text-gray-500 text-2xl mt-2">{studentData.rollNumber}</p>
+                </div>
+
+                <div className="mt-6 flex flex-col justify-center items-center">
+                  <h2 className="text-3xl font-semibold mb-2">Contact Information</h2>
+                  <div className="text-gray-600">
+                    <p>
+                      <b>Email:</b> {studentData.emailid}
+                    </p>
+                    <p>
+                      <b>Phone:</b> {studentData.contactNumber}
+                    </p>
+                    <p>
+                      <b>Gender:</b> {studentData.gender}
+                    </p>
+                    <p>
+                      <b>School:</b> {studentData.school}
+                    </p>
+                    <p>
+                      <b>Branch:</b> {studentData.stream}
+                    </p>
+                    <p>
+                      <b>Semester:</b> {studentData.semester}
+                    </p>
+                    <p>
+                      <b>Section:</b> {studentData.section}
+                    </p>
+                  </div>
                 </div>
               </div>
-              
+              <div className="flex flex-col items-center bg-white shadow-md rounded-lg p-4 w-full max-w-md mt-4 sm:mt-0">
+                <div className="mt-4">
+                  <h2 className="text-3xl font-semibold mb-2">Team</h2>
+                  <p className="text-gray-600 text-xl">
+                    {/* {studentData.team} */} ABCD <br/>
+                    EFGH <br/>
+                    IJKL
+                  </p>
+                </div>
+
+                <div className="mt-6">
+                  <h2 className="text-3xl font-semibold mb-2">Project</h2>
+                  <div>
+                    <p className="text-gray-600 text-xl">
+                      {/* studentData.Project */}
+                      ABCDEFGHIJKL
+                    </p>
+                  </div>
+                </div>
+              </div>
             </div>
-          </div>)}
-        
+          )}
+        </div>
       </div>
     );
 }
