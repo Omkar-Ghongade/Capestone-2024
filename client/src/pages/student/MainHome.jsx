@@ -68,7 +68,7 @@ export default function MainHome() {
         <div className="items-center  flex justify-center">
           {studentData && (
             <div className='main-content grid grid-cols-1 sm:grid-cols-2 gap-3 justify-center'>
-              <div className="flex flex-col items-center bg-white shadow-md rounded-lg p-6 w-full max-w-md">
+              <div className="flex flex-col items-center bg-white shadow-md rounded-lg p-6 w-strech">
                 <div className='w-full flex justify-center items-center'>
                   <img
                     src={studentData.photo ? studentData.photo : "https://via.placeholder.com/150"}
