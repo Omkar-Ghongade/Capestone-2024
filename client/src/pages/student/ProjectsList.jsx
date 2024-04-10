@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import ReactPaginate from 'react-paginate';
 import "./Navbar.css"
+import Footer from './Footer';
 
 
 const ProjectFilter = ({ }) => {
@@ -181,6 +182,7 @@ export default function ProjectsList() {
   const pagesVisited = pageNumber * projectsPerPage;
 
   return(
+    <>
       <div className="main-content flex">
         <div className="w-1/6 position-static md:h-screen ">
           <ProjectFilter/>
@@ -232,8 +234,10 @@ export default function ProjectsList() {
             activeClassName={"active"}
           />
         )}
-
+       
         </div>
       </div>
+         <Footer/>
+         </>
     );
 }
