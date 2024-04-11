@@ -10,5 +10,5 @@ export const navItems = [
       title: "Overview",
       path: "./overview",
       cName: "h-16 py-5",
-    },    
+    },
   ];

@@ -48,7 +48,6 @@
 import React, { useState, useEffect } from 'react';
 import ReactPaginate from 'react-paginate';
 import "./Navbar.css";
-import Footer from './Footer';
 
 export default function ProfessorProfiles() {
   const [professorData, setProfessorData] = useState(null);
@@ -141,7 +140,6 @@ export default function ProfessorProfiles() {
         />
         </div>
       )}
-      <Footer/>
     </div>
   );
 }

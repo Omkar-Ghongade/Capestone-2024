@@ -2,6 +2,6 @@ import React from 'react'
 
 export default function MainHome() {
   return (
-    <div>Admin Home</div>
+    <div className='main-content'>Admin Home</div>
   )
 }
