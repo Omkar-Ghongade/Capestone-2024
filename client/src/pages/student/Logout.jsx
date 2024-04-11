@@ -7,8 +7,7 @@ function Logout() {
     const handleLogout = () => {
         signOut(auth)
           .then(() => {
-            localStorage.removeItem('email');
-            localStorage.removeItem('role');
+            localStorage.removeItem('jwt');
             window.location.href = '/';
           })
           .catch(error => {
