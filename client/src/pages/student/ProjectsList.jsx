@@ -1,28 +1,17 @@
 import React, { useState, useEffect } from 'react';
+import { FaFilter } from "react-icons/fa";
 import ReactPaginate from 'react-paginate';
+
 import "./Navbar.css"
 
 
-const ProjectFilter = ({ }) => {
-  return (
-    <div className="bg-gray-100 p-4">
-      <h2 className="text-lg font-semibold mb-2">Filter Projects</h2>
-      <div className="flex flex-col space-y-2">
-        <label className="inline-flex items-center">
-          <input type="checkbox" className="form-checkbox h-4 w-4 text-indigo-600" onChange={(e) => handleFilterChange('filter1', e.target.checked)} />
-          <span className="ml-2">Filter 1</span>
-        </label>
-        <label className="inline-flex items-center">
-          <input type="checkbox" className="form-checkbox h-4 w-4 text-indigo-600" onChange={(e) => handleFilterChange('filter2', e.target.checked)} />
-          <span className="ml-2">Filter 2</span>
-        </label>
-        {/* Add more filters as needed */}
-      </div>
-    </div>
-  );
-};
+
 
 export default function ProjectsList() {
+
+  const [FilterbarOpen, setFilterbarOpen] = useState(true); // State to manage Filterbar visibility
+
+
   const [projectData, setProjectsData] = useState(null);
   var count=0;
   const [finalcount,setFinalCount]=useState(0);
@@ -73,6 +62,7 @@ export default function ProjectsList() {
   useEffect(() => {
     console.log(finalcount);
   }, [finalcount]);
+  
 
   const fetchProjectData = async () => {
     try {
@@ -116,12 +106,6 @@ export default function ProjectsList() {
       return;
     }
 
-    const handleFilterChange = (filterName, isChecked) => {
-      setFilters(prevFilters => ({
-        ...prevFilters,
-        [filterName]: isChecked
-      }));
-    }
 
     const data = {
       projectId: selectedProject._id,
@@ -155,6 +139,69 @@ export default function ProjectsList() {
     }
   }
 
+  const toggleSidebar = () => {
+      setFilterbarOpen(!FilterbarOpen);
+    };
+
+
+    useEffect(() => {
+      const handleResize = () => {
+        // Check if the screen size is lg (you may need to adjust the width)
+        const isLg = window.innerWidth >= 700; // Example width for lg screen
+  
+        // Update the state of FilterbarOpen based on screen size
+        setFilterbarOpen(isLg);
+      };
+
+      // handleResize();
+
+      window.addEventListener('resize', handleResize);
+
+      return () => {
+        window.removeEventListener('resize', handleResize);
+      };
+    }, []);
+
+    
+      const handleFilterChange = (filterName, isChecked) => {
+        setFilters(prevFilters => ({
+          ...prevFilters,
+          [filterName]: isChecked
+        }));
+      };
+      const ProjectFilter = () => {
+      return (
+        <div className={`bg-gray-100 p-4 ${!FilterbarOpen && 'invisible'}`}>
+          <h2 className="text-lg font-semibold mb-2">Filter Projects</h2>
+          <div className="flex flex-col space-y-2">
+            <label className="inline-flex items-center">
+              <input
+                type="checkbox"
+                className="form-checkbox h-4 w-4 text-indigo-600"
+                onChange={(e) => handleFilterChange('filter1', e.target.checked)}
+                checked={filters.filter1} // Ensure checkbox state is controlled
+              />
+              <span className="ml-2">Filter 1</span>
+            </label>
+            <label className="inline-flex items-center">
+              <input
+                type="checkbox"
+                className="form-checkbox h-4 w-4 text-indigo-600"
+                onChange={(e) => handleFilterChange('filter2', e.target.checked)}
+                checked={filters.filter2} // Ensure checkbox state is controlled
+              />
+              <span className="ml-2">Filter 2</span>
+            </label>
+            {/* Add more filters as needed */}
+          </div>
+        </div>
+      );
+    };
+    
+
+  
+  
+
   
   const handlePageChange = ({ selected }) => {
     setPageNumber(selected);
@@ -168,7 +215,7 @@ export default function ProjectsList() {
       } else if (screenWidth >= 640 && screenWidth < 1024) {
         setProjectsPerPage(8); // Medium screens
       } else {
-        setProjectsPerPage(10); // Large screens
+        setProjectsPerPage(16); // Large screens
       }
     };
 
@@ -181,10 +228,29 @@ export default function ProjectsList() {
   const pagesVisited = pageNumber * projectsPerPage;
 
   return(
-      <div className="main-content flex">
-        <div className="w-1/6 position-static md:h-screen ">
-          <ProjectFilter/>
+    <div>
+
+    <button
+        className="fixed main-content lg:hidden bottom-10 right-8 bg-teal-800 rounded-full drop-shadow-lg flex justify-center items-center text-white text-4xl hover:bg-teal-800 z-40"
+        onClick={toggleSidebar}>
+          <div className='flex w-10 h-10 justify-center items-center'>
+          <FaFilter className='w-6 h-6'/>
+          </div>
+        </button>
+
+      <div className="main-content flex flex-row gap-1">
+
+        
+
+        <div
+        className={`${FilterbarOpen? 'w-1/6 px-2 ' : 'w-0 '
+          } lg:w-72 -z-100 bg-teal-700 relative duration-500`}
+      >
+          {/* Responsive Filterbar */}
+          <ProjectFilter handleFilterChange={handleFilterChange} />     
+
         </div>
+        
         <div className="w-5/6 pr-4 ">
           {isApply ? (
             <div className='w-3/4 w-full bg-white rounded-lg shadow-md p-6 '>
@@ -200,40 +266,41 @@ export default function ProjectsList() {
               </div>
               <div className='flex flex-row '>
                 <button onClick={cancelApply} className='bg-red-500 text-white font-bold py-2 px-4 rounded hover:bg-red-700 mr-2'>Cancel</button>
-                <button onClick={handleSubmit} className='bg-blue-500 text-white font-bold py-2 px-4 rounded hover:bg-blue-700 mr-2'>Submit</button>
+                <button onClick={handleSubmit} className='bg-blue-500 text-white font-bold py-2 px-4 rounded hover:bg-blue-700 mr-2'>Apply</button>
                 
               </div>
             </div>
           ) : (
-            <div>
+            <div className='flex flex-col gap-2 mb-4'>
               {projectData && projectData.slice(pagesVisited, pagesVisited + projectsPerPage).map((project, index) => (
                 project.isopen && 
-                  <div key={index} className='flex flex-row justify-between bg-white rounded-lg shadow-md p-6 mb-4'>
-                    <div>
-                    <h2 className='text-xl font-bold mb-2'>{project.name}</h2>
-                    <p className='text-gray-600 mb-2'>{project.professor}</p>
-                    <p className='text-gray-600 mb-2'>{project.domains}</p>
+                  <div key={index} className=' flex flex-row max-w-200px border-2 border-solid bg-white shadow-md hover:shadow-lg hover:shadow-teal-100 rounded-md overflow-hidden pb-2'>
+                    <div className=' pl-2 w-5/6 my-1 '>
+                    <h2 className='text-left text-xl  font-bold'>{project.name}</h2>
+                    <p className='text-left text-gray-600 '>{project.professor}</p>
+                    <p className='text-left text-gray-600 '>{project.domains}</p>
                     </div>
-                    <div className='py-6'>
-                    <button onClick={() => applyProjectClick(project)} className='h-10 bg-blue-500 text-white font-bold py-2 px-4 rounded hover:bg-blue-700'>Apply</button>
+                    <div className=' w-1/6 flex justify-center items-center'>
+                    <button onClick={() => applyProjectClick(project)} className='h-8 w-auto text-center bg-blue-500 text-white font-bold px-4 rounded hover:bg-blue-700'>View</button>
                     </div>
                   </div>
               ))}
             </div>
           )}
-          {projectData && (
-          <ReactPaginate
-            previousLabel={"Previous"}
-            nextLabel={"Next"}
-            pageCount={Math.ceil(finalcount/ projectsPerPage)}
-            onPageChange={handlePageChange}
-            containerClassName="pagination"
-            disabledClassName="pagination__link--disabled"
-            activeClassName={"active"}
-          />
-        )}
-
+          
         </div>
+      </div>
+      {projectData && isApply? (
+          <></>
+        ):(<ReactPaginate
+          previousLabel={"Previous"}
+          nextLabel={"Next"}
+          pageCount={Math.ceil(finalcount/projectsPerPage)}
+          onPageChange={handlePageChange}
+          containerClassName="pagination"
+          disabledClassName="pagination__link--disabled"
+          activeClassName={"active"}
+        />)}
       </div>
     );
 }

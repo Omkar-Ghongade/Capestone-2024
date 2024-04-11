@@ -15,7 +15,7 @@ export default function SHome() {
   return (
     <BrowserRouter>
     <div className='flex flex-col'>
-      <Navbar />
+      <Navbar/>
       <Routes>
         <Route path="/" element={<MainHome />} />
         <Route path="/applied-projects" element={<AppliedProjects />} />
