@@ -29,6 +29,7 @@ export const applyproject = async (req, res) => {
         req.body.teamcode = teamcode;
         console.log(req.body);
         req.body.isaccepted = false;
+        req.body.isrejected = false;
         const appliedproject = new Appliedproject(req.body);
         const newappliedproject = await appliedproject.save();
         res.status(201).json(newappliedproject);
@@ -135,10 +136,12 @@ export const acceptproject = async (req, res) => {
 
 export const rejectproject = async (req, res) => {
     try{
-        const projectid = req.body.projectId;
-        const teamid = req.body.teamcode;
-        const deleteapplications1 = await Appliedproject.deleteMany({projectId:projectid,teamcode:teamid});
-        res.status(200).json(deleteapplications1);
+        const projectName=req.body.projectName;
+        const teamcode=req.body.teamcode;
+        const findProject= await Appliedproject.findOne({projectName:projectName, teamcode: teamcode });
+        findProject.isrejected = true;
+        await findProject.save();
+        res.status(200).json(findProject);
     }catch(err){
         res.status(404).json({message:err.message});
     }
