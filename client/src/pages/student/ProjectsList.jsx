@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { FaFilter } from "react-icons/fa";
 import ReactPaginate from 'react-paginate';
-
+import Footer from './Footer'
 import "./Navbar.css"
 
 
@@ -301,6 +301,7 @@ export default function ProjectsList() {
           disabledClassName="pagination__link--disabled"
           activeClassName={"active"}
         />)}
+        <Footer/>
       </div>
     );
 }

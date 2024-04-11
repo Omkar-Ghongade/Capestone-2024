@@ -1,5 +1,7 @@
 import React from 'react'
 import { useState, useEffect } from 'react'
+import './Navbar.css'
+
 
 export default function ViewReports() {
 
@@ -25,6 +27,6 @@ export default function ViewReports() {
   }
 
   return (
-    <div>ViewReports</div>
+    <div className='main-content'>ViewReports</div>
   )
 }

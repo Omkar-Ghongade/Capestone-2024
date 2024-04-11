@@ -1,5 +1,6 @@
 import React from 'react'
 import { useState, useEffect } from 'react'
+import "./Navbar.css"
 
 
 
@@ -45,7 +46,7 @@ export default function ManageApplications() {
 
 
   return (
-    <div>
+    <div className='main-content'>
       <h2>Manage Applications</h2>
       <ul>
         {projects.map((project,index) => ( project.isopen &&
