@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import "./Navbar.css"
 
 export default function PostProject() {
   const [name, setProjectName] = useState('');
@@ -66,7 +67,7 @@ export default function PostProject() {
   };
 
   return (
-    <div>
+    <div className='main-content'>
       <h2>Post a Project</h2>
       <form onSubmit={handleSubmit}>
         <label>

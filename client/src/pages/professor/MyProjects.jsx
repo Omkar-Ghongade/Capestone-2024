@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import "./Navbar.css"
+
 
 export default function MyProjects() {
   const [projects, setProjects] = useState([]);
@@ -44,7 +46,7 @@ export default function MyProjects() {
   };
 
   return (
-    <div>
+    <div className='main-content'>
       <h2>My Projects</h2>
       <ul>
         {projects.map(project => (

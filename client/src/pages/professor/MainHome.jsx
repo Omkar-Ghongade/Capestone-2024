@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import CryptoJS from 'crypto-js'; 
+import CryptoJS from 'crypto-js';
+import "./Navbar.css"
 
 const ENCRYPTION_KEY = "c%r2n8#FqPb6@vKt5^hMw9&sGzYp3!dA";
 
@@ -47,7 +48,7 @@ export default function MainHome() {
   }
 
   return (
-    <div>
+    <div className='main-content'>
       {professorData && (
         <div>
         <p>Name: {professorData.name}</p>
