@@ -12,13 +12,7 @@ export default function MainHome() {
   const [photoURL, setPhotoURL] = useState(null);
 
   useEffect(() => {
-    const fetchData = async () => {
-      const emailId = decryptEmailIdFromLocalStorage(); 
-      if (emailId) {
-        await fetchStudentData(emailId);
-      }
-    };
-    fetchData();
+    fetchStudentData()
   }, []);
 
   useEffect(() => {
@@ -38,16 +32,16 @@ export default function MainHome() {
     return null;
   }
 
-  const fetchStudentData = async (email) => {
-    // console.log(email);
+  const fetchStudentData = async () => {
     onAuthStateChanged(auth, async (user) => {
+      console.log(user);
       try {
         const res = await fetch('http://localhost:3000/api/student/getstudentdata', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({ emailid: email, url: user.photoURL }),
+          body: JSON.stringify({ emailid: user.email, url: user.photoURL }),
         });
         const data = await res.json();
         // console.log(data.rollNumber);
@@ -74,7 +68,7 @@ export default function MainHome() {
           <div className="flex flex-col items-center bg-white shadow-md rounded-lg p-10 h-screen w-full max-md:h-full ">
             <div className='w-full flex justify-center items-center'>
             <img
-              src={studentData.photo ? studentData.photo : "https://via.placeholder.com/150"}
+              src={studentData.photo}
               alt="profile"
               className="h-52 w-52 rounded-full m-0"
             />
