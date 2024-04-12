@@ -13,7 +13,6 @@ export default function ProjectsList() {
 
 
   const [projectData, setProjectsData] = useState(null);
-  var count=0;
   const [finalcount,setFinalCount]=useState(0);
   const [selectedProject, setSelectedProject] = useState(null);
   const [isApply, setIsApply] = useState(false);
@@ -23,9 +22,9 @@ export default function ProjectsList() {
     filter2: false,
     // Add more filters here
   });
-
-  const [pageNumber, setPageNumber] = useState(0);
-  const [projectsPerPage,setProjectsPerPage] = useState(6); // Number of projects to display per page
+  const [currentPage, setCurrentPage] = useState(1);
+  const [projectsPerPage,setProjectsPerPage] = useState(10); // Number of projects to display per page
+  const [filteredProjectsData, setFilteredProjectsData] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -46,23 +45,6 @@ export default function ProjectsList() {
     setIsApply(false);
   }, []);
 
-  useEffect(() => {
-    if (projectData) {
-      let count = 0;
-      for (var i = 0; i < projectData.length; i++) {
-        if (projectData[i].isopen) {
-          count++;
-        }
-      }
-      console.log(count);
-      setFinalCount(count);
-    }
-  }, [projectData]);
-  
-  useEffect(() => {
-    console.log(finalcount);
-  }, [finalcount]);
-  
 
   const fetchProjectData = async () => {
     try {
@@ -78,6 +60,39 @@ export default function ProjectsList() {
       console.log(error);
     }
   }
+
+  useEffect(() => {
+    if (!projectData) return;
+
+    const filteredData = filterProjects();
+    setFilteredProjectsData(filteredData);
+  }, [filters, projectData]);
+
+  const filterProjects = () => {
+    if (!projectData) return [];
+    return projectData.filter(project => 
+      project.isopen && 
+      (!Object.keys(filters).some(domain => filters[domain]) || project.domains.some(domain => filters[domain]))
+    );
+  };
+
+  const handleFilterChange = (filterName, isChecked) => {
+    setFilters(prevFilters => ({
+      ...prevFilters,
+      [filterName]: isChecked
+    }));
+  };
+
+  const handlePageChange = ({ selected }) => {
+    setCurrentPage(selected + 1);
+  };
+
+  const pagesVisited = (currentPage - 1) * projectsPerPage;
+  const currentProjects = filteredProjectsData.slice(pagesVisited, pagesVisited + projectsPerPage);
+  const pageCount = Math.ceil(filteredProjectsData.length / projectsPerPage);
+
+
+
 
   const applyProjectClick = async (project) => {
     setSelectedProject(project);
@@ -142,80 +157,53 @@ export default function ProjectsList() {
   const toggleSidebar = () => {
       setFilterbarOpen(!FilterbarOpen);
     };
-
-
-    useEffect(() => {
-      const handleResize = () => {
-        // Check if the screen size is lg (you may need to adjust the width)
-        const isLg = window.innerWidth >= 700; // Example width for lg screen
-  
-        // Update the state of FilterbarOpen based on screen size
-        setFilterbarOpen(isLg);
-      };
-
-      // handleResize();
-
-      window.addEventListener('resize', handleResize);
-
-      return () => {
-        window.removeEventListener('resize', handleResize);
-      };
-    }, []);
-
     
-      const handleFilterChange = (filterName, isChecked) => {
-        setFilters(prevFilters => ({
-          ...prevFilters,
-          [filterName]: isChecked
-        }));
-      };
       const ProjectFilter = () => {
-      return (
-        <div className={`bg-gray-100 p-4 ${!FilterbarOpen && 'invisible'}`}>
-          <h2 className="text-lg font-semibold mb-2">Filter Projects</h2>
-          <div className="flex flex-col space-y-2">
-            <label className="inline-flex items-center">
-              <input
-                type="checkbox"
-                className="form-checkbox h-4 w-4 text-indigo-600"
-                onChange={(e) => handleFilterChange('filter1', e.target.checked)}
-                checked={filters.filter1} // Ensure checkbox state is controlled
-              />
-              <span className="ml-2">Filter 1</span>
-            </label>
-            <label className="inline-flex items-center">
-              <input
-                type="checkbox"
-                className="form-checkbox h-4 w-4 text-indigo-600"
-                onChange={(e) => handleFilterChange('filter2', e.target.checked)}
-                checked={filters.filter2} // Ensure checkbox state is controlled
-              />
-              <span className="ml-2">Filter 2</span>
-            </label>
-            {/* Add more filters as needed */}
+        if (!projectData) {
+          return 0;
+        }
+        const allDomains = projectData.reduce((domains, project) => {
+          project.domains.forEach(domain => {
+            if (!domains.includes(domain)) {
+              domains.push(domain);
+            }
+          });
+          return domains;
+        }, []);
+      
+        return (
+          <div className={`bg-gray-100 p-4 ${(!FilterbarOpen || isApply) && 'invisible'}`}>
+            <h2 className="text-lg font-semibold mb-2">Filter Projects</h2>
+            <div className="flex flex-col space-y-2">
+              {allDomains.map((domain, index) => (
+                <label key={index} className="inline-flex items-center">
+                  <input
+                    type="checkbox"
+                    className="form-checkbox h-4 w-4 text-indigo-600"
+                    onChange={(e) => {handleFilterChange(domain, e.target.checked);setCurrentPage(1);}}
+                    checked={filters[domain]} // Ensure checkbox state is controlled
+                  />
+                  <span className="ml-2">{domain}</span>
+                </label>
+              ))}
+            </div>
           </div>
-        </div>
-      );
-    };
+        );
+      };
     
-
-  
-  
-
-  
-  const handlePageChange = ({ selected }) => {
-    setPageNumber(selected);
-  };
-
+      
   useEffect(() => {
     const handleResize = () => {
       const screenWidth = window.innerWidth;
-      if (screenWidth < 640) {
-        setProjectsPerPage(6); // Small screens
-      } else if (screenWidth >= 640 && screenWidth < 1024) {
-        setProjectsPerPage(8); // Medium screens
+      if (screenWidth < 768) {
+        
+        setFilterbarOpen(false); // Small screens
+      } else if (screenWidth >= 768 && screenWidth < 1024) {
+        
+        setFilterbarOpen(true); // Medium screens
       } else {
-        setProjectsPerPage(16); // Large screens
+        
+        setFilterbarOpen(true); // Large screens
       }
     };
 
@@ -225,13 +213,12 @@ export default function ProjectsList() {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  const pagesVisited = pageNumber * projectsPerPage;
 
   return(
     <div>
 
     <button
-        className="fixed main-content lg:hidden bottom-10 right-8 bg-teal-800 rounded-full drop-shadow-lg flex justify-center items-center text-white text-4xl hover:bg-teal-800 z-40"
+        className="fixed main-content md:hidden bottom-10 right-8 bg-teal-800 rounded-full drop-shadow-lg flex justify-center items-center text-white text-4xl hover:bg-teal-800 z-40"
         onClick={toggleSidebar}>
           <div className='flex w-10 h-10 justify-center items-center'>
           <FaFilter className='w-6 h-6'/>
@@ -243,15 +230,16 @@ export default function ProjectsList() {
         
 
         <div
-        className={`${FilterbarOpen? 'w-1/6 px-2 ' : 'w-0 '
-          } lg:w-72 -z-100 bg-teal-700 relative duration-500`}
+        className={`${FilterbarOpen && !isApply? 'w-2/6 lg:w-72 px-2 z-40 ' : 'w-0 '
+          } -z-100  bg-teal-700 top-0 right-0 relative duration-500`}
       >
           {/* Responsive Filterbar */}
           <ProjectFilter handleFilterChange={handleFilterChange} />     
 
         </div>
         
-        <div className="w-5/6 pr-4 ">
+        <div className={`${FilterbarOpen? 'w-5/6 px-2 z-40 ' : 'w-full'
+          } pr-4 z-30 `}>
           {isApply ? (
             <div className='w-3/4 w-full bg-white rounded-lg shadow-md p-6 '>
               <h2 className='text-2xl font-bold mb-4'>Apply for Project</h2>
@@ -272,8 +260,7 @@ export default function ProjectsList() {
             </div>
           ) : (
             <div className='flex flex-col gap-2 mb-4'>
-              {projectData && projectData.slice(pagesVisited, pagesVisited + projectsPerPage).map((project, index) => (
-                project.isopen && 
+              {currentProjects.map((project, index) => (
                   <div key={index} className=' flex flex-row max-w-200px border-2 border-solid bg-white shadow-md hover:shadow-lg hover:shadow-teal-100 rounded-md overflow-hidden pb-2'>
                     <div className=' pl-2 w-5/6 my-1 '>
                     <h2 className='text-left text-xl  font-bold'>{project.name}</h2>
@@ -295,7 +282,7 @@ export default function ProjectsList() {
         ):(<ReactPaginate
           previousLabel={"Previous"}
           nextLabel={"Next"}
-          pageCount={Math.ceil(finalcount/projectsPerPage)}
+          pageCount={Math.ceil(pageCount)}
           onPageChange={handlePageChange}
           containerClassName="pagination"
           disabledClassName="pagination__link--disabled"
