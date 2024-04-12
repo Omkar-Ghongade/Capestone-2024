@@ -9,9 +9,8 @@ const ENCRYPTION_KEY = "c%r2n8#FqPb6@vKt5^hMw9&sGzYp3!dA";
 export default function MainHome() {
 
   const [studentData, setStudentData] = useState(null);
-  const [photoURL, setPhotoURL] = useState(null);
   const [team, setTeam] = useState([]);
-  const [teamcode, setTeamcode] = useState('');
+  const [project, setProject] = useState(null);
 
   useEffect(() => {
     fetchStudentData()
@@ -53,11 +52,29 @@ export default function MainHome() {
       });
       const data = await res.json();
       setTeam(data.teammembers);
-      setTeamcode(data.teamcode);
+      fetchStudentProject(data.teamcode);
     } catch (error) {
       console.log(error);
     }
   };
+
+  const fetchStudentProject = async (teamcode) => {
+    try {
+      console.log(teamcode);
+      const res = await fetch('http://localhost:3000/api/auth/getproject', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ teamcode: teamcode }),
+      });
+      const data = await res.json();
+      console.log(data);
+      setProject(data);
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   return (
     <div className="flex justify-center items-center h-screen bg-gray-100">
@@ -105,27 +122,32 @@ export default function MainHome() {
               </div>
             </div>
             <div class="flex flex-col items-center justify-center bg-white shadow-md rounded-lg p-4 w-full max-w-md mt-4 sm:mt-0 h-full">
-            <div class="text-center flex-1 flex flex-col justify-center">
-              <h2 class="text-3xl font-semibold mb-2">Team</h2>
-              {team.length === 0 ? (
-                <div>
-                  <p class="text-gray-600 text-xl">Join a team or create a team</p>
-                </div>
-              ) : (
-                <p class="text-gray-600 text-xl">
-                  {team.map((member, index) => (
-                    <p key={index}>{member}</p>
-                  ))}
-                </p>
-              )}
-            </div>
-
+              <div class="text-center flex-1 flex flex-col justify-center">
+                <h2 class="text-3xl font-semibold mb-2">Team</h2>
+                {team.length === 0 ? (
+                  <div>
+                    <p class="text-gray-600 text-xl">Join a team or create a team</p>
+                  </div>
+                ) : (
+                  <p class="text-gray-600 text-xl">
+                    {team.map((member, index) => (
+                      <p key={index}>{member}</p>
+                    ))}
+                  </p>
+                )}
+              </div>
               <div class="text-center flex-1 flex flex-col justify-center mt-6">
                 <h2 class="text-3xl font-semibold mb-2">Project</h2>
                 <div>
-                  <p class="text-gray-600 text-xl">
-                    ABCDEFGHIJKL
-                  </p>
+                  {project ? (
+                    <p class="text-gray-600 text-xl">
+                      Project Title : {project.projectName}
+                    </p>
+                  ) :(
+                    <p class="text-gray-600 text-xl">
+                      Project not assigned
+                    </p>
+                  )}
                 </div>
               </div>
             </div>
