@@ -66,6 +66,7 @@ export default function ProjectsList() {
 
     const filteredData = filterProjects();
     setFilteredProjectsData(filteredData);
+    setCurrentPage(1); 
   }, [filters, projectData]);
 
   const filterProjects = () => {
@@ -85,6 +86,7 @@ export default function ProjectsList() {
 
   const handlePageChange = ({ selected }) => {
     setCurrentPage(selected + 1);
+    
   };
 
   const pagesVisited = (currentPage - 1) * projectsPerPage;
@@ -180,7 +182,7 @@ export default function ProjectsList() {
                   <input
                     type="checkbox"
                     className="form-checkbox h-4 w-4 text-indigo-600"
-                    onChange={(e) => {handleFilterChange(domain, e.target.checked);setCurrentPage(1);}}
+                    onChange={(e) => {handleFilterChange(domain, e.target.checked);}}
                     checked={filters[domain]} // Ensure checkbox state is controlled
                   />
                   <span className="ml-2">{domain}</span>
@@ -287,6 +289,7 @@ export default function ProjectsList() {
           containerClassName="pagination"
           disabledClassName="pagination__link--disabled"
           activeClassName={"active"}
+          forcePage={currentPage - 1}
         />)}
         <Footer/>
       </div>
