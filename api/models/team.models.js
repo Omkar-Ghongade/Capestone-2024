@@ -3,7 +3,8 @@ import mongoose, { model } from "mongoose";
 const Team=new mongoose.Schema({
     teamcode:{type:String,required:true},
     teammembers:{type:Array,required:true},
-    submitted:{type:Boolean,default:false}
+    submitted:{type:Boolean,default:false},
+    isopen:{type:Boolean,default:true}
 });
 
 const team=mongoose.model('Team',Team);

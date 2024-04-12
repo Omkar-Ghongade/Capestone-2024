@@ -7,7 +7,7 @@ function generateRandomString(length) {
       result += characters.charAt(Math.floor(Math.random() * characters.length));
     }
     return result;
-  }
+}
 
 export const createTeam = async (req, res) => {
     try{
@@ -28,9 +28,13 @@ export const createTeam = async (req, res) => {
 export const joinTeam = async (req, res) => {
     try{
         const teamFind=await team.findOne({teamcode:req.body.teamcode});
-        teamFind.teammembers.push(req.body.studentId);
-        const newteam = await teamFind.save();
-        res.status(201).json(newteam);
+        if(teamFind.isopen){
+            teamFind.teammembers.push(req.body.studentId);
+            const newteam = await teamFind.save();
+            res.status(201).json(newteam);
+        }else{
+            res.status(404).json({message:"Team is closed"});
+        }
     }catch(err){
         res.status(404).json({message:err.message});
     }
@@ -61,6 +65,7 @@ export const submitTeam = async (req, res) => {
         const teamFind=await team.findOne({teamcode:req.body.teamcode});
         console.log(teamFind);
         teamFind.submitted=true;
+        teamFind.isopen=false;
         const newteam = await teamFind.save();
         res.status(201).json(newteam);
     }catch(err){

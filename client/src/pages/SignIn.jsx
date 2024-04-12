@@ -14,7 +14,6 @@ import { FaGoogle } from 'react-icons/fa';
 export default function SignIn() {
   const [email, setEmail] = useState('');
   const [role, setRole] = useState('');
-  const [signOut] = useSignOut(auth);
 
 
   useEffect(() => { 
