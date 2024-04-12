@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import "./Navbar.css"
+import "./Navbar.css";
+
 
 export default function PostProject() {
   const [name, setProjectName] = useState('');
@@ -35,8 +36,6 @@ export default function PostProject() {
       maxteamsize
     };
 
-    // console.log(formData);
-
     try{
       const res=await fetch('http://localhost:3000/api/project/createproject',{
         method:'POST',
@@ -46,7 +45,7 @@ export default function PostProject() {
         body:JSON.stringify(formData)
       })
       const data=await res.json();
-      // console.log(data);
+      console.log(data);
     }catch(err){
       console.log(err);
     }
@@ -67,66 +66,67 @@ export default function PostProject() {
   };
 
   return (
-    <div className='main-content'>
-      <h2>Post a Project</h2>
+    <div className=" main-content w-full mx-auto p-6 bg-white rounded-lg shadow-xl">
+      <h2 className="text-2xl font-bold mb-4">Post a Project</h2>
       <form onSubmit={handleSubmit}>
-        <label>
-          Name of Project:
+        <div className="mb-4">
+          <label className="block mb-1">Name of Project:</label>
           <input
             type="text"
             value={name}
             onChange={(e) => setProjectName(e.target.value)}
+            className="border border-gray-300 px-2 py-1 w-full"
             required
           />
-        </label>
-        <br />
-        <label>
-          Description of Project:
+        </div>
+        <div className="mb-4">
+          <label className="block mb-1">Description of Project:</label>
           <textarea
             value={description}
             onChange={(e) => setProjectDescription(e.target.value)}
+            className="border border-gray-300 px-2 py-1 w-full"
             required
           />
-        </label>
-        <br />
-        <label>
-          Domains:
-          <br />
-          {Object.keys(domains).map((domain) =>(
-            <label key={domain}>
+        </div>
+        <div className="flex flex-row max-md:flex-col gap-4 mb-4">
+          <label className="block mb-1">Domains:</label>
+          {Object.keys(domains).map((domain) => (
+            <label key={domain} className="block mb-2">
               <input
                 type="checkbox"
                 checked={domains[domain]}
                 onChange={() => handleCheckboxChange(domain)}
+                className="mr-2"
               />
               {domain}
             </label>
           ))}
-        </label>
-        <br />
-        <label>
-          Minimum Team Size:
+        </div>
+        <div className="mb-4">
+          <label className="block mb-1">Minimum Team Size:</label>
           <input
             type="number"
             value={minteamsize}
             onChange={(e) => setMinTeamSize(e.target.value)}
+            className="border border-gray-300 px-2 py-1 w-full"
             required
             min="1"
           />
-        </label>
-        <br />
-        <label>
-          Maximum Team Size:
+        </div>
+        <div className="mb-4">
+          <label className="block mb-1">Maximum Team Size:</label>
           <input
             type="number"
             value={maxteamsize}
             onChange={(e) => setMaxTeamSize(e.target.value)}
+            className="border border-gray-300 px-2 py-1 w-full"
             required
             max="4"
           />
-        </label>
-        <br />
-        <button type="submit">Post Project</button>
+        </div>
+        <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+          Post Project
+        </button>
       </form>
     </div>
   );
