@@ -12,6 +12,16 @@ export const getprojectdata = async (req, res) => {
     }
 }
 
+export const getaprojectdata = async (req, res) => {
+    try{
+        const projectname = req.body.projectname;
+        const projectdata = await project.findOne({name:projectname})
+        res.status(200).json(projectdata);
+    }catch(err){
+        res.status(404).json({message:err.message});
+    }
+}
+
 export const applyproject = async (req, res) => {
     try {
         const rollNumber = req.body.studentId;

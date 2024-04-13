@@ -6,6 +6,7 @@ const appliedprojectdata=new mongoose.Schema({
     projectName:{type:String,required:true},
     projectDomain:{type:Array,required:true},
     projectProfessor:{type:String,required:true},
+    projectDescription:{type:String,required:true},
     teamcode:{type:String,required:true},
     studentId:{type:String,required:true},
     isaccepted:{type:Boolean,required:true},
