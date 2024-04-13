@@ -7,7 +7,7 @@ export default function SubmitReports() {
   const [imgUrl, setImgUrl] = useState(null);
   const [progresspercent, setProgresspercent] = useState(0);
   const [teamId, setTeamId] = useState('');
-  const [project, setProject] = useState(null);
+  const [project, setProject] = useState(null); // Moved project state to the top level
 
   useEffect(() => {
     fetchTeamId();
@@ -34,8 +34,10 @@ export default function SubmitReports() {
   const handleSubmit = (e) => {
     e.preventDefault()
     const file = e.target[0]?.files[0]
+
     const foldername = teamId;
     if (file.type === "application/pdf") {
+
       const storageRef = ref(storage, `${foldername}/${file.name}`);
       const uploadTask = uploadBytesResumable(storageRef, file);
 
@@ -55,7 +57,9 @@ export default function SubmitReports() {
           });
         }
       );
+
     } else {
+
       alert("Please upload a PDF file")
     }
   }
@@ -76,7 +80,9 @@ export default function SubmitReports() {
   }
 
   const getmyproject = async (teamcode) => {
+
     try {
+
       const res = await fetch('http://localhost:3000/api/project/getacceptedproject', {
         method: 'POST',
         headers: {
@@ -92,6 +98,7 @@ export default function SubmitReports() {
   }
 
   return (
+
     <div className=" main-content flex flex-col items-center">
       <div className="bg-white rounded-lg shadow-md w-full px-4 ">
         {project && project.length > 0 ? (
