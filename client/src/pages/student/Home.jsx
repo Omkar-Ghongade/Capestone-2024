@@ -5,7 +5,6 @@ import ProfessorProfiles from './ProfessorProfiles'
 import ProjectsList from './ProjectsList'
 import SubmitReports from './SubmitReports'
 import TeamFormation from './TeamFormation'
-import MyProjects from './MyProjects'
 import Navbar from './Navbar'
 import MainHome from './MainHome'
 import {BrowserRouter, Routes , Route} from 'react-router-dom'
@@ -21,10 +20,8 @@ export default function SHome() {
         <Route path="/applied-projects" element={<AppliedProjects />} />
         <Route path="/professor-profiles" element={<ProfessorProfiles />} />
         <Route path="/projects-list" element={<ProjectsList />} />
-        <Route path="/submit-reports" element={<SubmitReports />} />
+        <Route path="/my-projects" element={<SubmitReports />} />
         <Route path="/team-formation" element={<TeamFormation />} />
-        <Route path="/my-projects" element={<MyProjects />} />
-        
       </Routes>
       </div>
     </BrowserRouter>
