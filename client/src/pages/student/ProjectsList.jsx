@@ -290,7 +290,7 @@ export default function ProjectsList() {
                       <h2 className='text-left text-xl mb-1  font-bold'>{project.name}</h2>
                       <p className='text-left mb-2 text-gray-600 '>{project.professor}</p>
                       <div className='h-1/6'>
-                        {selectedProject.domains.map((domain, idx) => (
+                        {project.domains.map((domain, idx) => (
                           <div key={idx} className="rounded-full bg-gray-200 px-2 py-1 text-sm inline-block mr-2 mb-2">{domain}</div>
                          ))}
                       </div>
