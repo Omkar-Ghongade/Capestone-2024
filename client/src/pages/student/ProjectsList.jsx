@@ -261,11 +261,16 @@ export default function ProjectsList() {
           } pr-4 z-30 `}>
           {isApply ? (
             <div className='w-3/4 w-full bg-white rounded-lg shadow-md p-6 '>
-              <h2 className='text-2xl font-bold mb-4'>Apply for Project</h2>
+              <h2 className='text-2xl font-bold mb-3'>Apply for Project</h2>
               <div className='mb-4 '>
-                <p><span className='font-bold'>Name:</span> {selectedProject.name}</p>
-                <p><span className='font-bold'>Description:</span> {selectedProject.description}</p>
-                <p><span className='font-bold'>Skills:</span> {selectedProject.domains}</p>
+                <p className='mb-2'><span className='font-bold'>Name:</span> {selectedProject.name}</p>
+                <p className='mb-2'><span className='font-bold'>Description:</span> {selectedProject.description}</p>
+                <p className='h-1/6'>
+                {selectedProject.domains.map((domain, idx) => (
+                    <div key={idx} className="rounded-full bg-gray-200 px-2 py-1 text-sm inline-block mr-2 mb-2">{domain}</div>
+                    ))}
+                </p>
+                
               </div>
               <div className='mb-4'>
                 <label htmlFor='applyReason' className='block text-sm font-bold mb-1'>Why do you want to apply?</label>
@@ -282,9 +287,13 @@ export default function ProjectsList() {
               {currentProjects.map((project, index) => (
                   <div key={index} className=' flex flex-row max-w-200px border-2 border-solid bg-white shadow-md hover:shadow-lg hover:shadow-teal-100 rounded-md overflow-hidden pb-2'>
                     <div className=' pl-2 w-5/6 my-1 '>
-                    <h2 className='text-left text-xl  font-bold'>{project.name}</h2>
-                    <p className='text-left text-gray-600 '>{project.professor}</p>
-                    <p className='text-left text-gray-600 '>{project.domains}</p>
+                      <h2 className='text-left text-xl mb-1  font-bold'>{project.name}</h2>
+                      <p className='text-left mb-2 text-gray-600 '>{project.professor}</p>
+                      <div className='h-1/6'>
+                        {selectedProject.domains.map((domain, idx) => (
+                          <div key={idx} className="rounded-full bg-gray-200 px-2 py-1 text-sm inline-block mr-2 mb-2">{domain}</div>
+                         ))}
+                      </div>
                     </div>
                     <div className=' w-1/6 flex justify-center items-center'>
                     <button onClick={() => applyProjectClick(project)} className='h-8 w-auto text-center bg-blue-500 text-white font-bold px-4 rounded hover:bg-blue-700'>View</button>
