@@ -7,6 +7,7 @@ import SubmitReports from './SubmitReports'
 import TeamFormation from './TeamFormation'
 import Navbar from './Navbar'
 import MainHome from './MainHome'
+import Footer from './Footer'
 import {BrowserRouter, Routes , Route} from 'react-router-dom'
 
 
@@ -23,6 +24,7 @@ export default function SHome() {
         <Route path="/my-projects" element={<SubmitReports />} />
         <Route path="/team-formation" element={<TeamFormation />} />
       </Routes>
+      
       </div>
     </BrowserRouter>
   )

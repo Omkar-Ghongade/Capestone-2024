@@ -30,7 +30,7 @@
   }
 
   .main-content{
-    margin-top: 4.5rem;
+    margin-top: 0;
   }
 
   .pagination {
@@ -62,3 +62,4 @@
     background-color: #1a2e05;
     color: #fff;
   }
+

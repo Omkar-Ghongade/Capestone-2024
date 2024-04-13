@@ -112,7 +112,7 @@ export default function ProfessorProfiles() {
   };
 
   return (
-    <div className='main-content '>
+    <div className='main-content'>
       <div className='text-3xl mt-2 mb-2 text-center josefin-sans'><h1>Professor Profiles</h1></div>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 px-4">
         

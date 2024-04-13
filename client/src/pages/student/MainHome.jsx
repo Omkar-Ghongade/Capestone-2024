@@ -77,12 +77,12 @@ export default function MainHome() {
   }
 
   return (
-    <div className="flex justify-center items-center h-screen bg-gray-100">
+    <div className="main-content flex justify-center items-center h-screen bg-gray-100">
       <div className="items-center  flex justify-center">
         {studentData && (
-          <div className='main-content grid grid-cols-1 sm:grid-cols-2 gap-3 justify-center'>
-            <div className="flex flex-col items-center bg-white shadow-md rounded-lg p-6 w-full max-w-md">
-              <div className='w-full flex justify-center items-center'>
+          <div className=' grid grid-cols-1 sm:grid-cols-5 gap-3 justify-center'>
+            <div className="flex flex-col col-span-2 items-center bg-white shadow-md rounded-lg p-6 w-full max-w-md">
+              <div className='w-full flex justify-center items-center pt-4'>
                 <img
                   src={studentData.photo ? studentData.photo : "https://via.placeholder.com/150"}
                   alt="profile"
@@ -121,30 +121,30 @@ export default function MainHome() {
                 </div>
               </div>
             </div>
-            <div class="flex flex-col items-center justify-center bg-white shadow-md rounded-lg p-4 w-full max-w-md mt-4 sm:mt-0 h-full">
-              <div class="text-center flex-1 flex flex-col justify-center">
-                <h2 class="text-3xl font-semibold mb-2">Team</h2>
+            <div className="flex flex-col col-span-3 items-center justify-center bg-white shadow-md rounded-lg p-4 w-full max-w-md mt-4 sm:mt-0 h-full">
+              <div className="text-center flex-1 flex flex-col justify-center">
+                <h2 className="text-3xl font-semibold mb-2">Team</h2>
                 {team.length === 0 ? (
                   <div>
-                    <p class="text-gray-600 text-xl">Join a team or create a team</p>
+                    <p className="text-gray-600 text-xl">Join a team or create a team</p>
                   </div>
                 ) : (
-                  <p class="text-gray-600 text-xl">
+                  <p className="text-gray-600 text-xl">
                     {team.map((member, index) => (
                       <p key={index}>{member}</p>
                     ))}
                   </p>
                 )}
               </div>
-              <div class="text-center flex-1 flex flex-col justify-center mt-6">
-                <h2 class="text-3xl font-semibold mb-2">Project</h2>
+              <div className="text-center flex-1 flex flex-col justify-center mt-6">
+                <h2 className="text-3xl font-semibold mb-2">Project</h2>
                 <div>
                   {project ? (
-                    <p class="text-gray-600 text-xl">
+                    <p className="text-gray-600 text-xl">
                       Project Title : {project.projectName}
                     </p>
                   ) :(
-                    <p class="text-gray-600 text-xl">
+                    <p className="text-gray-600 text-xl">
                       Project not assigned
                     </p>
                   )}
