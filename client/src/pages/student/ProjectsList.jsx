@@ -123,12 +123,29 @@ export default function ProjectsList() {
       return;
     }
 
+    var Description='';
+
+    try{
+      const res=await fetch('http://localhost:3000/api/project/getaprojectdata',{
+        method:'POST',
+        headers:{
+          'Content-Type':'application/json',
+        },
+        body:JSON.stringify({projectname : selectedProject.name})
+      });
+      const data=await res.json();
+      Description=data.description;
+      console.log(description)
+    }catch(error){
+      console.log(error);
+    }
 
     const data = {
       projectId: selectedProject._id,
       projectName: selectedProject.name,
       projectDomain: selectedProject.domains,
       projectProfessor: selectedProject.professor,
+      projectDescription: Description,
       applyReason: applyReason,
       studentId: localStorage.getItem('rollNumber'),
     }
