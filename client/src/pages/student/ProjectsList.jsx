@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { FaFilter } from "react-icons/fa";
 import ReactPaginate from 'react-paginate';
-import Footer from './Footer'
 import "./Navbar.css"
 
 
@@ -237,10 +236,10 @@ export default function ProjectsList() {
     <div>
 
     <button
-        className="fixed main-content md:hidden bottom-10 right-8 bg-teal-800 rounded-full drop-shadow-lg flex justify-center items-center text-white text-4xl hover:bg-teal-800 z-40"
+        className="fixed main-content md:hidden bottom-10 right-8 bg-teal-800 rounded-full drop-shadow-lg flex justify-center items-center text-white text-4xl hover:bg-teal-800 z-50"
         onClick={toggleSidebar}>
           <div className='flex w-10 h-10 justify-center items-center'>
-          <FaFilter className='w-6 h-6'/>
+          <FaFilter className='w-6 h-6 '/>
           </div>
         </button>
 
@@ -249,8 +248,8 @@ export default function ProjectsList() {
         
 
         <div
-        className={`${FilterbarOpen && !isApply? 'w-2/6 lg:w-72 px-2 z-40 ' : 'w-0 '
-          } -z-100  bg-teal-700 top-0 right-0 relative duration-500`}
+        className={`${FilterbarOpen && !isApply? 'w-2/6 lg:w-72 px-2 ' : 'w-0 '
+          }  bg-teal-700 top-0 right-0 relative duration-500`}
       >
           {/* Responsive Filterbar */}
           <ProjectFilter handleFilterChange={handleFilterChange} />     
@@ -317,7 +316,6 @@ export default function ProjectsList() {
           activeClassName={"active"}
           forcePage={currentPage - 1}
         />)}
-        <Footer/>
       </div>
     );
 }

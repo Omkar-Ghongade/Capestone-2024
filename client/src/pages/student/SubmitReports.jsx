@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react'
+import React, { useState, useEffect } from 'react';
 import { storage } from '../config';
 import { ref, getDownloadURL, uploadBytesResumable } from "firebase/storage";
 import "./Navbar.css";
@@ -15,13 +15,13 @@ export default function SubmitReports() {
 
   const fetchTeamId = async () => {
     try {
-      const rollNumber=localStorage.getItem('rollNumber');
+      const rollNumber = localStorage.getItem('rollNumber');
       const res = await fetch('http://localhost:3000/api/team/isinTeam', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({studentId:rollNumber}),
+        body: JSON.stringify({ studentId: rollNumber }),
       });
       const data = await res.json();
       setTeamId(data.teamcode);
@@ -34,8 +34,10 @@ export default function SubmitReports() {
   const handleSubmit = (e) => {
     e.preventDefault()
     const file = e.target[0]?.files[0]
-    const foldername=teamId;
-    if (file.type==="application/pdf"){
+
+    const foldername = teamId;
+    if (file.type === "application/pdf") {
+
       const storageRef = ref(storage, `${foldername}/${file.name}`);
       const uploadTask = uploadBytesResumable(storageRef, file);
 
@@ -55,7 +57,9 @@ export default function SubmitReports() {
           });
         }
       );
-    }else{
+
+    } else {
+
       alert("Please upload a PDF file")
     }
   }
@@ -67,7 +71,7 @@ export default function SubmitReports() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({teamcode:teamId,reportlink:downloadURL}),
+        body: JSON.stringify({ teamcode: teamId, reportlink: downloadURL }),
       });
       const data = await res.json();
     } catch (error) {
@@ -76,56 +80,68 @@ export default function SubmitReports() {
   }
 
   const getmyproject = async (teamcode) => {
-    try{
+
+    try {
+
       const res = await fetch('http://localhost:3000/api/project/getacceptedproject', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({teamcode:teamcode}),
+        body: JSON.stringify({ teamcode: teamcode }),
       });
       const data = await res.json();
       setProject(data);
-    }catch(error){
+    } catch (error) {
       console.log(error);
     }
   }
 
   return (
-    <div className="App main-content">
-      {project && project.length > 0 ? ( // Modified the condition here to check if project exists and has length > 0
-        <div>
+
+    <div className=" main-content flex flex-col items-center">
+      <div className="bg-white rounded-lg shadow-md w-full px-4 ">
+        {project && project.length > 0 ? (
           <div>
-            <form onSubmit={handleSubmit} className='form'>
-              <input type='file' />
-              <button type='submit'>Upload</button>
-            </form>
-            {
-              !imgUrl &&
-              <div className='outerbar'>
-                <div className='innerbar' style={{ width: `${progresspercent}%` }}>{progresspercent}%</div>
+            <div>
+              <h2 className="text-2xl font-bold mt-4">Project Details</h2>
+              <p className='text-lg'>Project Name: {project[0].projectName}</p>
+              <p className='text-lg' >Project Description: {project[0].projectDescription}</p>
+            </div>
+
+            <div>
+              <h2 className="text-2xl font-bold mt-4">Reports</h2>
+              <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6  gap-2 ">
+                {project[0].reports.map((report, index) => (
+                  <div key={index} className="bg-white rounded-lg shadow-md mb-2 border-solid border-2 ">
+                    
+                    <a href={report} target="_blank" rel="noreferrer">
+                      <img src="https://srmap.edu.in/wp-content/uploads/2023/08/Dr-juman-iqbal-2-1.jpg?x91100" alt="Report Placeholder" className=" h-48 rounded-t-lg w-full object-cover mb-1" />
+                      <p className='text-center'>Report {index + 1}</p>
+                    </a>
+                  </div>
+                ))}
               </div>
-            }
+            </div>
+
+            <div className='mt-4'>
+              <form onSubmit={handleSubmit} className='form'>
+                <input type='file' />
+                <button type='submit'>Upload</button>
+              </form>
+              {
+                !imgUrl &&
+                <div className='outerbar'>
+                  <div className='innerbar' style={{ width: `${progresspercent}%` }}>{progresspercent}%</div>
+                </div>
+              }
+            </div>
+            
           </div>
-          <div>
-            <h2>Project Details</h2>
-            <p>Project Name: {project[0].projectName}</p>
-            <p>Project Description: {project[0].projectDescription}</p>
-          </div>
-          <div>
-            <h2>Reports</h2>
-            <ul>
-              {project[0].reports.map((report, index) => (
-                <li key={index}>
-                  <a href={report} target="_blank" rel="noreferrer">Report {index + 1}</a>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </div>
-      ) : (
-        <p>No project accepted</p>
-      )}
+        ) : (
+          <p>No project accepted</p>
+        )}
+      </div>
     </div>
   );
 }

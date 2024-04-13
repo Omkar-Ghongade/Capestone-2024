@@ -16,8 +16,9 @@ const Navbar= () => {
 
     return (
         <div className='shadow-md w-full fixed top-0 left-0 z-50'>
-           <div className='md:flex items-center justify-between bg-white h-16 md:px-10 px-7 m-0'>
+           <div className='md:flex items-center justify-between bg-white py-3 h-14 md:px-10 px-7'>
             {/* logo section */}
+            <div className='flex flex-row justify-between'>
             <a href="/">
             <div className='font-bold text-2xl cursor-pointer flex items-center gap-1'>
               
@@ -27,10 +28,11 @@ const Navbar= () => {
             </div>
             </a>
             {/* Menu icon */}
-            <div onClick={()=>setOpen(!open)} className='absolute right-8 top-6 cursor-pointer md:hidden w-7 h-7'>
+            <div onClick={()=>setOpen(!open)} className=' right-8 top-6 cursor-pointer md:hidden w-7 h-7'>
                 {
                     open ? <XMarkIcon/> : <Bars3BottomRightIcon />
                 }
+            </div>
             </div>
             {/* linke items */}
             <ul className={`bg-white h-25 items-center md:h-10 md:flex md:items-center md:pb-0 pb-12 absolute md:static md:bg-white md:z-auto z-[-1] left-0 w-full md:w-auto md:pl-0 pl-9 transition-all duration-500 ease-in ${open ? 'top-12' : 'top-[-490px]'}`}>
@@ -58,13 +60,13 @@ const Navbar= () => {
                             
                           >
                             
-                            <span className='flex flex-row py-6 text-md cursor-pointer text-gray-800 hover:text-teal-700 duration-500 md:ml-8 md:my-0 my-0  font-semibold'>{link.title}<RiArrowDropDownLine className='size-6 mt-0' /></span>
+                            <span className='flex flex-row py-7 text-md cursor-pointer text-gray-800 hover:text-teal-700 duration-500 md:ml-8 md:my-0 my-0  font-semibold'>{link.title}<RiArrowDropDownLine className='size-6 mt-0' /></span>
                             {dropdown && <Dropdown className=""/>}
                           </li>
                         );
                       }
                       
-                    return(<li key={link.id} className=' text-md mt-5 md:ml-8 md:my-0 my-7 font-semibold'>
+                    return(<li key={link.id} className=' text-md mt-5 md:ml-8 md:my-0 my-3 font-semibold'>
                         <a onClick={()=>setOpen(false)} href={link.path} className=' h-16 text-gray-800 hover:text-teal-700 duration-500'>{link.title}</a>
                         
                     </li>)})
