@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { FaFilter } from "react-icons/fa";
 import ReactPaginate from 'react-paginate';
+import { IoIosClose } from "react-icons/io";
 import "./Navbar.css"
 
 
@@ -233,10 +234,10 @@ export default function ProjectsList() {
 
 
   return(
-    <div>
+    <div className='pt-1'>
 
     <button
-        className="fixed main-content md:hidden bottom-10 right-8 bg-teal-800 rounded-full drop-shadow-lg flex justify-center items-center text-white text-4xl hover:bg-teal-800 z-50"
+        className="fixed md:hidden bottom-10 right-8 bg-gray-700 rounded-full drop-shadow-lg flex justify-center items-center text-white text-4xl hover:bg-teal-800 z-50"
         onClick={toggleSidebar}>
           <div className='flex w-10 h-10 justify-center items-center'>
           <FaFilter className='w-6 h-6 '/>
@@ -249,7 +250,7 @@ export default function ProjectsList() {
 
         <div
         className={`${FilterbarOpen && !isApply? 'w-2/6 lg:w-72 px-2 ' : 'w-0 '
-          }  bg-teal-700 top-0 right-0 relative duration-500`}
+          }  bg-gray-100 top-0 right-0 relative duration-500`}
       >
           {/* Responsive Filterbar */}
           <ProjectFilter handleFilterChange={handleFilterChange} />     
@@ -259,8 +260,14 @@ export default function ProjectsList() {
         <div className={`${FilterbarOpen? 'w-5/6 px-2 z-40 ' : 'w-full'
           } pr-4 z-30 `}>
           {isApply ? (
-            <div className='w-3/4 w-full bg-white rounded-lg shadow-md p-6 '>
-              <h2 className='text-2xl font-bold mb-3'>Apply for Project</h2>
+            <div className='w-full bg-white rounded-lg shadow-md p-6 sm:ml-8 md:ml-16 lg:ml-24'>
+              <div className='flex flex-row justify-between'>
+                <h2 className='text-2xl font-bold mb-3'>Apply for Project</h2>
+                <button onClick={cancelApply} className='top-2 right-2 text-gray-600 hover:text-gray-800'>
+                  <IoIosClose size={32} />
+                </button>
+              </div>
+
               <div className='mb-4 '>
                 <p className='mb-2'><span className='font-bold'>Name:</span> {selectedProject.name}</p>
                 <p className='mb-2'><span className='font-bold'>Description:</span> {selectedProject.description}</p>

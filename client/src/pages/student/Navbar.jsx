@@ -16,9 +16,9 @@ const Navbar= () => {
 
     return (
         <div className='shadow-md w-full fixed top-0 left-0 z-50'>
-           <div className='md:flex items-center justify-between bg-white py-3 h-14 md:px-10 px-7'>
+           <div className='md:flex items-center justify-between bg-white py-3 h-16 md:px-10 px-7'>
             {/* logo section */}
-            <div className='flex flex-row justify-between'>
+            <div className='flex flex-row justify-between pt-1'>
             <a href="/">
             <div className='font-bold text-2xl cursor-pointer flex items-center gap-1'>
               
