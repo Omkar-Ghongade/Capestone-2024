@@ -207,3 +207,15 @@ export const getacceptedproject = async (req, res) => {
         res.status(404).json({message:err.message});
     }
 }
+
+
+export const oncancelproject = async (req, res) => {
+    try{
+        const projectName=req.body.projectName;
+        const teamcode=req.body.teamcode;
+        const findProject= await Appliedproject.findOneAndDelete({projectName:projectName, teamcode: teamcode });
+        res.status(200).json({message:"Project Cancelled"});
+    }catch(err){
+        res.status(404).json({message:err.message});
+    }
+}

@@ -13,6 +13,7 @@ import { getmyapplications } from '../controller/project.controller.js';
 import { getreportlink } from '../controller/project.controller.js';
 import { getaprojectdata } from '../controller/project.controller.js';
 import { getacceptedproject } from '../controller/project.controller.js';
+import { oncancelproject } from '../controller/project.controller.js';
 
 const router = express.Router();
 
@@ -30,5 +31,6 @@ router.post('/getmyapplications',getmyapplications);
 router.post('/getreportlink',getreportlink);
 router.post('/getaprojectdata',getaprojectdata);
 router.post('/getacceptedproject',getacceptedproject);
+router.post('/oncancelproject',oncancelproject);
 
 export default router;

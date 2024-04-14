@@ -4,6 +4,8 @@ import "./Navbar.css";
 export default function AppliedProjects() {
   const [appliedProjects, setAppliedProjects] = useState([]);
   const [showCancelAlert, setShowCancelAlert] = useState(false);
+  const [teamcode, setTeamcode] = useState('');
+  const [projectName, setProjectName] = useState('');
 
   useEffect(() => {
     const fetchData = async () => {
@@ -30,16 +32,36 @@ export default function AppliedProjects() {
     }
   };
 
-  const handleCancel = () => {
+  const handleCancel = (teamcode, projectName) => {
+    setTeamcode(teamcode);
+    setProjectName(projectName);
+    console.log(teamcode, projectName);
     setShowCancelAlert(true);
   };
 
-  const handleConfirmCancel = () => {
+  const handleConfirmCancel = async () => {
     // Perform cancel logic here
     setShowCancelAlert(false);
+    try{
+      const res = await fetch('http://localhost:3000/api/project/oncancelproject', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ teamcode: teamcode, projectName: projectName })
+      });
+      const data = await res.json();
+      console.log(data);
+      window.location.reload();
+    }catch(err){
+      console.log(err);
+    }
   };
 
   const handleCancelCancel = () => {
+    setTeamcode('');
+    setProjectName('');
+    console.log(teamcode, projectName);
     setShowCancelAlert(false);
   };
 
@@ -53,7 +75,7 @@ export default function AppliedProjects() {
           <div key={index} className=" border-solid border-2 bg-white flex flex-col rounded-lg shadow-md hover:shadow-lg hover:bg-teal-50  p-4 w-full">
             <div className=' flex flex-row  justify-between'>
               <h3 className="text-2xl font-semibold">{project.projectName}</h3>
-              <button onClick={handleCancel} className='btn mt-2 h-6 w-16 bg-lime-950 shadow shadow-teal-200 hover:bg-black hover:shadow-md 
+              <button onClick={() => handleCancel(project.teamcode, project.projectName)} className='btn mt-2 h-6 w-16 bg-lime-950 shadow shadow-teal-200 hover:bg-black hover:shadow-md 
               hover:shadow-teal-200 text-white md:ml-8 font-semibold px-2 rounded duration-300 md:static'>Cancel</button>
             </div>
             <div className=''><p className="text-lg ">{project.projectProfessor}</p></div>
