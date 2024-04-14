@@ -116,7 +116,7 @@ export default function SubmitReports() {
                   <div key={index} className="bg-white rounded-lg shadow-md mb-2 border-solid border-2 ">
                     
                     <a href={report} target="_blank" rel="noreferrer">
-                      <img src="https://srmap.edu.in/wp-content/uploads/2023/08/Dr-juman-iqbal-2-1.jpg?x91100" alt="Report Placeholder" className=" h-48 rounded-t-lg w-full object-cover mb-1" />
+                      <img src="https://logodownload.org/wp-content/uploads/2021/05/adobe-acrobat-reader-logo-0-1536x1536.png" alt="Report Placeholder" className=" h-48 rounded-t-lg w-full object-cover mb-1" />
                       <p className='text-center'>Report {index + 1}</p>
                     </a>
                   </div>
