@@ -8,6 +8,7 @@ export default function SubmitReports() {
   const [progresspercent, setProgresspercent] = useState(0);
   const [teamId, setTeamId] = useState('');
   const [project, setProject] = useState(null); // Moved project state to the top level
+  const [loading, setLoading] = useState(true);
   const api = import.meta.env.VITE_backend;
 
   useEffect(() => {
@@ -29,6 +30,7 @@ export default function SubmitReports() {
       getmyproject(data.teamcode);
     } catch (error) {
       console.log(error);
+      setLoading(false);
     }
   }
 
@@ -93,9 +95,22 @@ export default function SubmitReports() {
       });
       const data = await res.json();
       setProject(data);
+      setLoading(false);
     } catch (error) {
       console.log(error);
     }
+  }
+
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <img 
+          src="https://srmap.edu.in/file/2019/12/Logo-2.png" 
+          alt="Loading..." 
+          style={{ width: "200px", height: "auto" }} 
+        />
+      </div>
+    );
   }
 
   return (

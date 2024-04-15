@@ -7,6 +7,7 @@ export default function ProfessorProfiles() {
   const [currentPage, setCurrentPage] = useState(0); // Current page of pagination
   const [profilesPerPage, setProfilesPerPage] = useState(4); // Number of profiles to display per page
   const [windowWidth, setWindowWidth] = useState(window.innerWidth); // Current viewport width
+  const [loading, setLoading] = useState(true);
   const api = import.meta.env.VITE_backend;
 
   useEffect(() => {
@@ -42,8 +43,10 @@ export default function ProfessorProfiles() {
       });
       const data = await res.json();
       setProfessorData(data);
+      setLoading(false);
     } catch (error) {
       console.log(error);
+      setLoading(false);
     }
   };
 
@@ -64,6 +67,18 @@ export default function ProfessorProfiles() {
   const handlePageChange = ({ selected }) => {
     setCurrentPage(selected);
   };
+
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <img 
+          src="https://srmap.edu.in/file/2019/12/Logo-2.png" 
+          alt="Loading..." 
+          style={{ width: "200px", height: "auto" }} 
+        />
+      </div>
+    );
+  }
 
   return (
     <div className='main-content'>

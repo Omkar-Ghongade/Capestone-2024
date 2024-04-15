@@ -8,6 +8,7 @@ export default function TeamFormation() {
   const [teamSubmitButton, setTeamSubmitButton] = useState(false);
   const [teamDeleteButton, setTeamDeleteButton] = useState(false);
   const [showSubmitAlert, setShowSubmitAlert] = useState(false);
+  const [loading, setLoading] = useState(true);
   const api = import.meta.env.VITE_backend;
 
   useEffect(() => {
@@ -71,8 +72,10 @@ export default function TeamFormation() {
           setTeamDeleteButton(true);
         setTeamCreatedOrJoined(true);
       }
+      setLoading(false);
     } catch (err) {
       console.log(err);
+      setLoading(false);
     }
   };
 
@@ -123,6 +126,18 @@ export default function TeamFormation() {
   const handleCancelSubmit = () => {
     setShowSubmitAlert(false); // Close the alert if canceled
   };
+
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <img 
+          src="https://srmap.edu.in/file/2019/12/Logo-2.png" 
+          alt="Loading..." 
+          style={{ width: "200px", height: "auto" }} 
+        />
+      </div>
+    );
+  }
 
   return (
     <div className='main-content flex flex-col mx-auto p-8 rounded-lg shadow-xl bg-white border-solid border-2'>
