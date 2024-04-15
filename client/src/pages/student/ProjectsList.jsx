@@ -9,6 +9,8 @@ import "./Navbar.css"
 
 export default function ProjectsList() {
 
+  const [loading, setLoading] = useState(true);
+
   const [FilterbarOpen, setFilterbarOpen] = useState(true); // State to manage Filterbar visibility
 
 
@@ -57,8 +59,10 @@ export default function ProjectsList() {
       });
       const data = await res.json();
       setProjectsData(data);
+      setLoading(false);
     } catch (error) {
       console.log(error);
+      setLoading(false);
     }
   }
 
@@ -232,6 +236,19 @@ export default function ProjectsList() {
 
     return () => window.removeEventListener('resize', handleResize);
   }, []);
+
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        {/* Loading screen content */}
+        <img 
+          src="https://srmap.edu.in/file/2019/12/Logo-2.png" 
+          alt="Loading..." 
+          style={{ width: "200px", height: "auto" }} 
+        />
+      </div>
+    );
+  }
 
 
   return(
