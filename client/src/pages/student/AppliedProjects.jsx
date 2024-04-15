@@ -6,6 +6,7 @@ export default function AppliedProjects() {
   const [showCancelAlert, setShowCancelAlert] = useState(false);
   const [teamcode, setTeamcode] = useState('');
   const [projectName, setProjectName] = useState('');
+  const [loading, setLoading] = useState(true);
   const api = import.meta.env.VITE_backend;
 
   useEffect(() => {
@@ -28,8 +29,10 @@ export default function AppliedProjects() {
       const data = await res.json();
       console.log(data);
       setAppliedProjects(data);
+      setLoading(false);
     } catch (error) {
       console.log(error);
+      setLoading(false);
     }
   };
 
@@ -65,6 +68,18 @@ export default function AppliedProjects() {
     console.log(teamcode, projectName);
     setShowCancelAlert(false);
   };
+
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <img 
+          src="https://srmap.edu.in/file/2019/12/Logo-2.png" 
+          alt="Loading..." 
+          style={{ width: "200px", height: "auto" }} 
+        />
+      </div>
+    );
+  }
 
   return (
     <div className={`${appliedProjects.length === 0 ? 'h-screen' : ''}main-content relative flex flex-col gap-2 items-center bg-white shadow-md rounded-lg p-6 w-screen `}>
