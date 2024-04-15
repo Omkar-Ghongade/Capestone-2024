@@ -84,6 +84,7 @@ export default function ProjectsList() {
     }));
   };
 
+
   const handlePageChange = ({ selected }) => {
     setCurrentPage(selected + 1);
     
@@ -189,10 +190,18 @@ export default function ProjectsList() {
           });
           return domains;
         }, []);
+
+        const handleDeselectAll = () => {
+          const updatedFilters = {};
+          allDomains.forEach(domain => {
+            updatedFilters[domain] = false;
+          });
+          setFilters(updatedFilters);
+        };
       
         return (
           <div className={`bg-gray-100 p-4 ${(!FilterbarOpen || isApply) && 'invisible'}`}>
-            <h2 className="text-lg font-semibold mb-2">Filter Projects</h2>
+            <h2 className="text-xl font-semibold mb-2">Filter Projects</h2>
             <div className="flex flex-col space-y-2">
               {allDomains.map((domain, index) => (
                 <label key={index} className="inline-flex items-center">
@@ -205,6 +214,8 @@ export default function ProjectsList() {
                   <span className="ml-2">{domain}</span>
                 </label>
               ))}
+              <button onClick={handleDeselectAll} className='mt-2 h-6 text-sm w-24 bg-lime-950 shadow shadow-teal-200 hover:bg-black hover:shadow-md 
+              hover:shadow-teal-200 text-white font-semibold px-2 mt-2 rounded duration-300 '>Deselect All</button>
             </div>
           </div>
         );
@@ -234,7 +245,7 @@ export default function ProjectsList() {
 
 
   return(
-    <div className='pt-1'>
+    <div className='main-content mb-4'>
 
     <button
         className="fixed md:hidden bottom-10 right-8 bg-gray-700 rounded-full drop-shadow-lg flex justify-center items-center text-white text-4xl hover:bg-teal-800 z-50"
@@ -244,7 +255,7 @@ export default function ProjectsList() {
           </div>
         </button>
 
-      <div className="main-content flex flex-row gap-1">
+      <div className=" flex flex-row gap-1">
 
         
 
