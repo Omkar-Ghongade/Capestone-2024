@@ -19,7 +19,7 @@ export const navItems = [
     },
     {
         id: 4,
-        title: "Team",
+        title: "Project Team",
         path: "./team-formation",
         cName: "nav-item",
       }
