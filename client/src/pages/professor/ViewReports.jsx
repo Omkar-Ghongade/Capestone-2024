@@ -5,6 +5,8 @@ import './Navbar.css'
 
 export default function ViewReports() {
 
+  const api = import.meta.env.VITE_backend;
+
   useEffect(() => {
     fetchReportsFromBackend();
   });
@@ -12,7 +14,7 @@ export default function ViewReports() {
   const fetchReportsFromBackend = async () => {
     try{
         const name=localStorage.getItem('professorName');
-        const res = await fetch('http://localhost:3000/api/project/getreportlink', {
+        const res = await fetch(`${api}/api/project/getreportlink`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

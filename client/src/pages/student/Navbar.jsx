@@ -12,6 +12,7 @@ const Navbar= () => {
 
       let [open, setOpen] =useState(false);
       const [dropdown, setDropdown] = useState(false);
+      const api = import.meta.env.VITE_backend;
 
 
     return (

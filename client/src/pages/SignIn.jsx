@@ -15,6 +15,7 @@ export default function SignIn() {
   const [email, setEmail] = useState('');
   const [role, setRole] = useState('');
   const [loading, setLoading] = useState(true); // Add loading state
+  const api = import.meta.env.VITE_backend;
 
   useEffect(() => { 
     validateData();
@@ -58,9 +59,10 @@ export default function SignIn() {
   };
 
   const validateData = async (data) => {
+    console.log(import.meta.env)
     onAuthStateChanged(auth, async (user) => {
-      try{
-        const res=await fetch('http://localhost:3000/api/auth/getdata',{
+      try{   
+        const res=await fetch(`${api}/api/auth/getdata`,{
           method:'POST',
           headers:{
             'Content-Type':'application/json'

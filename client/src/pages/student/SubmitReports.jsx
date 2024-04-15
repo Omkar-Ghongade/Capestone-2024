@@ -8,6 +8,7 @@ export default function SubmitReports() {
   const [progresspercent, setProgresspercent] = useState(0);
   const [teamId, setTeamId] = useState('');
   const [project, setProject] = useState(null); // Moved project state to the top level
+  const api = import.meta.env.VITE_backend;
 
   useEffect(() => {
     fetchTeamId();
@@ -16,7 +17,7 @@ export default function SubmitReports() {
   const fetchTeamId = async () => {
     try {
       const rollNumber = localStorage.getItem('rollNumber');
-      const res = await fetch('http://localhost:3000/api/team/isinTeam', {
+      const res = await fetch(`${api}/api/team/isinTeam`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -66,7 +67,7 @@ export default function SubmitReports() {
 
   const savetoteam = async (downloadURL) => {
     try {
-      const res = await fetch('http://localhost:3000/api/project/addreportlink', {
+      const res = await fetch(`${api}/api/project/addreportlink`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -83,7 +84,7 @@ export default function SubmitReports() {
 
     try {
 
-      const res = await fetch('http://localhost:3000/api/project/getacceptedproject', {
+      const res = await fetch(`${api}/api/project/getacceptedproject`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

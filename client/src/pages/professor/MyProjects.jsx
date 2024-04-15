@@ -5,6 +5,7 @@ export default function MyProjects() {
   const [projects, setProjects] = useState([]);
   const [showDeleteAlert, setShowDeleteAlert] = useState(false);
   const [projectToDelete, setProjectToDelete] = useState(null); // New state to store the project to be deleted
+  const api = import.meta.env.VITE_backend;
 
   useEffect(() => {
     fetchProjectsFromBackend();
@@ -12,7 +13,7 @@ export default function MyProjects() {
 
   const fetchProjectsFromBackend = async () => {
     try {
-      const res = await fetch('http://localhost:3000/api/project/getprofessorproject', {
+      const res = await fetch(`${api}/api/project/getprofessorproject`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -33,7 +34,7 @@ export default function MyProjects() {
 
   const handleConfirmDelete = async () => {
     try {
-      const res = await fetch('http://localhost:3000/api/project/Deleteproject', {
+      const res = await fetch(`${api}/api/project/Deleteproject`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

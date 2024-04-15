@@ -11,6 +11,7 @@ export default function MainHome() {
   const [studentData, setStudentData] = useState(null);
   const [team, setTeam] = useState([]);
   const [project, setProject] = useState(null);
+  const api = import.meta.env.VITE_backend;
 
   useEffect(() => {
     fetchStudentData()
@@ -24,7 +25,7 @@ export default function MainHome() {
     onAuthStateChanged(auth, async (user) => {
       // console.log(user);
       try {
-        const res = await fetch('http://localhost:3000/api/student/getstudentdata', {
+        const res = await fetch(`${api}/api/student/getstudentdata`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -43,7 +44,7 @@ export default function MainHome() {
 
   const fetchStudentTeam = async () => {
     try {
-      const res = await fetch('http://localhost:3000/api/auth/getteam', {
+      const res = await fetch(`${api}/api/auth/getteam`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -61,7 +62,7 @@ export default function MainHome() {
   const fetchStudentProject = async (teamcode) => {
     try {
       console.log(teamcode);
-      const res = await fetch('http://localhost:3000/api/auth/getproject', {
+      const res = await fetch(`${api}/api/auth/getproject`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

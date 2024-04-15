@@ -8,6 +8,7 @@ const ENCRYPTION_KEY = "c%r2n8#FqPb6@vKt5^hMw9&sGzYp3!dA";
 export default function MainHome() {
 
   const [professorData, setProfessorData] = useState(null);
+  const api = import.meta.env.VITE_backend;
 
   useEffect(() => {
     fetchProfessorData();
@@ -17,7 +18,7 @@ export default function MainHome() {
     onAuthStateChanged(auth, async (user) => {
       console.log(user);
       try {
-        const res = await fetch('http://localhost:3000/api/professor/displayprofessordata', {
+        const res = await fetch(`${api}/api/professor/displayprofessordata`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

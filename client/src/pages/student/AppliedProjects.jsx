@@ -6,6 +6,7 @@ export default function AppliedProjects() {
   const [showCancelAlert, setShowCancelAlert] = useState(false);
   const [teamcode, setTeamcode] = useState('');
   const [projectName, setProjectName] = useState('');
+  const api = import.meta.env.VITE_backend;
 
   useEffect(() => {
     const fetchData = async () => {
@@ -17,7 +18,7 @@ export default function AppliedProjects() {
   const fetchAppliedProjects = async () => {
     try {
       const studentId = localStorage.getItem('rollNumber');
-      const res = await fetch('http://localhost:3000/api/project/getappliedproject', {
+      const res = await fetch(`${api}/api/project/getappliedproject`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -43,7 +44,7 @@ export default function AppliedProjects() {
     // Perform cancel logic here
     setShowCancelAlert(false);
     try{
-      const res = await fetch('http://localhost:3000/api/project/oncancelproject', {
+      const res = await fetch(`${api}/api/project/oncancelproject`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

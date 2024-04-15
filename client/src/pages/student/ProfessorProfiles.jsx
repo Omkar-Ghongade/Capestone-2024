@@ -14,7 +14,7 @@
 
 //   const fetchProfessorData = async () => {
 //     try {
-//       const res = await fetch('http://localhost:3000/api/professor/getprofessordata', {
+//       const res = await fetch('${api}/api/professor/getprofessordata', {
 //         method: 'POST',
 //         headers: {
 //           'Content-Type': 'application/json',
@@ -54,6 +54,7 @@ export default function ProfessorProfiles() {
   const [currentPage, setCurrentPage] = useState(0); // Current page of pagination
   const [profilesPerPage, setProfilesPerPage] = useState(4); // Number of profiles to display per page
   const [windowWidth, setWindowWidth] = useState(window.innerWidth); // Current viewport width
+  const api = import.meta.env.VITE_backend;
 
   useEffect(() => {
     const fetchData = async () => {
@@ -80,7 +81,7 @@ export default function ProfessorProfiles() {
 
   const fetchProfessorData = async () => {
     try {
-      const res = await fetch('http://localhost:3000/api/professor/getprofessordata', {
+      const res = await fetch(`${api}/api/professor/getprofessordata`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -8,6 +8,7 @@ export default function TeamFormation() {
   const [teamSubmitButton, setTeamSubmitButton] = useState(false);
   const [teamDeleteButton, setTeamDeleteButton] = useState(false);
   const [showSubmitAlert, setShowSubmitAlert] = useState(false);
+  const api = import.meta.env.VITE_backend;
 
   useEffect(() => {
     isinTeam();
@@ -16,7 +17,7 @@ export default function TeamFormation() {
   const handleCreateTeam = async () => {
     try {
       const rollNumber = localStorage.getItem('rollNumber');
-      const response = await fetch('http://localhost:3000/api/team/createTeam', {
+      const response = await fetch(`${api}/api/team/createTeam`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -35,7 +36,7 @@ export default function TeamFormation() {
   const handleJoinTeam = async () => {
     try {
       const rollNumber = localStorage.getItem('rollNumber');
-      const response = await fetch('http://localhost:3000/api/team/joinTeam', {
+      const response = await fetch(`${api}/api/team/joinTeam`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -53,7 +54,7 @@ export default function TeamFormation() {
   const isinTeam = async () => {
     try {
       const rollNumber = localStorage.getItem('rollNumber');
-      const response = await fetch('http://localhost:3000/api/team/isinTeam', {
+      const response = await fetch(`${api}/api/team/isinTeam`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -77,7 +78,7 @@ export default function TeamFormation() {
 
   const handleDeleteTeam = async () => {
     try {
-      const response = await fetch('http://localhost:3000/api/team/deleteTeam', {
+      const response = await fetch(`${api}/api/team/deleteTeam`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -101,7 +102,7 @@ export default function TeamFormation() {
 
   const handleConfirmSubmit = async () => {
     try {
-      const response = await fetch('http://localhost:3000/api/team/submitTeam', {
+      const response = await fetch(`${api}/api/team/submitTeam`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

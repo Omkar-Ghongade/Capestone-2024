@@ -35,6 +35,7 @@ export default function PostProject() {
       minteamsize,
       maxteamsize
     };
+    const api = import.meta.env.VITE_backend;
     console.log(selectedDomains);
 
     // const isAnyDomainChecked = Object.values(domains).some(domain => domain);
@@ -53,7 +54,7 @@ export default function PostProject() {
     
 
     try {
-      const res = await fetch('http://localhost:3000/api/project/createproject', {
+      const res = await fetch(`${api}/api/project/createproject`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

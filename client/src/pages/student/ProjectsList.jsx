@@ -25,6 +25,7 @@ export default function ProjectsList() {
   const [currentPage, setCurrentPage] = useState(1);
   const [projectsPerPage,setProjectsPerPage] = useState(10); // Number of projects to display per page
   const [filteredProjectsData, setFilteredProjectsData] = useState([]);
+  const api = import.meta.env.VITE_backend;
 
   useEffect(() => {
     const fetchData = async () => {
@@ -48,7 +49,7 @@ export default function ProjectsList() {
 
   const fetchProjectData = async () => {
     try {
-      const res = await fetch('http://localhost:3000/api/project/getprojectdata', {
+      const res = await fetch(`${api}/api/project/getprojectdata`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -126,7 +127,7 @@ export default function ProjectsList() {
     var Description='';
 
     try{
-      const res=await fetch('http://localhost:3000/api/project/getaprojectdata',{
+      const res=await fetch(`${api}/api/project/getaprojectdata`,{
         method:'POST',
         headers:{
           'Content-Type':'application/json',
@@ -154,7 +155,7 @@ export default function ProjectsList() {
 
     console.log(data);
     try {
-      const res = await fetch('http://localhost:3000/api/project/applyproject', {
+      const res = await fetch(`${api}/api/project/applyproject`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

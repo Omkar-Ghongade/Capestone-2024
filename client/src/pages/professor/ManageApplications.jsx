@@ -4,6 +4,7 @@ import "./Navbar.css";
 export default function ManageApplications() {
 
   const [projects, setProjects] = useState([]);
+  const api = import.meta.env.VITE_backend;
 
   useEffect(() => {
     fetchProjectsFromBackend();
@@ -12,7 +13,7 @@ export default function ManageApplications() {
   const fetchProjectsFromBackend = async () => {
     setProjects([]);
     try {
-      const res = await fetch('http://localhost:3000/api/project/getmyapplications', {
+      const res = await fetch(`${api}/api/project/getmyapplications`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -30,7 +31,7 @@ export default function ManageApplications() {
 
   const acceptProject = async (projectName, teamcode) => {
     try {
-      const res = await fetch('http://localhost:3000/api/project/acceptproject', {
+      const res = await fetch(`${api}/api/project/acceptproject`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
