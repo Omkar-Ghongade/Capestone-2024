@@ -3,6 +3,7 @@ import { FaFilter } from "react-icons/fa";
 import ReactPaginate from 'react-paginate';
 import { IoIosClose } from "react-icons/io";
 import "./Navbar.css"
+import { set } from 'mongoose';
 
 
 
@@ -27,6 +28,7 @@ export default function ProjectsList() {
   const [currentPage, setCurrentPage] = useState(1);
   const [projectsPerPage,setProjectsPerPage] = useState(10); // Number of projects to display per page
   const [filteredProjectsData, setFilteredProjectsData] = useState([]);
+  const [validteam,setValidTeam]=useState(false);
   const api = import.meta.env.VITE_backend;
 
   useEffect(() => {
@@ -34,6 +36,7 @@ export default function ProjectsList() {
       await fetchProjectData();
     };
     fetchData();
+    isvalidteam();
   }, []);
 
   useEffect(() => {
@@ -47,6 +50,25 @@ export default function ProjectsList() {
     }
     setIsApply(false);
   }, []);
+
+  const isvalidteam=async()=>{
+    try{
+      const rollNumber=localStorage.getItem('rollNumber');
+      const res=await fetch(`${api}/api/team/isinteam`,{
+        method:'POST',
+        headers:{
+          'Content-Type':'application/json',
+        },
+        body:JSON.stringify({studentId:rollNumber})
+      });
+      const data=await res.json();
+      // console.log(data);
+      if(data.submitted)
+        setValidTeam(true);
+    }catch(error){
+      console.log(error);
+    }
+  }
 
 
   const fetchProjectData = async () => {
@@ -311,11 +333,10 @@ export default function ProjectsList() {
                 <label htmlFor='applyReason' className='block text-sm font-bold mb-1'>Why do you want to apply?</label>
                 <input type='text' id='applyReason' className='w-full border rounded px-3 py-2' value={applyReason} onChange={handleApplyReasonChange} autocomplete="off" />
               </div>
-              <div className='flex flex-row '>
+              {validteam?(<div className='flex flex-row '>
                 <button onClick={cancelApply} className='bg-red-500 text-white font-bold py-2 px-4 rounded hover:bg-red-700 mr-2'>Cancel</button>
                 <button onClick={handleSubmit} className='bg-blue-500 text-white font-bold py-2 px-4 rounded hover:bg-blue-700 mr-2'>Apply</button>
-                
-              </div>
+              </div>):(<div className="text-red-500  my-4">Create and Submit your team to start applying</div>)}
             </div>
           ) : (
             <div className='flex flex-col gap-2 mb-4'>
