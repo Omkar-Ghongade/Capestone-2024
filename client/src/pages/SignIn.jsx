@@ -59,7 +59,6 @@ export default function SignIn() {
   };
 
   const validateData = async (data) => {
-    console.log(import.meta.env)
     onAuthStateChanged(auth, async (user) => {
       try{   
         const res=await fetch(`${api}/api/auth/getdata`,{
