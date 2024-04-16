@@ -29,6 +29,8 @@ export default function ProjectsList() {
   const [projectsPerPage,setProjectsPerPage] = useState(10); // Number of projects to display per page
   const [filteredProjectsData, setFilteredProjectsData] = useState([]);
   const [validteam,setValidTeam]=useState(false);
+  const [teamid, setTeamId] = useState('');
+  const [applied, setApplied] = useState(false);
   const api = import.meta.env.VITE_backend;
 
   useEffect(() => {
@@ -63,12 +65,43 @@ export default function ProjectsList() {
       });
       const data=await res.json();
       // console.log(data);
-      if(data.submitted)
+      if(data.submitted){
+        setTeamId(data.teamcode);
+        console.log(teamid);
         setValidTeam(true);
+      }
     }catch(error){
       console.log(error);
     }
   }
+
+  async function isTeamSubmitted(projectName) {
+    console.log(teamid);
+    console.log(projectName);
+    const submitted = await isSubmitted(teamid, projectName);
+    console.log(submitted);
+    return submitted;
+  }
+
+  const isSubmitted = async (teamcode, projectName) => {
+    try {
+      const res = await fetch(`${api}/api/project/isteamproject`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ teamcode, projectName }),
+      });
+      const data = await res.json();
+      console.log(data);
+      if(data.projectName===projectName)
+        return true;
+      return false;
+    } catch (error) {
+      return false;
+      console.log(error);
+    }
+  };
 
 
   const fetchProjectData = async () => {
@@ -129,6 +162,12 @@ export default function ProjectsList() {
     setIsApply(true);
     localStorage.setItem('isApply', JSON.stringify(true));
     localStorage.setItem('selectedProject', JSON.stringify(project));
+
+    const submitted = await isTeamSubmitted(project.name);
+    if (submitted) {
+      setApplied(true);
+    }else
+      setApplied(false);
   }
 
   const cancelApply = () => {
@@ -333,10 +372,19 @@ export default function ProjectsList() {
                 <label htmlFor='applyReason' className='block text-sm font-bold mb-1'>Why do you want to apply?</label>
                 <input type='text' id='applyReason' className='w-full border rounded px-3 py-2' value={applyReason} onChange={handleApplyReasonChange} autocomplete="off" />
               </div>
-              {validteam?(<div className='flex flex-row '>
-                <button onClick={cancelApply} className='bg-red-500 text-white font-bold py-2 px-4 rounded hover:bg-red-700 mr-2'>Cancel</button>
-                <button onClick={handleSubmit} className='bg-blue-500 text-white font-bold py-2 px-4 rounded hover:bg-blue-700 mr-2'>Apply</button>
-              </div>):(<div className="text-red-500  my-4">Create and Submit your team to start applying</div>)}
+              {validteam ? (
+                applied ? (
+                  <div className="text-red-500 my-4">You have already applied for this project</div>
+                ) : (
+                  <div className='flex flex-row'>
+                    <button onClick={cancelApply} className='bg-red-500 text-white font-bold py-2 px-4 rounded hover:bg-red-700 mr-2'>Cancel</button>
+                    <button onClick={handleSubmit} className='bg-blue-500 text-white font-bold py-2 px-4 rounded hover:bg-blue-700 mr-2'>Apply</button>
+                  </div>
+                )
+              ) : (
+                <div className="text-red-500 my-4">Create and submit your team to start applying</div>
+              )}
+
             </div>
           ) : (
             <div className='flex flex-col gap-2 mb-4'>
