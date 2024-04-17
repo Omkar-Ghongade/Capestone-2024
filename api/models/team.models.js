@@ -9,6 +9,6 @@ const Team=new mongoose.Schema({
 
 const team=mongoose.model('Team',Team);
 
-team.createIndexes();
+// team.createIndexes();
 
 export default team;
