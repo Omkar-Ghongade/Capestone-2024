@@ -14,7 +14,7 @@ import {BrowserRouter, Routes , Route} from 'react-router-dom'
 export default function SHome() {
   return (
     <BrowserRouter>
-    <div className='flex flex-col'>
+    <div className='flex flex-col h-screen'>
       <Navbar/>
       <Routes>
         <Route path="/" element={<MainHome />} />

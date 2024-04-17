@@ -49,10 +49,6 @@ body{
     padding: 16px;
   }
 
-  .main-content{
-    margin-top: 0;
-  }
-
   .pagination {
     display: flex;
     justify-content: center;
@@ -75,11 +71,12 @@ body{
     border: 1px solid #ccc;
     border-radius: 4px;
     text-decoration: none;
-    color: #1a2e05;
+    color: #042f2e;
+    transition: box-shadow 0.3s ease; /* Adding transition for smooth effect */
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3); /* Thin shadow by default */
   }
   
-  .pagination li.active a {
-    background-color: #1a2e05;
-    color: #fff;
+  .pagination li a:hover {
+    box-shadow: 
+      0 2px 7px #99f6e4; /* Heavy shadow on bottom with color #99f6e4 */
   }
-

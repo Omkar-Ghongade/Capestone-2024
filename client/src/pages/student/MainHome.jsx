@@ -78,11 +78,11 @@ export default function MainHome() {
   }
 
   return (
-    <div className="main-content flex justify-center items-center h-screen bg-gray-100">
-      <div className="items-center  flex justify-center">
+    <div className="main-content flex flex-col justify-center items-center py-3">
+      <div className="items-center flex justify-center">
         {studentData && (
-          <div className=' grid grid-cols-1 sm:grid-cols-5 gap-3 justify-center'>
-            <div className="flex flex-col col-span-2 items-center bg-white shadow-md rounded-lg p-6 w-full max-w-md">
+          <div className=' grid grid-cols-1 sm:grid-cols-5 gap-3 justify-center mt-8 mb-8'>
+            <div className="flex flex-col col-span-2 items-center bg-white shadow-md rounded-lg p-6 w-full max-w-md shadow-md shadow-teal-100 hover:shadow-lg hover:shadow-teal-300">
               <div className='w-full flex justify-center items-center pt-4'>
                 <img
                   src={studentData.photo ? studentData.photo : "https://via.placeholder.com/150"}
@@ -122,7 +122,7 @@ export default function MainHome() {
                 </div>
               </div>
             </div>
-            <div className="flex flex-col col-span-3 items-center justify-center bg-white shadow-md rounded-lg p-4 w-full max-w-md mt-4 sm:mt-0 h-full">
+            <div className="flex flex-col col-span-3 items-center justify-center bg-white shadow-md rounded-lg p-4 w-full max-w-md mt-4 sm:mt-0 h-full shadow-md shadow-teal-100 hover:shadow-lg hover:shadow-teal-300">
               <div className="text-center flex-1 flex flex-col justify-center">
                 <h2 className="text-3xl font-semibold mb-2">Team</h2>
                 {team.length === 0 ? (
@@ -158,3 +158,4 @@ export default function MainHome() {
     </div>
   );
 }
+

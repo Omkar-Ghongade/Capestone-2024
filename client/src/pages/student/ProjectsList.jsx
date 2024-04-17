@@ -4,6 +4,7 @@ import ReactPaginate from 'react-paginate';
 import { IoIosClose } from "react-icons/io";
 
 import { set } from 'mongoose';
+import Footer from './Footer';
 
 
 
@@ -350,7 +351,7 @@ export default function ProjectsList() {
         <div className={`${FilterbarOpen? 'w-5/6 px-2 z-40 ' : 'w-full'
           } pr-4 z-30 `}>
           {isApply ? (
-            <div className='w-full bg-white rounded-lg shadow-md p-6 sm:ml-8 md:ml-16 lg:ml-24'>
+            <div className='w-full bg-white rounded-lg shadow-md p-6 sm:ml-8 md:ml-16 lg:ml-24 mt-4'>
               <div className='flex flex-row justify-between'>
                 <h2 className='text-2xl font-bold mb-3'>Apply for Project</h2>
                 <button onClick={cancelApply} className='top-2 right-2 text-gray-600 hover:text-gray-800'>
@@ -421,6 +422,7 @@ export default function ProjectsList() {
           activeClassName={"active"}
           forcePage={currentPage - 1}
         />)}
+        <Footer/>
       </div>
     );
 }

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import ReactPaginate from 'react-paginate';
+import Footer from './Footer';
 
 
 export default function ProfessorProfiles() {
@@ -87,11 +88,13 @@ export default function ProfessorProfiles() {
         
         {currentProfiles.map((professor, index) => (
           <div className="bg-white shadow-md hover:shadow-lg hover:shadow-teal-100 rounded-md overflow-hidden" key={index}>
+            <a href={professor.profilelink} target="_blank" rel='noopener noreferrer' >
             <img src={professor.profilephoto} alt={professor.name} className="max-w-360px max-h-200px w-full h-41 object-cover" />
             <div className="p-4">
               <h3 className="text-xl font-semibold mb-2">Name: {professor.name}</h3>
               <p className="text-gray-800 font-bold mt-2">Email: {professor.emailid}</p>
             </div>
+            </a>
           </div>
         ))}
       </div>
@@ -109,6 +112,7 @@ export default function ProfessorProfiles() {
         />
         </div>
       )}
+      <Footer/>
     </div>
   );
 }
