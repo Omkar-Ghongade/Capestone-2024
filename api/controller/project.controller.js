@@ -230,3 +230,13 @@ export const isteamproject = async (req, res) => {
         res.status(404).json({message:err.message});
     }
 }
+
+export const isteamprojectaccept = async (req, res) => {
+    try{
+        const teamcode=req.body.teamcode;
+        const findProject= await Finalproject.findOne({teamcode: teamcode });
+        res.status(200).json(findProject);
+    }catch(err){
+        res.status(404).json({message:err.message});
+    }
+}
