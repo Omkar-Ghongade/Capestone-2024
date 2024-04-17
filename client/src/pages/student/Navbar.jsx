@@ -5,7 +5,7 @@ import { navItems, ProjectDropdown } from './NavItems';
 import { BookOpenIcon, Bars3BottomRightIcon, XMarkIcon } from '@heroicons/react/24/solid'
 import { RiArrowDropDownLine } from "react-icons/ri";
 import Dropdown from './DropDown';
-import './Navbar.css'
+
 
 
 const Navbar= () => {

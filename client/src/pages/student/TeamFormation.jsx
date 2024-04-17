@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import "./Navbar.css"
+
 
 export default function TeamFormation() {
   const [teamData, setTeamData] = useState(null);

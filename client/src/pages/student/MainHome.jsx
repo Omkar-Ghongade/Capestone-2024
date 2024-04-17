@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 // import CryptoJS from 'crypto-js'; // Import CryptoJS library
-import "./Navbar.css"
+
 import { auth } from '../config';
 import { onAuthStateChanged } from 'firebase/auth';
 

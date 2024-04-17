@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import "./Navbar.css";
+
 
 export default function AppliedProjects() {
   const [appliedProjects, setAppliedProjects] = useState([]);
