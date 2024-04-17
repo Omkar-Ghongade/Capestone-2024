@@ -229,7 +229,7 @@ export default function TeamFormation() {
         </div>
       )}
       </div> 
-<div className=''>
+<div className='fixed bottom-0 w-full'>
 <Footer/>
 </div>
     </>
