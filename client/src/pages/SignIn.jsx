@@ -76,12 +76,14 @@ export default function SignIn() {
           setEmail(user.email);
           setRole(data.role);
           setLoading(false); // Set loading to false once authentication is done
-        }
+        }else
+        localStorage.clear();
       }catch(e){
         console.log(e);
         setLoading(false);
       }
     })
+    // localStorage.removeItem('jwt');
   }
 
 
