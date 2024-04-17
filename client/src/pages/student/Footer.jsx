@@ -3,7 +3,7 @@ import { FaInstagram, FaLinkedin, FaFacebook } from 'react-icons/fa';
 
 function Footer() {
   return (
-    <footer className="bg-teal-950 text-white py-4 mt-2">
+    <footer className="bg-teal-950 bottom-0 text-white py-4 mt-2 ">
       <div className="container mx-auto flex flex-wrap justify-between">
         {/* University name and address */}
         <div className="w-full md:w-1/2 p-4">

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import Footer from './Footer';
 
 
 export default function TeamFormation() {
@@ -140,7 +141,8 @@ export default function TeamFormation() {
   }
 
   return (
-    <div className='main-content flex flex-col mx-auto p-8 rounded-lg shadow-xl bg-white border-solid border-2'>
+    <>
+     <div className=' mt-28 flex flex-col p-8 rounded-lg shadow-xl bg-white border-solid border-2 self-center mb-11'>
       {!teamCreatedOrJoined && (
         <div className='mb-4 h-1/2 pt-2 flex flex-col '>
           <h2 className=' h-1/3 text-lg font-bold py-2'>Create Your Own Team</h2>
@@ -185,8 +187,8 @@ export default function TeamFormation() {
         </div>
       )}
       {teamData && (
-        <div className='mb-4'>
-          <h2 className='text-lg font-bold mb-2'>Team Information</h2>
+        <div className='mt-8 p-8 rounded-lg bg-white mb-8'>
+          <h2 className='mt-0.5 text-lg font-bold mb-2'>Team Information</h2>
           <p className='mb-2'>Team Code: {teamData.teamcode}</p>
           {teamData.teammembers.map((member, index) => (
             <p key={index} className='mb-1'>Creator: {member}</p>
@@ -226,6 +228,10 @@ export default function TeamFormation() {
           </div>
         </div>
       )}
-    </div>
+      </div> 
+<div className=''>
+<Footer/>
+</div>
+    </>
   );
 }
