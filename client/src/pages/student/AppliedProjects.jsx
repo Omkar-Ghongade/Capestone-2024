@@ -7,6 +7,7 @@ export default function AppliedProjects() {
   const [teamcode, setTeamcode] = useState('');
   const [projectName, setProjectName] = useState('');
   const [loading, setLoading] = useState(true);
+  const [isAccepted, setIsAccepted] = useState(true);
   const api = import.meta.env.VITE_backend;
 
   useEffect(() => {
@@ -30,11 +31,49 @@ export default function AppliedProjects() {
       console.log(data);
       setAppliedProjects(data);
       setLoading(false);
+      isinTeam(studentId);
     } catch (error) {
       console.log(error);
       setLoading(false);
     }
   };
+
+  const isinTeam = async (studentId) => {
+    try{
+      const res = await fetch(`${api}/api/team/isinteam`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ studentId: studentId })
+      });
+      const data = await res.json();
+      console.log(data);
+      AcceptedProject(data.teamcode);
+    }catch(err){
+      console.log(err);
+    }
+  }
+
+  const AcceptedProject = async (teamcode) => {
+    try{
+      const res = await fetch(`${api}/api/project/isteamprojectaccept`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({teamcode:teamcode})
+      });
+      const data = await res.json();
+      console.log(data);
+      if(data.length === 0){
+        setIsAccepted(true);
+      }else
+        setIsAccepted(false);
+    }catch(err){
+      console.log(err);
+    }
+  }
 
   const handleCancel = (teamcode, projectName) => {
     setTeamcode(teamcode);
@@ -91,8 +130,8 @@ export default function AppliedProjects() {
           <div key={index} className=" border-solid border-2 bg-white flex flex-col rounded-lg shadow-md hover:shadow-lg hover:bg-teal-50  p-4 w-full">
             <div className=' flex flex-row  justify-between'>
               <h3 className="text-2xl font-semibold">{project.projectName}</h3>
-              <button onClick={() => handleCancel(project.teamcode, project.projectName)} className='btn mt-2 h-6 w-16 bg-lime-950 shadow shadow-teal-200 hover:bg-black hover:shadow-md 
-              hover:shadow-teal-200 text-white md:ml-8 font-semibold px-2 rounded duration-300 md:static'>Cancel</button>
+              {isAccepted && (<button onClick={() => handleCancel(project.teamcode, project.projectName)} className='btn mt-2 h-6 w-16 bg-lime-950 shadow shadow-teal-200 hover:bg-black hover:shadow-md 
+              hover:shadow-teal-200 text-white md:ml-8 font-semibold px-2 rounded duration-300 md:static'>Cancel</button>)}
             </div>
             <div className=''><p className="text-lg ">{project.projectProfessor}</p></div>
             <div className=''>

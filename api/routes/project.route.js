@@ -15,6 +15,7 @@ import { getaprojectdata } from '../controller/project.controller.js';
 import { getacceptedproject } from '../controller/project.controller.js';
 import { oncancelproject } from '../controller/project.controller.js';
 import { isteamproject } from '../controller/project.controller.js';
+import { isteamprojectaccept } from '../controller/project.controller.js';
 
 const router = express.Router();
 
@@ -34,5 +35,6 @@ router.post('/getaprojectdata',getaprojectdata);
 router.post('/getacceptedproject',getacceptedproject);
 router.post('/oncancelproject',oncancelproject);
 router.post('/isteamproject',isteamproject);
+router.post('/isteamprojectaccept',isteamprojectaccept);
 
 export default router;
