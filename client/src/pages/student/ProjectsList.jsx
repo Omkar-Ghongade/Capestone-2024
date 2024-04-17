@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { FaFilter } from "react-icons/fa";
 import ReactPaginate from 'react-paginate';
 import { IoIosClose } from "react-icons/io";
-import "./Navbar.css"
+
 import { set } from 'mongoose';
 
 

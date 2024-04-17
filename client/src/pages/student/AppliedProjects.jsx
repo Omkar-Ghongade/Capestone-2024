@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import "./Navbar.css";
-import { isinTeam } from '../../../../api/controller/team.controller';
-import team from '../../../../api/models/team.models';
+
 
 export default function AppliedProjects() {
   const [appliedProjects, setAppliedProjects] = useState([]);

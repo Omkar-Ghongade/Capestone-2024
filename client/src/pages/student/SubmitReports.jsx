@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { storage } from '../config';
 import { ref, getDownloadURL, uploadBytesResumable } from "firebase/storage";
-import "./Navbar.css";
+
 
 export default function SubmitReports() {
   const [imgUrl, setImgUrl] = useState(null);
