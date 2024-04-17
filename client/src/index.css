@@ -17,3 +17,69 @@ body{
     margin-top: 4rem;
     padding-top: 0.25rem;
 }
+
+.services-submenu {
+    width: 10rem;
+    position: absolute;
+    top: 67px;
+    list-style: none;
+    text-align: start;
+    margin-top: 0;
+  }
+  
+  .services-submenu li {
+    background: #14b8a6;
+    cursor: pointer;
+  }
+  
+  .services-submenu li a:hover {
+    background: #134e4a;
+  }
+  
+  .services-submenu.clicked {
+    display: none;
+  }
+  
+  .submenu-item {
+    display: block;
+    width: 100%;
+    height: 100%;
+    text-decoration: none;
+    color: white;
+    padding: 16px;
+  }
+
+  .main-content{
+    margin-top: 0;
+  }
+
+  .pagination {
+    display: flex;
+    justify-content: center;
+    list-style: none;
+    padding: 0;
+  }
+  
+  .pagination li {
+    display: inline-block;
+    margin-right: 0.5rem; /* Adjust margin as needed */
+  }
+
+  .pagination li:hover {
+    background-color: #c5c4c4;  
+  }
+  
+  .pagination li a {
+    display: inline-block;
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    text-decoration: none;
+    color: #1a2e05;
+  }
+  
+  .pagination li.active a {
+    background-color: #1a2e05;
+    color: #fff;
+  }
+
