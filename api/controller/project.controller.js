@@ -52,7 +52,7 @@ export const applyproject = async (req, res) => {
 
 export const getappliedproject = async (req, res) => {
     try{
-        const allappliedproject = await Appliedproject.find({teamId:req.body.teamId});
+        const allappliedproject = await Appliedproject.find({teamcode:req.body.teamcode});
         res.status(200).json(allappliedproject);
     }catch(err){
         res.status(404).json({message:err.message});
