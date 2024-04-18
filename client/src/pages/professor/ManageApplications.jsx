@@ -37,9 +37,11 @@ export default function ManageApplications() {
         body: JSON.stringify({ name: localStorage.getItem('professorName') })
       });
       const data = await res.json();
+      // console.log(data);
       setApplications(data);
       const titles = data.map(application => application.projectName);
       setUniqueTitles([...new Set(titles)]);
+      console.log(applications)
     } catch (err) {
       console.error(err);
     }
@@ -64,6 +66,23 @@ export default function ManageApplications() {
   };
 
   const acceptApplication = async (projectName, teamcode) => {
+    console.log(projectName, teamcode);
+    // try {
+    //   const res = await fetch(`${api}/api/project/acceptproject`, {
+    //     method: 'POST',
+    //     headers: {
+    //       'Content-Type': 'application/json'
+    //     },
+    //     body: JSON.stringify({ projectName: projectName, teamcode: teamcode })
+    //   });
+    //   fetchApplications();
+    // } catch (err) {
+    //   console.error(err);
+    // }
+  }
+
+  const cancelApplication = async (projectName, teamcode) => {
+    console.log(projectName, teamcode);
     try {
       const res = await fetch(`${api}/api/project/acceptproject`, {
         method: 'POST',
@@ -118,26 +137,26 @@ export default function ManageApplications() {
                 <div>
                 <div className="border border-gray-200 rounded-lg shadow-md p-4">
                   <div className='flex flex-row justify-between'>
-                <h2 className="text-xl font-semibold mb-4">{viewApplication.projectName}</h2>
-                <button onClick={handleViewCancel} className='top-2 right-2 text-gray-600 hover:text-gray-800'>
-                  <IoIosClose size={32} />
-                </button>
-                </div>
+                    <h2 className="text-xl font-semibold mb-4">{viewApplication.projectName}</h2>
+                    <button onClick={handleViewCancel} className='top-2 right-2 text-gray-600 hover:text-gray-800'>
+                      <IoIosClose size={32} />
+                    </button>
+                  </div>
                 
                   <h3 className="text-lg font-semibold mb-2">{viewApplication.teamcode}</h3>
                   <p className="mb-2">{viewApplication.applyReason}</p>
-                  <div className="flex justify-between">
-                    <button onClick={() => handleViewCancel()} className="bg-blue-500 text-white font-semibold py-2 px-4 rounded hover:bg-blue-700">Cancel</button>
+                  <div className="flex">
+                    <button onClick={()=>cancelApplication(viewApplication.projectName, viewApplication.teamcode)} className="bg-blue-500 text-white font-semibold py-2 px-4 rounded hover:bg-blue-700">Cancel</button>
+                    <button onClick={()=>acceptApplication(viewApplication.projectName, viewApplication.teamcode)} className="bg-red-500 text-white font-semibold py-2 px-4 rounded hover:bg-red-700 ml-4">Accept</button>
                   </div>
                 </div>
               </div>
               ) : (
                   <div>
                    <h1 className='text-xl font-semibold mb-4'>{selectedApplications[0].projectName}</h1>
-                  {selectedApplications.map(application => (
+                  {selectedApplications.map(application => !application.isrejected && (
 
-                  <div key={application.id} className=' flex flex-row max-w-200px border-2 
-                    border-solid bg-white shadow-md hover:shadow-lg hover:shadow-teal-100 rounded-md overflow-hidden pb-2'>
+                  <div key={application.id} className=' flex flex-row max-w-200px border-2 border-solid bg-white shadow-md hover:shadow-lg hover:shadow-teal-100 rounded-md overflow-hidden pb-2'>
                     <div className=' pl-2 w-5/6 my-1 '>
                       <h2 className='text-left text-xl mb-1  font-bold'>{application.teamcode}</h2>
                       <p className='text-left mb-2 text-gray-600 '>{application.applyReason}</p>
@@ -145,7 +164,7 @@ export default function ManageApplications() {
                     <div className=' w-1/6 flex justify-center items-center'>
                     <button onClick={() => handleViewClick(application)} className='h-8 w-auto text-center bg-blue-500 text-white font-bold px-4 rounded hover:bg-blue-700'>View</button>
                     </div>
-                    </div>
+                  </div>
                   ))}
                 </div>
               )}
