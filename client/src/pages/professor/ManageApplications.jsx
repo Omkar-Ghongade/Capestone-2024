@@ -58,6 +58,7 @@ export default function ManageApplications() {
   const handleViewClick = async (application) => {
     setIsView(true);
     setViewApplication(application);
+    console.log(viewApplication);
   };
 
   const handleViewCancel = () => {
@@ -66,18 +67,19 @@ export default function ManageApplications() {
 
   const acceptApplication = async (projectName, teamcode) => {
     console.log(projectName, teamcode);
-    // try {
-    //   const res = await fetch(`${api}/api/project/acceptproject`, {
-    //     method: 'POST',
-    //     headers: {
-    //       'Content-Type': 'application/json'
-    //     },
-    //     body: JSON.stringify({ projectName: projectName, teamcode: teamcode })
-    //   });
-    //   fetchApplications();
-    // } catch (err) {
-    //   console.error(err);
-    // }
+    try {
+      const res = await fetch(`${api}/api/project/acceptproject`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ projectName: projectName, teamcode: teamcode })
+      });
+      fetchApplications();
+      window.location.reload();
+    } catch (err) {
+      console.error(err);
+    }
   }
 
   const rejectApplication = async (projectName, teamcode) => {
@@ -145,10 +147,10 @@ export default function ManageApplications() {
                 
                   <h3 className="text-lg font-semibold mb-2">{viewApplication.teamcode}</h3>
                   <p className="mb-2">{viewApplication.applyReason}</p>
-                  <div className="flex">
+                  {(viewApplication.isaccpeted === viewApplication.isrejected) ? (<div className="flex">
                     <button onClick={()=>rejectApplication(viewApplication.projectName, viewApplication.teamcode)} className="bg-blue-500 text-white font-semibold py-2 px-4 rounded hover:bg-blue-700">Reject</button>
                     <button onClick={()=>acceptApplication(viewApplication.projectName, viewApplication.teamcode)} className="bg-red-500 text-white font-semibold py-2 px-4 rounded hover:bg-red-700 ml-4">Accept</button>
-                  </div>
+                  </div>):(<h1>Already Accepted</h1>)}
                 </div>
               </div>
               ) : (

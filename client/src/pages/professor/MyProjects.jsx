@@ -22,6 +22,7 @@ export default function MyProjects() {
       })
       const data = await res.json();
       setProjects(data);
+      console.log(projects);
     } catch (err) {
       console.error(err);
     }
@@ -64,13 +65,13 @@ export default function MyProjects() {
           <div key={index} className="border-solid border-2 bg-white flex flex-col rounded-lg shadow-md hover:shadow-lg hover:bg-teal-50 p-4 w-full">
             <div className='flex flex-row justify-between'>
               <h3 className="text-2xl font-semibold">{project.name}</h3>
-              <button
+              {!project.isopen ? (<p className="text-green-500">Accepted</p>):(<button
                 onClick={() => handleDelete(project.name)}
                 className='btn mt-2 h-6 w-16 bg-lime-950 shadow shadow-teal-200 hover:bg-black hover:shadow-md 
                 hover:shadow-teal-200 text-white md:ml-8 font-semibold px-2 rounded duration-300 md:static'
               >
                 Delete
-              </button>
+              </button>)}
             </div>
 
             <div>
