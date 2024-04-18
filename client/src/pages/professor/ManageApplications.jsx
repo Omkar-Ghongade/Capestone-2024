@@ -41,7 +41,6 @@ export default function ManageApplications() {
       setApplications(data);
       const titles = data.map(application => application.projectName);
       setUniqueTitles([...new Set(titles)]);
-      console.log(applications)
     } catch (err) {
       console.error(err);
     }
@@ -81,10 +80,10 @@ export default function ManageApplications() {
     // }
   }
 
-  const cancelApplication = async (projectName, teamcode) => {
+  const rejectApplication = async (projectName, teamcode) => {
     console.log(projectName, teamcode);
     try {
-      const res = await fetch(`${api}/api/project/acceptproject`, {
+      const res = await fetch(`${api}/api/project/rejectproject`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -92,6 +91,7 @@ export default function ManageApplications() {
         body: JSON.stringify({ projectName: projectName, teamcode: teamcode })
       });
       fetchApplications();
+      window.location.reload();
     } catch (err) {
       console.error(err);
     }
@@ -146,7 +146,7 @@ export default function ManageApplications() {
                   <h3 className="text-lg font-semibold mb-2">{viewApplication.teamcode}</h3>
                   <p className="mb-2">{viewApplication.applyReason}</p>
                   <div className="flex">
-                    <button onClick={()=>cancelApplication(viewApplication.projectName, viewApplication.teamcode)} className="bg-blue-500 text-white font-semibold py-2 px-4 rounded hover:bg-blue-700">Cancel</button>
+                    <button onClick={()=>rejectApplication(viewApplication.projectName, viewApplication.teamcode)} className="bg-blue-500 text-white font-semibold py-2 px-4 rounded hover:bg-blue-700">Reject</button>
                     <button onClick={()=>acceptApplication(viewApplication.projectName, viewApplication.teamcode)} className="bg-red-500 text-white font-semibold py-2 px-4 rounded hover:bg-red-700 ml-4">Accept</button>
                   </div>
                 </div>
