@@ -147,7 +147,7 @@ export default function ManageApplications() {
                 
                   <h3 className="text-lg font-semibold mb-2">{viewApplication.teamcode}</h3>
                   <p className="mb-2">{viewApplication.applyReason}</p>
-                  {(viewApplication.isaccpeted === viewApplication.isrejected) ? (<div className="flex">
+                  {(viewApplication.isaccepted === viewApplication.isrejected) ? (<div className="flex">
                     <button onClick={()=>rejectApplication(viewApplication.projectName, viewApplication.teamcode)} className="bg-blue-500 text-white font-semibold py-2 px-4 rounded hover:bg-blue-700">Reject</button>
                     <button onClick={()=>acceptApplication(viewApplication.projectName, viewApplication.teamcode)} className="bg-red-500 text-white font-semibold py-2 px-4 rounded hover:bg-red-700 ml-4">Accept</button>
                   </div>):(<h1>Already Accepted</h1>)}
