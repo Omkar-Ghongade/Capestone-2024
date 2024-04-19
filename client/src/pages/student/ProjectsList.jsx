@@ -388,21 +388,24 @@ export default function ProjectsList() {
                 </p>
                 
               </div>
-              <div className='mb-4'>
-                <label htmlFor='applyReason' className='block text-sm font-bold mb-1'>Why do you want to apply?</label>
-                <input type='text' id='applyReason' className='w-full border rounded px-3 py-2' value={applyReason} onChange={handleApplyReasonChange} autocomplete="off" />
-              </div>
+              
               {validteam ? (
                 acceptance ? (
-                  <div className="text-red-500 my-4">Your project has been accepted</div>
+                  <div className="text-red-500 my-4">You have already been accepted for a project.</div>
                 ) : (
                   applied ? (
                     <div className="text-red-500 my-4">You have already applied for this project</div>
                   ) : (
-                    <div className='flex flex-row'>
-                      <button onClick={cancelApply} className='bg-red-500 text-white font-bold py-2 px-4 rounded hover:bg-red-700 mr-2'>Cancel</button>
-                      <button onClick={handleSubmit} className='bg-blue-500 text-white font-bold py-2 px-4 rounded hover:bg-blue-700 mr-2'>Apply</button>
+                  <div>
+                      <div className='mb-4'>
+                        <label htmlFor='applyReason' className='block text-sm font-bold mb-1'>Why do you want to apply?</label>
+                        <input type='text' id='applyReason' className='w-full border rounded px-3 py-2' value={applyReason} onChange={handleApplyReasonChange} autocomplete="off" />
+                      </div>
+                      <div className='flex flex-row'>
+                        <button onClick={cancelApply} className='bg-red-500 text-white font-bold py-2 px-4 rounded hover:bg-red-700 mr-2'>Cancel</button>
+                        <button onClick={handleSubmit} className='bg-blue-500 text-white font-bold py-2 px-4 rounded hover:bg-blue-700 mr-2'>Apply</button>
                     </div>
+                  </div>
                   )
                 )
               ) : (
