@@ -2,6 +2,7 @@ import project from '../models/project.models.js';
 import Finalproject from '../models/finalproject.models.js';
 import Appliedproject from '../models/applied.project.models.js';
 import team from '../models/team.models.js';
+import studentdata from '../models/student.models.js';
 import nodemailer from 'nodemailer';
 import dotenv from 'dotenv';
 dotenv.config();
@@ -258,30 +259,45 @@ export const isteamprojectaccept = async (req, res) => {
 
 export const sendemail = async (req, res) => {
     try{
-        const transporter = nodemailer.createTransport({
-            service: "gmail",
-            host: "smtp.gmail.email",
-            port: 587,
-            secure: false, // Use `true` for port 465, `false` for all other ports
-            auth: {
-              user: process.env.EMAIL,
-              pass: process.env.PASSWORD,
-            },
-        });
-        
-        const mailOptions = {
-            from : {
-                name : 'Capestone 2024',
-                address : process.env.EMAIL,
-            },
-            to : ['omkarsubhashghongade21@gmail.com'],
-            subject : 'Project Accepted',
-            text : 'Your project has been accepted',
-            html : '<h1>Your project has been accepted</h1>'
-        };
 
-        transporter.sendMail(mailOptions);
-        console.log("Email sent");
+        // get team members
+
+        const teamcode=req.body.teamcode;
+        const Team = await team.findOne({ teamcode: teamcode });
+        const teammembers  = Team.teammembers;
+
+        console.log(teammembers);
+
+        // get team membesr email
+
+        teammembers.forEach(async member => {
+            const student = await studentdata.findOne({rollNumber:member});
+            
+            const transporter = nodemailer.createTransport({
+                service: "gmail",
+                host: "smtp.gmail.email",
+                port: 587,
+                secure: false, // Use `true` for port 465, `false` for all other ports
+                auth: {
+                user: process.env.EMAIL,
+                pass: process.env.PASSWORD,
+                },
+            });
+            
+            const mailOptions = {
+                from : {
+                    name : 'Capestone 2024',
+                    address : process.env.EMAIL,
+                },
+                to : student.emailid,
+                subject : 'Project Accepted',
+                text : 'Your project has been accepted',
+                html : '<h1>Your project has been accepted</h1>'
+            };
+
+            transporter.sendMail(mailOptions);
+            console.log("Email sent");
+        });
     }catch(err){
         res.status(404).json({message:err.message});
     }
