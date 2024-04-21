@@ -268,8 +268,10 @@ export const sendemail = async (req, res) => {
         for (const member of teammembers) {
             const student = await studentdata.findOne({ rollNumber: member });
 
-            const transporter = smtp.createTransport({
+            const transporter = nodemailer.createTransport({
                 service: "gmail",
+                port: 465,
+                secure: true,
                 auth: {
                     user: process.env.EMAIL,
                     pass: process.env.PASSWORD,
