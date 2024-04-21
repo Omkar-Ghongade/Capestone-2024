@@ -2,6 +2,9 @@ import project from '../models/project.models.js';
 import Finalproject from '../models/finalproject.models.js';
 import Appliedproject from '../models/applied.project.models.js';
 import team from '../models/team.models.js';
+import nodemailer from 'nodemailer';
+import dotenv from 'dotenv';
+dotenv.config();
 
 export const getprojectdata = async (req, res) => {
     try{
@@ -246,6 +249,39 @@ export const isteamprojectaccept = async (req, res) => {
         const teamcode=req.body.teamcode;
         const findProject= await Finalproject.findOne({teamcode: teamcode });
         res.status(200).json(findProject);
+    }catch(err){
+        res.status(404).json({message:err.message});
+    }
+}
+
+
+
+export const sendemail = async (req, res) => {
+    try{
+        const transporter = nodemailer.createTransport({
+            service: "gmail",
+            host: "smtp.gmail.email",
+            port: 587,
+            secure: false, // Use `true` for port 465, `false` for all other ports
+            auth: {
+              user: process.env.EMAIL,
+              pass: process.env.PASSWORD,
+            },
+        });
+        
+        const mailOptions = {
+            from : {
+                name : 'Capestone 2024',
+                address : process.env.EMAIL,
+            },
+            to : ['omkarsubhashghongade21@gmail.com'],
+            subject : 'Project Accepted',
+            text : 'Your project has been accepted',
+            html : '<h1>Your project has been accepted</h1>'
+        };
+
+        transporter.sendMail(mailOptions);
+        console.log("Email sent");
     }catch(err){
         res.status(404).json({message:err.message});
     }
