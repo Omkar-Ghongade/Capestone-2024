@@ -65,6 +65,20 @@ export default function ManageApplications() {
     setIsView(false);
   };
 
+  const sendEmails = async (projectName, teamcode) => {
+    try {
+      const res = await fetch(`${api}/api/project/sendemail`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ projectName: projectName, teamcode: teamcode })
+      });
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
   const acceptApplication = async (projectName, teamcode) => {
     console.log(projectName, teamcode);
     try {
@@ -75,6 +89,7 @@ export default function ManageApplications() {
         },
         body: JSON.stringify({ projectName: projectName, teamcode: teamcode })
       });
+      sendEmails(projectName, teamcode);
       fetchApplications();
       window.location.reload();
     } catch (err) {
