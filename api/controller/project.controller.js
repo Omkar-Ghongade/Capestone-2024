@@ -258,45 +258,42 @@ export const isteamprojectaccept = async (req, res) => {
 
 
 export const sendemail = async (req, res) => {
-    try{
-
-        // get team members
-
-        const teamcode=req.body.teamcode;
+    try {
+        const teamcode = req.body.teamcode;
         const Team = await team.findOne({ teamcode: teamcode });
-        const teammembers  = Team.teammembers;
+        const teammembers = Team.teammembers;
 
         console.log(teammembers);
 
-        // get team membesr email
+        for (const member of teammembers) {
+            const student = await studentdata.findOne({ rollNumber: member });
 
-        teammembers.forEach(async member => {
-            const student = await studentdata.findOne({rollNumber:member});
-            
             const transporter = nodemailer.createTransport({
                 service: "gmail",
-                host: "smtp.gmail.email", // Use `true` for port 465, `false` for all other ports
                 auth: {
-                user: process.env.EMAIL,
-                pass: process.env.PASSWORD,
+                    user: process.env.EMAIL,
+                    pass: process.env.PASSWORD,
                 },
             });
-            
+
             const mailOptions = {
-                from : {
-                    name : 'Capestone 2024',
-                    address : process.env.EMAIL,
+                from: {
+                    name: 'Capestone 2024',
+                    address: process.env.EMAIL,
                 },
-                to : student.emailid,
-                subject : 'Project Accepted',
-                text : 'Your project has been accepted',
-                html : '<h1>Your project has been accepted</h1>'
+                to: student.emailid,
+                subject: 'Project Accepted',
+                text: 'Your project has been accepted',
+                html: '<h1>Your project has been accepted</h1>'
             };
 
-            transporter.sendMail(mailOptions);
-            console.log("Email sent");
-        });
-    }catch(err){
-        res.status(404).json({message:err.message});
+            await transporter.sendMail(mailOptions);
+            console.log("Email sent to", student.emailid);
+        }
+
+        res.status(200).json({ message: "Emails sent successfully" });
+    } catch (err) {
+        console.error("Error sending emails:", err);
+        res.status(500).json({ message: "Internal server error" });
     }
 }
