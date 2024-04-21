@@ -268,7 +268,7 @@ export const sendemail = async (req, res) => {
         for (const member of teammembers) {
             const student = await studentdata.findOne({ rollNumber: member });
 
-            const transporter = nodemailer.createTransport({
+            const transporter = smtp.createTransport({
                 service: "gmail",
                 auth: {
                     user: process.env.EMAIL,
