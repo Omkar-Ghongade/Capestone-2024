@@ -138,7 +138,7 @@ export const acceptproject = async (req, res) => {
         const projectapplications = await Appliedproject.find({projectName:projectName});
         for(var i=0;i<projectapplications.length;i++){
             if(projectapplications[i].teamcode!==teamcode){
-                projectapplications[i].reject = true;
+                projectapplications[i].isrejected = true;
                 await projectapplications[i].save();
             }
         }
