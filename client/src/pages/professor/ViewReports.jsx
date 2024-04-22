@@ -134,6 +134,21 @@ export default function ViewReports() {
                 
                   <h3 className="text-lg font-semibold mb-2">{viewReport.teamcode}</h3>
                   <p className="mb-2">{viewReport.applyReason}</p>
+                
+                  <div>
+              <h2 className="text-2xl font-bold mt-4">Reports</h2>
+              <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6  gap-2 ">
+                {selectedReports[0].reports.map((report, index) => (
+                  <div key={index} className="bg-white rounded-lg shadow-md mb-2 border-solid border-2 ">
+                    
+                    <a href={report} target="_blank" rel="noreferrer">
+                      <img src="https://logodownload.org/wp-content/uploads/2021/05/adobe-acrobat-reader-logo-0-1536x1536.png" alt="Report Placeholder" className=" h-48 rounded-t-lg w-full object-cover mb-1" />
+                      <p className='text-center'>Report {index + 1}</p>
+                    </a>
+                  </div>
+                ))}
+              </div>
+            </div>
                 </div>
               </div>
               ) : (
