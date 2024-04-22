@@ -2,6 +2,10 @@ import project from '../models/project.models.js';
 import Finalproject from '../models/finalproject.models.js';
 import Appliedproject from '../models/applied.project.models.js';
 import team from '../models/team.models.js';
+import studentdata from '../models/student.models.js';
+import nodemailer from 'nodemailer';
+import dotenv from 'dotenv';
+dotenv.config();
 
 export const getprojectdata = async (req, res) => {
     try{
@@ -52,7 +56,7 @@ export const applyproject = async (req, res) => {
 
 export const getappliedproject = async (req, res) => {
     try{
-        const allappliedproject = await Appliedproject.find({teamId:req.body.teamId});
+        const allappliedproject = await Appliedproject.find({teamcode:req.body.teamcode});
         res.status(200).json(allappliedproject);
     }catch(err){
         res.status(404).json({message:err.message});
@@ -100,7 +104,10 @@ export const acceptproject = async (req, res) => {
         // closed the project
         const findproject = await project.findOne({name:projectName});
         findproject.isopen = false;
+        // console.log(findProject)
         await findproject.save();
+
+        
 
         // accepted the project
         const findProject= await Appliedproject.findOne({projectName:projectName, teamcode: teamcode });
@@ -110,26 +117,33 @@ export const acceptproject = async (req, res) => {
         }
 
         findProject.isaccepted = true;
+        // console.log(findProject);
         await findProject.save();
+
+        
 
 
         // rejected all other projects by that team 
         const teamapplications = await Appliedproject.find({teamcode:teamcode});
         for(var i=0;i<teamapplications.length;i++){
             if(teamapplications[i].projectName!==projectName){
-                teamapplications[i].isaccepted = false;
+                teamapplications[i].isrejected = true;
                 await teamapplications[i].save();
             }
         }
+
+        // console.log(teamapplications);
 
         // reject all applications for that project
         const projectapplications = await Appliedproject.find({projectName:projectName});
         for(var i=0;i<projectapplications.length;i++){
             if(projectapplications[i].teamcode!==teamcode){
-                projectapplications[i].isaccepted = false;
+                projectapplications[i].isrejected = true;
                 await projectapplications[i].save();
             }
         }
+
+        // console.log(projectapplications);
 
 
         const { _id, __v, ...cleanFindProject } = findProject.toObject();
@@ -138,7 +152,7 @@ export const acceptproject = async (req, res) => {
         const finalproject = new Finalproject(cleanFindProject);
         console.log("here");
         const newfinalProject = await finalproject.save();
-        res.status(200).json(newfinalProject);
+        res.status(200).json({message:"Project Accepted"});
     }catch(err){
         res.status(404).json({message:err.message});
     }
@@ -238,5 +252,50 @@ export const isteamprojectaccept = async (req, res) => {
         res.status(200).json(findProject);
     }catch(err){
         res.status(404).json({message:err.message});
+    }
+}
+
+
+
+export const sendemail = async (req, res) => {
+    try {
+        const teamcode = req.body.teamcode;
+        const Team = await team.findOne({ teamcode: teamcode });
+        const teammembers = Team.teammembers;
+
+        console.log(teammembers);
+
+        for (const member of teammembers) {
+            const student = await studentdata.findOne({ rollNumber: member });
+
+            const transporter = nodemailer.createTransport({
+                service: "gmail",
+                port: 465,
+                secure: true,
+                auth: {
+                    user: process.env.EMAIL,
+                    pass: process.env.PASSWORD,
+                },
+            });
+
+            const mailOptions = {
+                from: {
+                    name: 'Capestone 2024',
+                    address: process.env.EMAIL,
+                },
+                to: student.emailid,
+                subject: 'Project Accepted',
+                text: 'Your project has been accepted',
+                html: '<h1>Your project has been accepted</h1>'
+            };
+
+            await transporter.sendMail(mailOptions);
+            console.log("Email sent to", student.emailid);
+        }
+
+        res.status(200).json({ message: "Emails sent successfully" });
+    } catch (err) {
+        console.error("Error sending emails:", err);
+        res.status(500).json({ message: "Internal server error" });
     }
 }

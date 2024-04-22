@@ -12,21 +12,39 @@ export default function AppliedProjects() {
 
   useEffect(() => {
     const fetchData = async () => {
-      await fetchAppliedProjects();
+      await isinTeam();
     };
     fetchData();
   }, []);
 
-  const fetchAppliedProjects = async () => {
-    try {
+  const isinTeam = async () => {
+    try{
       const studentId = localStorage.getItem('rollNumber');
-      const res = await fetch(`${api}/api/project/getappliedproject`, {
+      const res = await fetch(`${api}/api/team/isinteam`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ studentId: studentId })
       });
+      const data = await res.json();
+      console.log(data);
+      fetchAppliedProjects(data.teamcode);
+      AcceptedProject(data.teamcode);
+    }catch(err){
+      console.log(err);
+    }
+  }
+
+  const fetchAppliedProjects = async (teamcode) => {
+    try {
+      const res = await fetch(`${api}/api/project/getappliedproject`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ teamcode: teamcode})
+      }); 
       const data = await res.json();
       console.log(data);
       setAppliedProjects(data);
@@ -38,22 +56,6 @@ export default function AppliedProjects() {
     }
   };
 
-  const isinTeam = async (studentId) => {
-    try{
-      const res = await fetch(`${api}/api/team/isinteam`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ studentId: studentId })
-      });
-      const data = await res.json();
-      console.log(data);
-      AcceptedProject(data.teamcode);
-    }catch(err){
-      console.log(err);
-    }
-  }
 
   const AcceptedProject = async (teamcode) => {
     try{
