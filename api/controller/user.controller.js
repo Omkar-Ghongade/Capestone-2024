@@ -1,6 +1,7 @@
 import user from "../models/user.models.js";
 import team from "../models/team.models.js";
 import Finalproject from '../models/finalproject.models.js';
+import Demodata from "../models/demo.models.js";
 import jwt from 'jsonwebtoken';
 
 export const getuser = async (req, res) => {
@@ -36,4 +37,7 @@ export const getproject = async (req, res) => {
     }catch(err){
         res.status(404).json({message:err.message});
     }
+}
+
+export const uploadUsers = async (req, res) => {
 }
