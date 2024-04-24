@@ -127,10 +127,10 @@ export default function ManageApplications() {
       <div className=" flex flex-row gap-1">
 
         <div
-          className={`${sidebarOpen && !isView ? 'w-2/6 max-sm:w-3/6 px-2 ' : 'w-0'
+          className={`${sidebarOpen && !isView && applications.length>0 ? 'w-2/6 max-sm:w-3/6 px-2 ' : 'w-0'
             } bg-gray-100 top-0 right-0 relative duration-500`}
         >
-          <div className={`bg-gray-100 p-4 ${(!sidebarOpen || isView) && 'invisible'}`}>
+          <div className={`bg-gray-100 p-4 ${(!sidebarOpen || isView || applications.length===0) && 'invisible'}`}>
             <h2 className="text-xl font-semibold mb-2">Projects</h2>
             <div className="flex flex-col space-y-2">
               {uniqueTitles.map((title, index) => (
@@ -146,9 +146,10 @@ export default function ManageApplications() {
           </div>
         </div>
 
-        <div className={`${sidebarOpen ? 'w-5/6 px-2 z-40 ' : 'w-full'
-          } pr-4 z-30 `}>
-          {selectedApplications.length > 0 ? (
+        <div className={`${sidebarOpen  ? ' px-2 z-40 ' : ''
+          } pr-4 z-30 w-full `}>
+
+          {applications.length === 0 ? (<h2 className='w-full text-6xl text-slate-300 text-center'>No Applications made</h2>):(selectedApplications.length > 0 ? (
             <div>
               {isView ? (
                 <div>
@@ -188,7 +189,7 @@ export default function ManageApplications() {
             </div>
           ) : (
             <div className="text-lg font-semibold">Select a project from the sidebar to view applications.</div>
-          )}
+          ))}
         </div>
       </div>
     </div>
