@@ -70,7 +70,11 @@ export const edituser = async (req, res) => {
         const pemail = req.body.pemailid;
         const email = req.body.emailid;
         const role = req.body.role;
-
+        const User = await user.findOne({emailid:pemail});
+        User.emailid = email;
+        User.role = role;
+        User.save();
+        res.status(200).json({message:"User edited successfully"});
     }catch(err){
         res.status(404).json({message:err.message});
     }

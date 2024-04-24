@@ -92,9 +92,27 @@ export default function Handleusers() {
     }
   };
 
-  const handleSave = () => {
+  const handleSave = async () => {
     console.log('Edited email:', editedEmail);
     console.log('Edited role:', editedRole);
+    try {
+      const res = await fetch(`${api}/api/auth/edituser`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ pemailid: editingUser.emailid, emailid: editedEmail, role: editedRole })
+      });
+      if (res.ok) {
+        console.log('User edited successfully');
+        // Refresh the user list after successful edit
+        displayallusers();
+      } else {
+        throw new Error('Failed to edit user');
+      }
+    } catch (err) {
+      console.error(err);
+    }
     setEditingUser(null);
     setEditedEmail('');
     setEditedRole('');
@@ -138,11 +156,10 @@ export default function Handleusers() {
   const filteredUsers = users.filter(user =>
     user.emailid.toLowerCase().includes(searchQuery.toLowerCase()) && user.role !== 'admin'
   );
-  
 
   return (
     <div className='main-content'>
-      <h1 className="text-3xl font-bold mb-4">Overview</h1>
+      <h1 className="text-3xl font-bold mb-4">Handle Users</h1>
       <form onSubmit={handleSubmit} className="mb-8">
         <input
           type="file"
@@ -205,12 +222,15 @@ export default function Handleusers() {
                     onChange={(e) => setEditedEmail(e.target.value)}
                     className="mr-2 p-2 border border-gray-300 rounded-md"
                   />
-                  <input
-                    type="text"
+                  <select
                     value={editedRole}
                     onChange={(e) => setEditedRole(e.target.value)}
                     className="mr-2 p-2 border border-gray-300 rounded-md"
-                  />
+                  >
+                    <option value="student">Student</option>
+                    <option value="professor">Professor</option>
+                    <option value="admin">Admin</option>
+                  </select>
                   <button onClick={handleSave} className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
                     Save
                   </button>
