@@ -7,6 +7,10 @@ export default function Handleusers() {
   const [editingUser, setEditingUser] = useState(null);
   const [editedEmail, setEditedEmail] = useState('');
   const [editedRole, setEditedRole] = useState('');
+  const [showAddForm, setShowAddForm] = useState(false);
+  const [newUserEmail, setNewUserEmail] = useState('');
+  const [newUserRole, setNewUserRole] = useState('student'); // Default role
+
   const api = import.meta.env.VITE_backend;
 
   useEffect(() => {
@@ -67,33 +71,74 @@ export default function Handleusers() {
     setEditedRole(user.role);
   };
 
-  const handleDelete = (user) => {
-    try{
-      const res = fetch(`${api}/api/auth/deleteuser`, {
+  const handleDelete = async (user) => {
+    try {
+      const res = await fetch(`${api}/api/auth/deleteuser`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({ emailid: user.emailid })
       });
-      console.log('User deleted successfully');
-    }catch(err){
-        console.log(err);
+      if (res.ok) {
+        console.log('User deleted successfully');
+        // Refresh the user list after successful deletion
+        displayallusers();
+      } else {
+        throw new Error('Failed to delete user');
+      }
+    } catch (error) {
+      console.error('Error deleting user:', error);
     }
   };
 
   const handleSave = () => {
     console.log('Edited email:', editedEmail);
     console.log('Edited role:', editedRole);
-    // You can add logic here to update the user data in the backend
     setEditingUser(null);
     setEditedEmail('');
     setEditedRole('');
   };
 
+  const handleAddUser = () => {
+    setShowAddForm(true);
+  };
+
+  const handleCancelAddUser = () => {
+    setShowAddForm(false);
+    setNewUserEmail('');
+    setNewUserRole('student');
+  };
+
+  const handleNewUserSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await fetch(`${api}/api/auth/adduser`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ emailid: newUserEmail, role: newUserRole })
+      });
+      if (response.ok) {
+        console.log('User added successfully');
+        // Refresh the user list after successful addition
+        displayallusers();
+        setShowAddForm(false);
+        setNewUserEmail('');
+        setNewUserRole('student');
+      } else {
+        throw new Error('Failed to add user');
+      }
+    } catch (error) {
+      console.error('Error adding user:', error);
+    }
+  };
+
   const filteredUsers = users.filter(user =>
-    user.emailid.toLowerCase().includes(searchQuery.toLowerCase())
+    user.emailid.toLowerCase().includes(searchQuery.toLowerCase()) && user.role !== 'admin'
   );
+  
 
   return (
     <div className='main-content'>
@@ -118,6 +163,37 @@ export default function Handleusers() {
           onChange={handleSearchChange}
           className="mb-4 p-2 border border-gray-300 rounded-md"
         />
+        <div className="mb-4">
+          <button onClick={handleAddUser} className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mr-2">
+            Add User
+          </button>
+        </div>
+        {showAddForm && (
+          <form onSubmit={handleNewUserSubmit} className="mb-4">
+            <input
+              type="text"
+              placeholder="Enter email"
+              value={newUserEmail}
+              onChange={(e) => setNewUserEmail(e.target.value)}
+              className="mr-2 p-2 border border-gray-300 rounded-md"
+            />
+            <select
+              value={newUserRole}
+              onChange={(e) => setNewUserRole(e.target.value)}
+              className="mr-2 p-2 border border-gray-300 rounded-md"
+            >
+              <option value="student">Student</option>
+              <option value="professor">Professor</option>
+              <option value="admin">Admin</option>
+            </select>
+            <button type="submit" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+              Submit
+            </button>
+            <button type="button" onClick={handleCancelAddUser} className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded ml-2">
+              Cancel
+            </button>
+          </form>
+        )}
         <ul>
           {filteredUsers.map(user => (
             <li key={user.id} className="flex items-center justify-between mb-4">

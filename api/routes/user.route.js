@@ -6,6 +6,7 @@ import { uploadUsers } from '../controller/user.controller.js';
 import { getallusers } from '../controller/user.controller.js';
 import { edituser } from '../controller/user.controller.js';
 import { deleteuser } from '../controller/user.controller.js';
+import { adduser } from '../controller/user.controller.js';
 import multer from 'multer';
 
 const router = express.Router();
@@ -19,5 +20,6 @@ router.post('/uploadUsers',upload.single('file'),uploadUsers);
 router.get('/getallusers',getallusers);
 router.post('/edituser',edituser);
 router.post('/deleteuser',deleteuser);
+router.post('/adduser',adduser);
 
 export default router;
