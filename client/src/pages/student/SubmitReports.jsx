@@ -115,8 +115,8 @@ export default function SubmitReports() {
 
   return (
 
-    <div className=" main-content flex flex-col items-center">
-      <div className="bg-white rounded-lg shadow-md w-full px-4 ">
+    <div className={`${project.length === 0 ? 'h-screen' : ''} main-content flex flex-col items-center`}>
+      <div className={` bg-white rounded-lg shadow-md w-full px-4 `}>
         {project && project.length > 0 ? (
           <div>
             <div>
@@ -155,7 +155,7 @@ export default function SubmitReports() {
             
           </div>
         ) : (
-          <p>No project accepted</p>
+          <p className='text-6xl mb-4 text-slate-300 text-center'>No projects accepted</p>
         )}
       </div>
     </div>
