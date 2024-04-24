@@ -7,8 +7,8 @@ export const navItems = [
     },
     {
       id: 2,
-      title: "Overview",
-      path: "./overview",
+      title: "Handle Users",
+      path: "./handleusers",
       cName: "h-16 py-5",
     },
   ];

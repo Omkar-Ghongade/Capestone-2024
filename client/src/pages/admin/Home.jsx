@@ -2,7 +2,7 @@
 import React from 'react'
 import Navbar from './Navbar'
 import MainHome from './MainHome'
-import Overview from './Overview'
+import Handleusers from './Handleusers'
 import {BrowserRouter, Routes , Route} from 'react-router-dom'
 
 export default function AHome() {
@@ -11,7 +11,7 @@ export default function AHome() {
       <Navbar />
       <Routes>
         <Route path="/" element={<MainHome />} />
-        <Route path="/overview" element={<Overview />} />
+        <Route path="/handleusers" element={<Handleusers />} />
       </Routes>
     </BrowserRouter>
   )

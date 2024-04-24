@@ -438,7 +438,7 @@ export default function ProjectsList() {
                           <div key={idx} className="rounded-full bg-gray-200 px-2 py-1 text-sm inline-block mr-2 mb-2">{domain}</div>
                          ))}
                       </div>
-                      <p className='text-left mb-2 text-gray-600 '>{project.minteamsize}-{project.maxteamsize}</p>
+                      {/* <p className='text-left mb-2 text-gray-600 '>{project.minteamsize}-{project.maxteamsize}</p> */}
 
                     </div>
                     <div className=' w-1/6 flex justify-center items-center'>

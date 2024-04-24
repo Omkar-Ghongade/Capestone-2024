@@ -3,6 +3,7 @@ import team from "../models/team.models.js";
 import Finalproject from '../models/finalproject.models.js';
 import Demodata from "../models/demo.models.js";
 import jwt from 'jsonwebtoken';
+import xlsx from 'xlsx';
 
 export const getuser = async (req, res) => {
     console.log(req);
@@ -40,4 +41,26 @@ export const getproject = async (req, res) => {
 }
 
 export const uploadUsers = async (req, res) => {
+    const workbook = xlsx.read(req.file.buffer, { type: 'buffer' });
+    const sheetName = workbook.SheetNames[0];
+    const sheet = workbook.Sheets[sheetName];
+    const data = xlsx.utils.sheet_to_json(sheet);
+
+    user.insertMany(data)
+    .then(() => {
+      res.status(200).send('Data uploaded successfully');
+    })
+    .catch(err => {
+      console.error(err);
+      res.status(500).send('Error uploading data');
+    });
+}
+
+export const getallusers = async (req, res) => {
+    try{
+        const Users = await user.find();
+        res.status(200).json(Users);
+    }catch(err){
+        res.status(404).json({message:err.message});
+    }
 }
