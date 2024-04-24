@@ -33,15 +33,24 @@ export default function ProjectsList() {
   const [teamid, setTeamId] = useState('');
   const [applied, setApplied] = useState(false);
   const [acceptance , setAcceptance] = useState(false);
+  const [teamsize, setTeamsize] = useState(0);
   const api = import.meta.env.VITE_backend;
 
   useEffect(() => {
     const fetchData = async () => {
-      await fetchProjectData();
+      await isvalidteam(); 
     };
     fetchData();
-    isvalidteam();
-  }, []);
+    
+  },[]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      await fetchProjectData(); 
+    };
+    fetchData();
+    
+  }, [teamsize]);
 
   useEffect(() => {
     const isApplyStored = localStorage.getItem('isApply');
@@ -70,6 +79,7 @@ export default function ProjectsList() {
       if(data.submitted){
         setTeamId(data.teamcode);
         finalproject(data.teamcode);
+        setTeamsize(data.teammembers.length);
         console.log(teamid);
         setValidTeam(true);
       }
@@ -88,10 +98,10 @@ export default function ProjectsList() {
         body: JSON.stringify({ teamcode: teamcode })
       });
       const data = await res.json();
-      console.log(data.isaccepted);
+      // console.log(data.isaccepted);
       setAcceptance(data.isaccepted);
-    }catch(err){
-        res.status(404).json({message:err.message});
+    }catch(error){
+      console.log(error);
     }
   }
 
@@ -133,7 +143,9 @@ export default function ProjectsList() {
         },
       });
       const data = await res.json();
-      setProjectsData(data);
+      const teamsizedData = data.filter(project => teamsize>=project.minteamsize && teamsize<= project.maxteamsize)
+      setProjectsData(teamsizedData);
+      console.log(teamsize);
       setLoading(false);
     } catch (error) {
       console.log(error);
@@ -426,6 +438,8 @@ export default function ProjectsList() {
                           <div key={idx} className="rounded-full bg-gray-200 px-2 py-1 text-sm inline-block mr-2 mb-2">{domain}</div>
                          ))}
                       </div>
+                      <p className='text-left mb-2 text-gray-600 '>{project.minteamsize}-{project.maxteamsize}</p>
+
                     </div>
                     <div className=' w-1/6 flex justify-center items-center'>
                     <button onClick={() => applyProjectClick(project)} className='h-8 w-auto text-center bg-blue-500 text-white font-bold px-4 rounded hover:bg-blue-700'>View</button>
