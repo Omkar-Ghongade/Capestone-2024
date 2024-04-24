@@ -127,16 +127,16 @@ export default function ManageApplications() {
       <div className=" flex flex-row gap-1">
 
         <div
-          className={`${sidebarOpen && !isView ? 'w-2/6 max-sm:w-3/6 px-2 ' : 'w-0 hidden '
+          className={`${sidebarOpen && !isView ? 'w-2/6 max-sm:w-3/6 px-2 ' : 'w-0'
             } bg-gray-100 top-0 right-0 relative duration-500`}
         >
-          <div className={`bg-gray-100 p-4 ${(!sidebarOpen) && 'invisible'}`}>
+          <div className={`bg-gray-100 p-4 ${(!sidebarOpen || isView) && 'invisible'}`}>
             <h2 className="text-xl font-semibold mb-2">Projects</h2>
             <div className="flex flex-col space-y-2">
               {uniqueTitles.map((title, index) => (
                 <button
                   key={index}
-                  className={`text-left py-2 px-4 w-full rounded ${selectedApplications.length>0 && selectedApplications[0].projectName === title ? 'bg-gray-400' : ''}`}
+                  className={`text-left py-2 px-4 w-full rounded bg-gray-200 ${selectedApplications.length>0 && selectedApplications[0].projectName === title ? 'bg-gray-400' : ''}`}
                   onClick={() => handleProjectClick(title)}
                 >
                   {title}

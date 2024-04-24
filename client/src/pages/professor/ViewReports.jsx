@@ -108,7 +108,7 @@ export default function ViewReports() {
               {uniqueTitles.map((title, index) => (
                 <button
                   key={index}
-                  className={`text-left py-2 px-4 w-full rounded ${selectedReports.length>0 && selectedReports[0].projectName === title ? 'bg-gray-400' : ''}`}
+                  className={`text-left py-2 px-4 w-full rounded bg-gray-200 ${selectedReports.length>0 && selectedReports[0].projectName === title ? 'bg-gray-400' : ''}`}
                   onClick={() => handleProjectClick(title)}
                 >
                   {title}
