@@ -64,3 +64,24 @@ export const getallusers = async (req, res) => {
         res.status(404).json({message:err.message});
     }
 }
+
+export const edituser = async (req, res) => {
+    try{
+        const pemail = req.body.pemailid;
+        const email = req.body.emailid;
+        const role = req.body.role;
+
+    }catch(err){
+        res.status(404).json({message:err.message});
+    }
+}
+
+export const deleteuser = async (req, res) => {
+    try{
+        const email = req.body.emailid;
+        const User = await user.deleteOne({emailid:email});
+        res.status(200).json({message:"User deleted successfully"});
+    }catch(err){
+        res.status(404).json({message:err.message});
+    }
+}
