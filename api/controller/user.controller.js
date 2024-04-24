@@ -85,3 +85,14 @@ export const deleteuser = async (req, res) => {
         res.status(404).json({message:err.message});
     }
 }
+
+export const adduser = async (req, res) => {
+    try{
+        const {emailid,role} = req.body;
+        const newUser = new user({emailid,role});
+        newUser.save();
+        res.status(200).json({message:"User added successfully"});
+    }catch(err){
+        res.status(404).json({message:err.message});
+    }
+}
