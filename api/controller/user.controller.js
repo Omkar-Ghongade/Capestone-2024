@@ -119,6 +119,7 @@ export const deletestudent = async (req, res) => {
     try{
         const email = req.body.emailid;
         const User = await studentdata.deleteOne({emailid:email});
+        const nUser = await user.deleteOne({emailid:email});
         res.status(200).json({message:"User deleted successfully"});
     }catch(err){
         res.status(404).json({message:err.message});
@@ -129,6 +130,30 @@ export const adduser = async (req, res) => {
     try{
         const {emailid,role} = req.body;
         const newUser = new user({emailid,role});
+        newUser.save();
+        res.status(200).json({message:"User added successfully"});
+    }catch(err){
+        res.status(404).json({message:err.message});
+    }
+}
+
+export const addstudent = async (req, res) => {
+    try{
+        const name=req.body.name;
+        const emailid=req.body.emailid;
+        const rollNumber=req.body.rollNumber;
+        const school=req.body.school;
+        const stream=req.body.stream;
+        const semester=req.body.semester;
+        const section=req.body.section;
+        const gender=req.body.gender;
+        const contactNumber=req.body.contactnumber;
+        
+        const User = await user({emailid:req.body.emailid,role:"student"});
+        User.save();
+        
+        const newUser = await studentdata({name:name, emailid:emailid,rollNumber:rollNumber, school:school, stream:stream, semester:semester, section:section, gender:gender, contactNumber:contactNumber});
+        console.log(newUser);
         newUser.save();
         res.status(200).json({message:"User added successfully"});
     }catch(err){

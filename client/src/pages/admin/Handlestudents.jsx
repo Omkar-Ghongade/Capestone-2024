@@ -11,7 +11,7 @@ export default function Handlestudents() {
   const [newUserSchool, setNewUserSchool] = useState('SEAS');
   const [newUserStream, setNewUserStream] = useState('CSE');
   const [newUserSemester, setNewUserSemester] = useState('');
-  const [newUserSection, setNewUserSection] = useState('');
+  const [newUserSection, setNewUserSection] = useState('A');
   const [newUserGender, setNewUserGender] = useState('Male');
   const [newUserContactNumber, setNewUserContactNumber] = useState('');
 
@@ -51,7 +51,7 @@ export default function Handlestudents() {
   const displayallusers = async () => {
     try {
       const response = await fetch(`${api}/api/auth/getallstudents`, {
-        method: 'GET',
+        method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         }
@@ -89,7 +89,7 @@ export default function Handlestudents() {
   const handleNewUserSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch(`${api}/api/auth/adduser`, {
+      const response = await fetch(`${api}/api/auth/addstudent`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -159,7 +159,7 @@ export default function Handlestudents() {
 
   return (
     <div className='main-content'>
-      <h1 className="text-3xl font-bold mb-4">Handle Users</h1>
+      <h1 className="text-3xl font-bold mb-4">Handle Students</h1>
       <form onSubmit={handleSubmit} className="mb-8">
         <input
           type="file"
