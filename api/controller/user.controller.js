@@ -1,7 +1,7 @@
 import user from "../models/user.models.js";
 import team from "../models/team.models.js";
 import Finalproject from '../models/finalproject.models.js';
-import Demodata from "../models/demo.models.js";
+import studentdata from "../models/student.models.js";
 import jwt from 'jsonwebtoken';
 import xlsx from 'xlsx';
 
@@ -56,9 +56,34 @@ export const uploadUsers = async (req, res) => {
     });
 }
 
+export const uploadStudents = async (req, res) => {
+    const workbook = xlsx.read(req.file.buffer, { type: 'buffer' });
+    const sheetName = workbook.SheetNames[0];
+    const sheet = workbook.Sheets[sheetName];
+    const data = xlsx.utils.sheet_to_json(sheet);
+
+    studentdata.insertMany(data)
+    .then(() => {
+      res.status(200).send('Data uploaded successfully');
+    })
+    .catch(err => {
+      console.error(err);
+      res.status(500).send('Error uploading data');
+    });
+}
+
 export const getallusers = async (req, res) => {
     try{
         const Users = await user.find();
+        res.status(200).json(Users);
+    }catch(err){
+        res.status(404).json({message:err.message});
+    }
+}
+
+export const getallstudents = async (req, res) => {
+    try{
+        const Users = await studentdata.find();
         res.status(200).json(Users);
     }catch(err){
         res.status(404).json({message:err.message});
@@ -84,6 +109,16 @@ export const deleteuser = async (req, res) => {
     try{
         const email = req.body.emailid;
         const User = await user.deleteOne({emailid:email});
+        res.status(200).json({message:"User deleted successfully"});
+    }catch(err){
+        res.status(404).json({message:err.message});
+    }
+}
+
+export const deletestudent = async (req, res) => {
+    try{
+        const email = req.body.emailid;
+        const User = await studentdata.deleteOne({emailid:email});
         res.status(200).json({message:"User deleted successfully"});
     }catch(err){
         res.status(404).json({message:err.message});

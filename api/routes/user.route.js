@@ -7,6 +7,9 @@ import { getallusers } from '../controller/user.controller.js';
 import { edituser } from '../controller/user.controller.js';
 import { deleteuser } from '../controller/user.controller.js';
 import { adduser } from '../controller/user.controller.js';
+import { uploadStudents } from '../controller/user.controller.js';
+import { getallstudents } from '../controller/user.controller.js';
+import { deletestudent } from '../controller/user.controller.js';
 import multer from 'multer';
 
 const router = express.Router();
@@ -21,5 +24,8 @@ router.get('/getallusers',getallusers);
 router.post('/edituser',edituser);
 router.post('/deleteuser',deleteuser);
 router.post('/adduser',adduser);
+router.post('/uploadStudents',upload.single('file'),uploadStudents);
+router.get('/getallstudents',getallstudents);
+router.post('/deletestudent',deletestudent);
 
 export default router;
