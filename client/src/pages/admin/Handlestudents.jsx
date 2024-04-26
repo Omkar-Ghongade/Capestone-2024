@@ -16,7 +16,7 @@ export default function Handlestudents() {
   const [newUserContactNumber, setNewUserContactNumber] = useState('');
   const [editingUser, setEditingUser] = useState(null);
   const [editedEmail, setEditedEmail] = useState('');
-  const [editedRole, setEditedRole] = useState('');
+
 
   const api = import.meta.env.VITE_backend;
 
@@ -167,7 +167,37 @@ export default function Handlestudents() {
     console.log('Edit user:', user);
   };
 
-  const handleSaveEdit = async (user) => {
+  const handleSave = async (user) => {
+    try {
+      const response = await fetch(`${api}/api/auth/updatestudent`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          id: user.id, // Assuming you have an id property for each user
+          name: user.name,
+          emailid: editedEmail,
+          rollNumber: user.rollNumber,
+          school: user.school,
+          stream: user.stream,
+          semester: user.semester,
+          section: user.section,
+          gender: user.gender,
+          contactnumber: user.contactNumber
+        })
+      });
+      if (response.ok) {
+        console.log('User updated successfully');
+        // Refresh the user list after successful update
+        displayallusers();
+        setEditingUser(null); // Reset editing state
+      } else {
+        throw new Error('Failed to update user');
+      }
+    } catch (error) {
+      console.error('Error updating user:', error);
+    }
   };
 
   return (
@@ -297,47 +327,47 @@ export default function Handlestudents() {
           <li key={user.id} className="flex items-center justify-between mb-4">
             {editingUser === user ? (
               <form onSubmit={(e) => handleSubmit(e, user)}>
-              <div className="flex items-center space-x-4">
-                <input type="text" name="name" defaultValue={user.name} placeholder="Name" required className="border border-gray-300 rounded px-3 py-2" />
-                <input type="email" name="emailid" defaultValue={user.emailid} placeholder="Email" required className="border border-gray-300 rounded px-3 py-2" />
-                <input type="text" name="rollNumber" defaultValue={user.rollNumber} placeholder="Roll Number" required className="border border-gray-300 rounded px-3 py-2" />
-                <select name="stream" defaultValue={user.stream} required className="border border-gray-300 rounded px-3 py-2">
-                  <option value="CSE">CSE</option>
-                  <option value="ECE">ECE</option>
-                  <option value="EEE">EEE</option>
-                  <option value="ME">ME</option>
-                  <option value="CE">CE</option>
-                  <option value="CHE">CHE</option>
-                  <option value="BT">BT</option>
-                </select>
-                <select name="section" defaultValue={user.section} required className="border border-gray-300 rounded px-3 py-2">
-                  <option value="A">A</option>
-                  <option value="B">B</option>
-                  <option value="C">C</option>
-                  <option value="D">D</option>
-                  <option value="E">E</option>
-                  <option value="F">F</option>
-                  <option value="G">G</option>
-                  <option value="H">H</option>
-                  <option value="I">I</option>
-                  <option value="J">J</option>
-                  <option value="K">K</option>
-                  <option value="L">L</option>
-                </select>
-                <input type="text" name="semester" defaultValue={user.semester} placeholder="Semester" required className="border border-gray-300 rounded px-3 py-2" />
-                <select name="gender" defaultValue={user.gender} required className="border border-gray-300 rounded px-3 py-2">
-                  <option value="Male">Male</option>
-                  <option value="Female">Female</option>
-                  <option value="Other">Other</option>
-                </select>
-                <input type="text" name="contactNumber" defaultValue={user.contactNumber} placeholder="Contact Number" required className="border border-gray-300 rounded px-3 py-2" />
-                <div className='space-x-2'>
-                  <button type="submit" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                    Save
-                  </button>
+                <div className="flex items-center space-x-4">
+                  <input type="text" name="name" defaultValue={user.name} placeholder="Name" required className="border border-gray-300 rounded px-3 py-2" />
+                  <input type="email" name="emailid" defaultValue={user.emailid} placeholder="Email" required className="border border-gray-300 rounded px-3 py-2" />
+                  <input type="text" name="rollNumber" defaultValue={user.rollNumber} placeholder="Roll Number" required className="border border-gray-300 rounded px-3 py-2" />
+                  <select name="stream" defaultValue={user.stream} required className="border border-gray-300 rounded px-3 py-2">
+                    <option value="CSE">CSE</option>
+                    <option value="ECE">ECE</option>
+                    <option value="EEE">EEE</option>
+                    <option value="ME">ME</option>
+                    <option value="CE">CE</option>
+                    <option value="CHE">CHE</option>
+                    <option value="BT">BT</option>
+                  </select>
+                  <select name="section" defaultValue={user.section} required className="border border-gray-300 rounded px-3 py-2">
+                    <option value="A">A</option>
+                    <option value="B">B</option>
+                    <option value="C">C</option>
+                    <option value="D">D</option>
+                    <option value="E">E</option>
+                    <option value="F">F</option>
+                    <option value="G">G</option>
+                    <option value="H">H</option>
+                    <option value="I">I</option>
+                    <option value="J">J</option>
+                    <option value="K">K</option>
+                    <option value="L">L</option>
+                  </select>
+                  <input type="text" name="semester" defaultValue={user.semester} placeholder="Semester" required className="border border-gray-300 rounded px-3 py-2" />
+                  <select name="gender" defaultValue={user.gender} required className="border border-gray-300 rounded px-3 py-2">
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                    <option value="Other">Other</option>
+                  </select>
+                  <input type="text" name="contactNumber" defaultValue={user.contactNumber} placeholder="Contact Number" required className="border border-gray-300 rounded px-3 py-2" />
+                  <div className='space-x-2'>
+                    <button onClick={() => handleSave(user)} type="submit" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                      Save
+                    </button>
+                  </div>
                 </div>
-              </div>
-            </form>            
+              </form>            
             ) : (
               <div className="space-x-4">
                 <span>{user.name}</span>
