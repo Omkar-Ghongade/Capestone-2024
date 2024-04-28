@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import Footer from './Footer';
 
 
 export default function AppliedProjects() {
@@ -123,6 +124,7 @@ export default function AppliedProjects() {
   }
 
   return (
+    <>
     <div className={`${appliedProjects.length === 0 ? 'h-screen' : ''} main-content relative flex flex-col gap-2 items-center bg-white shadow-md rounded-lg p-6 w-screen `}>
       <h2 className="text-2xl font-bold mb-4">Applied Projects</h2>
       {appliedProjects.length === 0 ? (
@@ -162,5 +164,6 @@ export default function AppliedProjects() {
         </div>
       )}
     </div>
+    <Footer/></>
   );
 }
