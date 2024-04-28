@@ -19,8 +19,8 @@ const Navbar= () => {
         <div className='shadow-md w-full fixed top-0 left-0 z-50'>
            <div className='md:flex items-center justify-between bg-white py-3 h-16 md:px-10 px-7'>
             {/* logo section */}
-            <div className='flex flex-row justify-between pt-1'>
-            <a href="/">
+            <div className='flex flex-row justify-between pt-1 relative'>
+            <a href="/" className='block p-2 rounded-full shadow-sm hover:shadow-md hover:shadow-teal-100 transform hover:-translate-y-1 transition duration-200 ease-in-out'>
             <div className='font-bold text-2xl cursor-pointer flex items-center gap-1'>
               
                 <BookOpenIcon className='w-7 h-7 text-lime-950'/>
