@@ -105,6 +105,14 @@ export const edituser = async (req, res) => {
     }
 }
 
+export const editstudent = async (req, res) => {
+    try{
+        
+    }catch(err){
+        res.status(404).json({message:err.message});
+    }
+}
+
 export const deleteuser = async (req, res) => {
     try{
         const email = req.body.emailid;

@@ -15,7 +15,16 @@ export default function Handlestudents() {
   const [newUserGender, setNewUserGender] = useState('Male');
   const [newUserContactNumber, setNewUserContactNumber] = useState('');
   const [editingUser, setEditingUser] = useState(null);
+  const [editedUserName, setEditedUserName] = useState('');
   const [editedEmail, setEditedEmail] = useState('');
+  const [editedRollNumber, setEditedRollNumber] = useState('');
+  const [editedSchool, setEditedSchool] = useState('');
+  const [editedStream, setEditedStream] = useState('');
+  const [editedSemester, setEditedSemester] = useState('');
+  const [editedSection, setEditedSection] = useState('');
+  const [editedGender, setEditedGender] = useState('')
+  const [editedContactNumber, setEditedContactNumber] = useState('');
+
 
 
   const api = import.meta.env.VITE_backend;
@@ -162,42 +171,20 @@ export default function Handlestudents() {
 
   const handleEdit = (user) => {
     setEditingUser(user);
+    setEditedUserName(user.name);
     setEditedEmail(user.emailid);
-    setEditedRole(user.role);
+    setEditedRollNumber(user.rollNumber);
+    setEditedSchool(user.school);
+    setEditedStream(user.stream);
+    setEditedSemester(user.semester);
+    setEditedSection(user.section);
+    setEditedGender(user.gender);
+    setEditedContactNumber(user.contactNumber);
     console.log('Edit user:', user);
   };
 
   const handleSave = async (user) => {
-    try {
-      const response = await fetch(`${api}/api/auth/updatestudent`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          id: user.id, // Assuming you have an id property for each user
-          name: user.name,
-          emailid: editedEmail,
-          rollNumber: user.rollNumber,
-          school: user.school,
-          stream: user.stream,
-          semester: user.semester,
-          section: user.section,
-          gender: user.gender,
-          contactnumber: user.contactNumber
-        })
-      });
-      if (response.ok) {
-        console.log('User updated successfully');
-        // Refresh the user list after successful update
-        displayallusers();
-        setEditingUser(null); // Reset editing state
-      } else {
-        throw new Error('Failed to update user');
-      }
-    } catch (error) {
-      console.error('Error updating user:', error);
-    }
+    console.log(editedEmail)
   };
 
   return (
@@ -328,8 +315,8 @@ export default function Handlestudents() {
             {editingUser === user ? (
               <form onSubmit={(e) => handleSubmit(e, user)}>
                 <div className="flex items-center space-x-4">
-                  <input type="text" name="name" defaultValue={user.name} placeholder="Name" required className="border border-gray-300 rounded px-3 py-2" />
-                  <input type="email" name="emailid" defaultValue={user.emailid} placeholder="Email" required className="border border-gray-300 rounded px-3 py-2" />
+                  <input type="text" name="name" value={editedUserName}  placeholder="Name" required className="border border-gray-300 rounded px-3 py-2" />
+                  <input type="email" name="emailid" value={editedEmail} onChange={(e) => setEditedEmail(e.target.value)} placeholder="Email" required className="border border-gray-300 rounded px-3 py-2" />
                   <input type="text" name="rollNumber" defaultValue={user.rollNumber} placeholder="Roll Number" required className="border border-gray-300 rounded px-3 py-2" />
                   <select name="stream" defaultValue={user.stream} required className="border border-gray-300 rounded px-3 py-2">
                     <option value="CSE">CSE</option>
@@ -362,7 +349,7 @@ export default function Handlestudents() {
                   </select>
                   <input type="text" name="contactNumber" defaultValue={user.contactNumber} placeholder="Contact Number" required className="border border-gray-300 rounded px-3 py-2" />
                   <div className='space-x-2'>
-                    <button onClick={() => handleSave(user)} type="submit" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                    <button onClick={() => handleSave(user)} type="submit" className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
                       Save
                     </button>
                   </div>
