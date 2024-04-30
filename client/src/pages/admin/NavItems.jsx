@@ -11,4 +11,16 @@ export const navItems = [
       path: "./handleusers",
       cName: "h-16 py-5",
     },
+    {
+      id: 3,
+      title: "Handle Students",
+      path: "./handlestudents",
+      cName: "h-16 py-5",
+    },
+    {
+      id: 4,
+      title: "Handle Professors",
+      path: "./handleprofessors",
+      cName: "h-16 py-5",
+    },
   ];

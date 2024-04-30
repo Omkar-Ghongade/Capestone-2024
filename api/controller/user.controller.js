@@ -1,7 +1,7 @@
 import user from "../models/user.models.js";
 import team from "../models/team.models.js";
 import Finalproject from '../models/finalproject.models.js';
-import Demodata from "../models/demo.models.js";
+import studentdata from "../models/student.models.js";
 import jwt from 'jsonwebtoken';
 import xlsx from 'xlsx';
 
@@ -56,9 +56,34 @@ export const uploadUsers = async (req, res) => {
     });
 }
 
+export const uploadStudents = async (req, res) => {
+    const workbook = xlsx.read(req.file.buffer, { type: 'buffer' });
+    const sheetName = workbook.SheetNames[0];
+    const sheet = workbook.Sheets[sheetName];
+    const data = xlsx.utils.sheet_to_json(sheet);
+
+    studentdata.insertMany(data)
+    .then(() => {
+      res.status(200).send('Data uploaded successfully');
+    })
+    .catch(err => {
+      console.error(err);
+      res.status(500).send('Error uploading data');
+    });
+}
+
 export const getallusers = async (req, res) => {
     try{
         const Users = await user.find();
+        res.status(200).json(Users);
+    }catch(err){
+        res.status(404).json({message:err.message});
+    }
+}
+
+export const getallstudents = async (req, res) => {
+    try{
+        const Users = await studentdata.find();
         res.status(200).json(Users);
     }catch(err){
         res.status(404).json({message:err.message});
@@ -70,7 +95,11 @@ export const edituser = async (req, res) => {
         const pemail = req.body.pemailid;
         const email = req.body.emailid;
         const role = req.body.role;
-
+        const User = await user.findOne({emailid:pemail});
+        User.emailid = email;
+        User.role = role;
+        User.save();
+        res.status(200).json({message:"User edited successfully"});
     }catch(err){
         res.status(404).json({message:err.message});
     }
@@ -86,10 +115,45 @@ export const deleteuser = async (req, res) => {
     }
 }
 
+export const deletestudent = async (req, res) => {
+    try{
+        const email = req.body.emailid;
+        const User = await studentdata.deleteOne({emailid:email});
+        const nUser = await user.deleteOne({emailid:email});
+        res.status(200).json({message:"User deleted successfully"});
+    }catch(err){
+        res.status(404).json({message:err.message});
+    }
+}
+
 export const adduser = async (req, res) => {
     try{
         const {emailid,role} = req.body;
         const newUser = new user({emailid,role});
+        newUser.save();
+        res.status(200).json({message:"User added successfully"});
+    }catch(err){
+        res.status(404).json({message:err.message});
+    }
+}
+
+export const addstudent = async (req, res) => {
+    try{
+        const name=req.body.name;
+        const emailid=req.body.emailid;
+        const rollNumber=req.body.rollNumber;
+        const school=req.body.school;
+        const stream=req.body.stream;
+        const semester=req.body.semester;
+        const section=req.body.section;
+        const gender=req.body.gender;
+        const contactNumber=req.body.contactnumber;
+        
+        const User = await user({emailid:req.body.emailid,role:"student"});
+        User.save();
+        
+        const newUser = await studentdata({name:name, emailid:emailid,rollNumber:rollNumber, school:school, stream:stream, semester:semester, section:section, gender:gender, contactNumber:contactNumber});
+        console.log(newUser);
         newUser.save();
         res.status(200).json({message:"User added successfully"});
     }catch(err){

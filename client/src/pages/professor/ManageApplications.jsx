@@ -174,6 +174,7 @@ export default function ManageApplications() {
         <div className={`${sidebarOpen  ? ' px-2 z-40 ' : ''
           } pr-4 z-30 w-full `}>
 
+
           {selectedApplications.length === 0 ? (<h2 className='w-full text-6xl text-slate-300 text-center'>No Applications made</h2>):(selectedApplications.length > 0 ? (
             <div>
               {isView ? (

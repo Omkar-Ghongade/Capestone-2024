@@ -140,7 +140,7 @@ export default function ProfessorProfiles() {
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 px-4">
         {currentProfiles.map((professor, index) => (
           <div
-            className="bg-white shadow-md hover:shadow-lg hover:shadow-teal-100 rounded-md overflow-hidden"
+            className="bg-white shadow-md hover:shadow-md hover:shadow-teal-200 transform hover:-translate-y-0.5 transition duration-200 ease-in-out rounded-md overflow-hidden"
             key={index}
           >
             <a
