@@ -7,6 +7,7 @@ export default function ManageApplications() {
   const [applications, setApplications] = useState([]);
   const [uniqueTitles, setUniqueTitles] = useState([]);
   const [viewApplication, setViewApplication] = useState(null);
+  const [clickedButtonindex, setClickedButtonindex] = useState(null);
   const [selectedApplications, setselectedApplications] = useState([]);
   const [sidebarOpen, setSidebarOpen] = useState(window.innerWidth >= 768);
   const [isView, setIsView] = useState(false);
@@ -14,6 +15,10 @@ export default function ManageApplications() {
 
   useEffect(() => {
     fetchApplications();
+  }, []);
+
+  useEffect(() => {
+    fetchProjecttitles();
   }, []);
 
   useEffect(() => {
@@ -46,13 +51,33 @@ export default function ManageApplications() {
     }
   }
 
+
+
+  const fetchProjecttitles= async () => {
+    try {
+      const res = await fetch(`${api}/api/project/getprofessorproject`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ name: localStorage.getItem('professorName') })
+      })
+      const titdata = await res.json();
+      const titles = titdata.map(project => project.name);
+      setUniqueTitles([...new Set(titles)]);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   const toggleSidebar = () => {
     setSidebarOpen(!sidebarOpen);
   };
 
-  const handleProjectClick = (title) => {
+  const handleProjectClick = (title,index) => {
     const filteredApplications = applications.filter(app => app.projectName === title);
     setselectedApplications(filteredApplications);
+    setClickedButtonindex(index);
   };
 
   const handleViewClick = async (application) => {
@@ -136,8 +161,8 @@ export default function ManageApplications() {
               {uniqueTitles.map((title, index) => (
                 <button
                   key={index}
-                  className={`text-left py-2 px-4 w-full rounded bg-gray-200 ${selectedApplications.length>0 && selectedApplications[0].projectName === title ? 'bg-gray-400' : ''}`}
-                  onClick={() => handleProjectClick(title)}
+                  className={`text-left py-2 px-4 w-full rounded bg-gray-200 ${clickedButtonindex === index  ? 'bg-gray-400' : ''}`}
+                  onClick={() => handleProjectClick(title,index)}
                 >
                   {title}
                 </button>
@@ -149,7 +174,7 @@ export default function ManageApplications() {
         <div className={`${sidebarOpen  ? ' px-2 z-40 ' : ''
           } pr-4 z-30 w-full `}>
 
-          {applications.length === 0 ? (<h2 className='w-full text-6xl text-slate-300 text-center'>No Applications made</h2>):(selectedApplications.length > 0 ? (
+          {selectedApplications.length === 0 ? (<h2 className='w-full text-6xl text-slate-300 text-center'>No Applications made</h2>):(selectedApplications.length > 0 ? (
             <div>
               {isView ? (
                 <div>
