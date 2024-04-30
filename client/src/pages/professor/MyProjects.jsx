@@ -5,6 +5,8 @@ export default function MyProjects() {
   const [projects, setProjects] = useState([]);
   const [showDeleteAlert, setShowDeleteAlert] = useState(false);
   const [projectToDelete, setProjectToDelete] = useState(null); // New state to store the project to be deleted
+  const [edit, setEdit] = useState(false);
+  const [editProject, setEditProject] = useState(null);
   const api = import.meta.env.VITE_backend;
 
   useEffect(() => {
@@ -32,6 +34,12 @@ export default function MyProjects() {
     setProjectToDelete(projectName); // Set the project to be deleted
     setShowDeleteAlert(true); // Show the delete alert
   };
+
+  const handleEdit = (project) => {
+    setEdit(true);
+    setEditProject(project);
+    console.log(project);
+  }
 
   const handleConfirmDelete = async () => {
     try {
@@ -63,29 +71,46 @@ export default function MyProjects() {
       ) : (
         projects.map((project, index) => (
           <div key={index} className="border-solid border-2 bg-white flex flex-col rounded-lg shadow-md hover:shadow-lg hover:bg-teal-50 p-4 w-full">
-            <div className='flex flex-row justify-between'>
-              <h3 className="text-2xl font-semibold">{project.name}</h3>
-              {!project.isopen ? (<p className="text-green-500">Accepted</p>):(<button
-                onClick={() => handleDelete(project.name)}
-                className='btn mt-2 h-6 w-16 bg-lime-950 shadow shadow-teal-200 hover:bg-black hover:shadow-md 
-                hover:shadow-teal-200 text-white md:ml-8 font-semibold px-2 rounded duration-300 md:static'
-              >
-                Delete
-              </button>)}
-            </div>
+            {edit && project.name === editProject.name ? (
+              <div>
+                <h3 className="text-2xl font-semibold">Hello</h3>
+              </div>
+            ) : (
+              <div>
+                <div className='flex flex-row justify-between'>
+                  <h3 className="text-2xl font-semibold">{project.name}</h3>
+                  {!project.isopen ? (<p className="text-green-500">Accepted</p>):(
+                    <div>
+                      <button
+                        onClick={() => handleEdit(project)}
+                        className='btn mt-2 h-6 w-16 bg-blue-500 hover:bg-blue-700 text-white md:ml-8 font-semibold px-2 rounded duration-300 md:static'
+                      >
+                        Edit
+                      </button>
+                      <button
+                        onClick={() => handleDelete(project.name)}
+                        className='btn mt-2 h-6 w-16 bg-red-500 hover:bg-red-700 text-white md:ml-8 font-semibold px-2 rounded duration-300 md:static'
+                      >
+                        Delete
+                      </button>
+                    </div>
+                  )}
+                </div>
 
-            <div>
-              {project.domains.map((domain, idx) => (
-                <div key={idx} className="rounded-full bg-gray-200 px-2 py-1 text-sm inline-block mr-2 mb-2">{domain}</div>
-              ))}
-            </div>
-            <div><p className="text-md "><strong>Team Size:</strong> {project.minteamsize} - {project.maxteamsize}</p></div>
+                <div>
+                  {project.domains.map((domain, idx) => (
+                    <div key={idx} className="rounded-full bg-gray-200 px-2 py-1 text-sm inline-block mr-2 mb-2">{domain}</div>
+                  ))}
+                </div>
+                <div><p className="text-md "><strong>Team Size:</strong> {project.minteamsize} - {project.maxteamsize}</p></div>
 
-            <div><p className="text-lg ">{project.description} Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-            sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation
-            ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit
-            esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui
-            officia deserunt mollit anim id est laborum.</p></div>
+                <div><p className="text-lg ">{project.description} Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+                sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation
+                ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit
+                esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui
+                officia deserunt mollit anim id est laborum.</p></div>
+              </div>
+            )}
           </div>
         ))
       )}
