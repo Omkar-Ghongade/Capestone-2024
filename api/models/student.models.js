@@ -10,7 +10,9 @@ const studentData=new mongoose.Schema({
     section : {type:String, required: true},
     gender : {type:String, required: true},
     contactNumber : {type:String, required: true, unique: true},
-    photo: {type:String, required: false}
+    photo: {type:String, required: false},
+    cgpa: {type:String, required: true},
+    specalization: {type:String, required: true},
 });
 
 const studentdata=mongoose.model('studentdata',studentData);
