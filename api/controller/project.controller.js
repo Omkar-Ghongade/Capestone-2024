@@ -299,3 +299,22 @@ export const sendemail = async (req, res) => {
         res.status(500).json({ message: "Internal server error" });
     }
 }
+
+
+export const saveEditProject = async (req, res) => {
+    try{
+        const findProjectName = req.body.editProject.name;
+        const findProjectProfessor = req.body.editProject.professor;
+        const findProject = await project.findOne({name:findProjectName, professor:findProjectProfessor});
+        console.log(findProject);
+        findProject.name = req.body.name;
+        findProject.description = req.body.description;
+        findProject.minteamsize = req.body.minteamsize;
+        findProject.maxteamsize = req.body.maxteamsize;
+        findProject.domains = req.body.domains;
+        findProject.save();
+        console.log(findProject);
+    }catch(err){
+        res.status(404).json({message:err.message});
+    }
+}

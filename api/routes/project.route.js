@@ -17,6 +17,7 @@ import { oncancelproject } from '../controller/project.controller.js';
 import { isteamproject } from '../controller/project.controller.js';
 import { isteamprojectaccept } from '../controller/project.controller.js';
 import { sendemail } from '../controller/project.controller.js';
+import { saveEditProject } from '../controller/project.controller.js';
 
 const router = express.Router();
 
@@ -38,5 +39,6 @@ router.post('/oncancelproject',oncancelproject);
 router.post('/isteamproject',isteamproject);
 router.post('/isteamprojectaccept',isteamprojectaccept);
 router.post('/sendemail',sendemail);
+router.post('/saveEditProject',saveEditProject);
 
 export default router;
