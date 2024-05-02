@@ -11,7 +11,8 @@ const finalprojectdata=new mongoose.Schema({
     studentId:{type:String,required:true},
     isaccepted:{type:Boolean,required:true},
     reports:{type:Array},
-    cgpa:{type:Array,default:[],required:true}
+    cgpa:{type:Array,default:[],required:true},
+    specalization :{type:Array,default:[],required:true}
 });
 
 const Finalproject=mongoose.model('finalprojectdata',finalprojectdata);
