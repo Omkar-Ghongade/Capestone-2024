@@ -1,4 +1,5 @@
 import team from "../models/team.models.js";
+import studentdata from '../models/student.models.js';
 
 function generateRandomString(length) {
     let result = '';
@@ -12,10 +13,11 @@ function generateRandomString(length) {
 export const createTeam = async (req, res) => {
     try{
         const teamId = generateRandomString(8);
-        // console.log(teamid);
+        const student = await studentdata.findOne({rollNumber:req.body.studentId});
         const Team = new team({
             teamcode: teamId,
             teammembers: req.body.studentId,
+            cgpa : student.cgpa
         });
         console.log(Team);
         const newteam = await Team.save();
@@ -29,6 +31,8 @@ export const joinTeam = async (req, res) => {
     try{
         const teamFind=await team.findOne({teamcode:req.body.teamcode});
         if(teamFind.isopen){
+            const student = await studentdata.findOne({rollNumber:req.body.studentId});
+            teamFind.cgpa.push(student.cgpa);
             teamFind.teammembers.push(req.body.studentId);
             const newteam = await teamFind.save();
             res.status(201).json(newteam);

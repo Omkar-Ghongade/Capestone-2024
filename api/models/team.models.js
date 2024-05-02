@@ -4,7 +4,8 @@ const Team=new mongoose.Schema({
     teamcode:{type:String,required:true},
     teammembers:{type:Array,required:true},
     submitted:{type:Boolean,default:false},
-    isopen:{type:Boolean,default:true}
+    isopen:{type:Boolean,default:true},
+    cgpa:{type:Array,default:[],required:true}
 });
 
 const team=mongoose.model('Team',Team);
