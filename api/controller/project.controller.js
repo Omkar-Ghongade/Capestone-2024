@@ -306,6 +306,12 @@ export const saveEditProject = async (req, res) => {
         const findProjectName = req.body.editProject.name;
         const findProjectProfessor = req.body.editProject.professor;
         const findProject = await project.findOne({name:findProjectName, professor:findProjectProfessor});
+        const findappliedproject = await Appliedproject.find({projectName:findProjectName});
+        for(var i=0;i<findappliedproject.length;i++){
+            findappliedproject[i].projectName = req.body.name;
+            findappliedproject[i].projectDescription = req.body.description;
+            findappliedproject[i].save();
+        }
         console.log(findProject);
         findProject.name = req.body.name;
         findProject.description = req.body.description;
