@@ -11,7 +11,6 @@ export default function ManageApplications() {
   const [selectedApplications, setselectedApplications] = useState([]);
   const [sidebarOpen, setSidebarOpen] = useState(window.innerWidth >= 768);
   const [isView, setIsView] = useState(false);
-  const [cgpas, setCgpas] = useState([]);
   const api = import.meta.env.VITE_backend;
 
   useEffect(() => {
@@ -205,13 +204,11 @@ export default function ManageApplications() {
                       <div className='flex items-center pl-2 w-5/6 my-1'>
                         <div className='mr-2 font-bold'>Team Code : </div>
                         <h2 className='text-left text-xl mb-1'>{application.teamcode}</h2>
-                      </div>
-                      <div className='flex items-center pl-2 w-5/6 my-1'>
-                        <div className='mr-2 font-bold'>Team GCPA's : </div>
-                        {cgpas.map((cgpa, index) => (
-                          <div key={index} className='flex items-center pl-2 w-5/6 my-1'>
-                            <h2 className='text-left text-xl mb-1'>{cgpa}</h2>
-                          </div>
+                        {application.cgpa.map(cgpa => (
+                          <h2 key={cgpa} className='text-left text-xl mb-1'>{cgpa}</h2>
+                        ))}
+                        {application.specalization.map(specalization => (
+                          <h2 key={specalization} className='text-left text-xl mb-1'>{specalization}</h2>
                         ))}
                       </div>
                     </div>
