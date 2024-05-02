@@ -40,6 +40,8 @@ export const applyproject = async (req, res) => {
             }
         }
 
+
+        req.body.cgpa=Team.cgpa;
         req.body.teamcode = teamcode;
         console.log(req.body);
         req.body.isaccepted = false;
@@ -148,6 +150,8 @@ export const acceptproject = async (req, res) => {
 
         const { _id, __v, ...cleanFindProject } = findProject.toObject();
         cleanFindProject.isaccepted = true;
+        const Team = await team.findOne({ teamcode: teamcode });
+        cleanFindProject.cgpa=Team.cgpa;
         console.log(cleanFindProject);
         const finalproject = new Finalproject(cleanFindProject);
         console.log("here");

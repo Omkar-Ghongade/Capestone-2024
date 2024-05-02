@@ -10,7 +10,8 @@ const appliedprojectdata=new mongoose.Schema({
     teamcode:{type:String,required:true},
     studentId:{type:String,required:true},
     isaccepted:{type:Boolean,required:true},
-    isrejected:{type:Boolean,required:true}
+    isrejected:{type:Boolean,required:true},
+    cgpa:{type:Array,default:[],required:true}
 });
 
 const Appliedproject=mongoose.model('appliedprojectdata',appliedprojectdata);
