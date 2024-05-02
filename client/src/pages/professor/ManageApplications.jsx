@@ -8,9 +8,10 @@ export default function ManageApplications() {
   const [uniqueTitles, setUniqueTitles] = useState([]);
   const [viewApplication, setViewApplication] = useState(null);
   const [clickedButtonindex, setClickedButtonindex] = useState(null);
-  const [selectedApplications, setselectedApplications] = useState([]);
+  const [selectedApplications, setSelectedApplications] = useState([]);
   const [sidebarOpen, setSidebarOpen] = useState(window.innerWidth >= 768);
   const [isView, setIsView] = useState(false);
+  const [filterCGPA, setFilterCGPA] = useState(null); // State to store the filter value
   const api = import.meta.env.VITE_backend;
 
   useEffect(() => {
@@ -41,7 +42,6 @@ export default function ManageApplications() {
         body: JSON.stringify({ name: localStorage.getItem('professorName') })
       });
       const data = await res.json();
-      // console.log(data);
       setApplications(data);
       const titles = data.map(application => application.projectName);
       setUniqueTitles([...new Set(titles)]);
@@ -50,9 +50,7 @@ export default function ManageApplications() {
     }
   }
 
-
-
-  const fetchProjecttitles= async () => {
+  const fetchProjecttitles = async () => {
     try {
       const res = await fetch(`${api}/api/project/getprofessorproject`, {
         method: 'POST',
@@ -60,7 +58,7 @@ export default function ManageApplications() {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({ name: localStorage.getItem('professorName') })
-      })
+      });
       const titdata = await res.json();
       const titles = titdata.map(project => project.name);
       setUniqueTitles([...new Set(titles)]);
@@ -73,16 +71,15 @@ export default function ManageApplications() {
     setSidebarOpen(!sidebarOpen);
   };
 
-  const handleProjectClick = (title,index) => {
+  const handleProjectClick = (title, index) => {
     const filteredApplications = applications.filter(app => app.projectName === title);
-    setselectedApplications(filteredApplications);
+    setSelectedApplications(filteredApplications);
     setClickedButtonindex(index);
   };
 
   const handleViewClick = async (application) => {
     setIsView(true);
     setViewApplication(application);
-    console.log(viewApplication);
   };
 
   const handleViewCancel = () => {
@@ -104,7 +101,6 @@ export default function ManageApplications() {
   }
 
   const acceptApplication = async (projectName, teamcode) => {
-    console.log(projectName, teamcode);
     try {
       const res = await fetch(`${api}/api/project/acceptproject`, {
         method: 'POST',
@@ -122,7 +118,6 @@ export default function ManageApplications() {
   }
 
   const rejectApplication = async (projectName, teamcode) => {
-    console.log(projectName, teamcode);
     try {
       const res = await fetch(`${api}/api/project/rejectproject`, {
         method: 'POST',
@@ -138,6 +133,18 @@ export default function ManageApplications() {
     }
   }
 
+  // Function to handle filtering based on CGPA
+  const handleFilterChange = (event) => {
+    const value = event.target.value;
+    setFilterCGPA(value);
+  };
+
+  // Function to check if all CGPA's are above a certain mark
+  const areAllCGPAsAboveMark = (application) => {
+    if (!filterCGPA) return true; // If no filter applied, return true
+    return application.cgpa.every(cgpa => cgpa >= filterCGPA);
+  };
+
   return (
     <div className='main-content mb-4'>
       <button
@@ -151,17 +158,17 @@ export default function ManageApplications() {
       <div className=" flex flex-row gap-1">
 
         <div
-          className={`${sidebarOpen && !isView && applications.length>0 ? 'w-2/6 max-sm:w-3/6 px-2 ' : 'w-0'
+          className={`${sidebarOpen && !isView && applications.length > 0 ? 'w-2/6 max-sm:w-3/6 px-2 ' : 'w-0'
             } bg-gray-100 top-0 right-0 relative duration-500`}
         >
-          <div className={`bg-gray-100 p-4 ${(!sidebarOpen || isView || applications.length===0) && 'invisible'}`}>
+          <div className={`bg-gray-100 p-4 ${(!sidebarOpen || isView || applications.length === 0) && 'invisible'}`}>
             <h2 className="text-xl font-semibold mb-2">Projects</h2>
             <div className="flex flex-col space-y-2">
               {uniqueTitles.map((title, index) => (
                 <button
                   key={index}
-                  className={`text-left py-2 px-4 w-full rounded bg-gray-200 ${clickedButtonindex === index  ? 'bg-gray-400' : ''}`}
-                  onClick={() => handleProjectClick(title,index)}
+                  className={`text-left py-2 px-4 w-full rounded bg-gray-200 ${clickedButtonindex === index ? 'bg-gray-400' : ''}`}
+                  onClick={() => handleProjectClick(title, index)}
                 >
                   {title}
                 </button>
@@ -170,53 +177,86 @@ export default function ManageApplications() {
           </div>
         </div>
 
-        <div className={`${sidebarOpen  ? ' px-2 z-40 ' : ''
+        <div className={`${sidebarOpen ? ' px-2 z-40 ' : ''
           } pr-4 z-30 w-full `}>
 
-
-          {selectedApplications.length === 0 ? (<h2 className='w-full text-6xl text-slate-300 text-center'>No Applications made</h2>):(selectedApplications.length > 0 ? (
+          {selectedApplications.length === 0 ? (
+            <h2 className='w-full text-6xl text-slate-300 text-center'>No Applications made</h2>
+          ) : (selectedApplications.length > 0 ? (
             <div>
               {isView ? (
                 <div>
-                <div className="border border-gray-200 rounded-lg shadow-md p-4">
-                  <div className='flex flex-row justify-between'>
-                    <h2 className="text-xl font-semibold mb-4">{viewApplication.projectName}</h2>
-                    <button onClick={handleViewCancel} className='top-2 right-2 text-gray-600 hover:text-gray-800'>
-                      <IoIosClose size={32} />
-                    </button>
-                  </div>
-                
-                  <h3 className="text-lg font-semibold mb-2">{viewApplication.teamcode}</h3>
-                  <p className="mb-2">{viewApplication.applyReason}</p>
-                  {(viewApplication.isaccepted === viewApplication.isrejected) ? (<div className="flex">
-                    <button onClick={()=>rejectApplication(viewApplication.projectName, viewApplication.teamcode)} className="bg-blue-500 text-white font-semibold py-2 px-4 rounded hover:bg-blue-700">Reject</button>
-                    <button onClick={()=>acceptApplication(viewApplication.projectName, viewApplication.teamcode)} className="bg-red-500 text-white font-semibold py-2 px-4 rounded hover:bg-red-700 ml-4">Accept</button>
-                  </div>):(<h1>Already Accepted</h1>)}
-                </div>
-              </div>
-              ) : (
-                  <div>
-                   <h1 className='text-xl font-semibold mb-4'>{selectedApplications[0].projectName}</h1>
-                  {selectedApplications.map(application => !application.isrejected && (
+                  <div className="border border-gray-200 rounded-lg shadow-md p-4">
+                    <div className='flex flex-row justify-between'>
+                      <h2 className="text-xl font-semibold mb-4">{viewApplication.projectName}</h2>
+                      <button onClick={handleViewCancel} className='top-2 right-2 text-gray-600 hover:text-gray-800'>
+                        <IoIosClose size={32} />
+                      </button>
+                    </div>
 
-                  <div key={application.id} className=' flex flex-row max-w-200px border-2 border-solid bg-white shadow-md hover:shadow-lg hover:shadow-teal-100 rounded-md overflow-hidden pb-2'>
-                    <div className='flex'>
-                      <div className='flex items-center pl-2 w-5/6 my-1'>
-                        <div className='mr-2 font-bold'>Team Code : </div>
-                        <h2 className='text-left text-xl mb-1'>{application.teamcode}</h2>
-                        {application.cgpa.map(cgpa => (
-                          <h2 key={cgpa} className='text-left text-xl mb-1'>{cgpa}</h2>
-                        ))}
-                        {application.specalization.map(specalization => (
-                          <h2 key={specalization} className='text-left text-xl mb-1'>{specalization}</h2>
-                        ))}
+                    <h3 className="text-lg font-semibold mb-2">{viewApplication.teamcode}</h3>
+                    <div className='grid grid-cols-2' style={{ maxWidth: '300px' }}>
+                      <h2 className='text-xl font-bold'>CGPA</h2>
+                      <h2 className='text-xl font-bold'>Spec.</h2>
+                      {viewApplication.cgpa.map((cgpa, index) => (
+                        <React.Fragment key={cgpa}>
+                          <h2 className='text-xl'>{cgpa}</h2>
+                          <h2 className='text-xl'>{viewApplication.specialization[index]}</h2>
+                        </React.Fragment>
+                      ))}
+                    </div>
+                    <p className="my-3 text-xl"><b>Reason:</b> {viewApplication.applyReason}</p>
+                    {(viewApplication.isaccepted === viewApplication.isrejected) ? (
+                      <div className="flex">
+                        <button onClick={() => rejectApplication(viewApplication.projectName, viewApplication.teamcode)} className="bg-blue-500 text-white font-semibold py-2 px-4 rounded hover:bg-blue-700">Reject</button>
+                        <button onClick={() => acceptApplication(viewApplication.projectName, viewApplication.teamcode)} className="bg-red-500 text-white font-semibold py-2 px-4 rounded hover:bg-red-700 ml-4">Accept</button>
+                      </div>
+                    ) : (<h1>Already Accepted</h1>)}
+                  </div>
+                </div>
+              ) : (
+                <div>
+
+                  <div className={`flex justify-between mb-4 ${sidebarOpen && window.innerWidth < 768  ? 'flex-col gap-3 mb-4':''} `}>
+                  <h1 className='text-xl font-semibold '>{selectedApplications[0].projectName}</h1>
+                    {/* Dropdown filter */}
+        <select
+          className="p-2 border-2 border-gray-300 rounded shadow-md"
+          value={filterCGPA}
+          onChange={handleFilterChange}
+        >
+          <option value="">Select CGPA Filter</option>
+          <option value="9">Above 9</option>
+          <option value="8">Above 8</option>
+          <option value="7">Above 7</option>
+          <option value="6">Above 6</option>
+          {/* Add more options as needed */}
+        </select>
+      
+      
+
+
+
+                  </div>
+                  {selectedApplications.map(application => !application.isrejected && areAllCGPAsAboveMark(application) && (
+                    <div key={application.id} className=' flex flex-row justify-between max-w-200px border-2 border-solid bg-white shadow-md hover:shadow-lg hover:shadow-teal-100 rounded-md overflow-hidden pb-2 pl-4'>
+                      <div className='flex-col items-center pl-2 w-4/6 md:w-5/6 my-1'>
+                        <div className='mr-2 font-bold'>Team Code : {application.teamcode} </div>
+                        <div className='grid grid-cols-2' style={{ maxWidth: '300px' }}>
+                          <h2 className='text-xl font-bold'>CGPA</h2>
+                          <h2 className='text-xl font-bold'>Spec.</h2>
+                          {application.cgpa.map((cgpa, index) => (
+                            <React.Fragment key={cgpa}>
+                              <h2 className='text-xl'>{cgpa}</h2>
+                              <h2 className='text-xl'>{application.specialization[index]}</h2>
+                            </React.Fragment>
+                          ))}
+                        </div>
+                      </div>
+                      <div className=' w-2/6 md:w-1/6 flex items-center max-sm:pr-32'>
+                        <button onClick={() => handleViewClick(application)} className='h-8 w-auto text-center bg-blue-500 text-white font-bold px-4 rounded hover:bg-blue-700'>View</button>
                       </div>
                     </div>
-
-                    <div className=' w-1/6 flex justify-center items-center'>
-                    <button onClick={() => handleViewClick(application)} className='h-8 w-auto text-center bg-blue-500 text-white font-bold px-4 rounded hover:bg-blue-700'>View</button>
-                    </div>
-                  </div>
                   ))}
                 </div>
               )}
@@ -226,6 +266,8 @@ export default function ManageApplications() {
           ))}
         </div>
       </div>
+
+      
     </div>
   );
 }

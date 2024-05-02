@@ -12,7 +12,7 @@ const appliedprojectdata=new mongoose.Schema({
     isaccepted:{type:Boolean,required:true},
     isrejected:{type:Boolean,required:true},
     cgpa:{type:Array,default:[],required:true},
-    specalization :{type:Array,default:[],required:true}
+    specialization :{type:Array,default:[],required:true}
 });
 
 const Appliedproject=mongoose.model('appliedprojectdata',appliedprojectdata);

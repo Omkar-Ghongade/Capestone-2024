@@ -15,13 +15,10 @@ export default function MainHome() {
   const api = import.meta.env.VITE_backend;
 
   useEffect(() => {
-    fetchStudentData()
+    fetchStudentData();
   }, []);
 
-  useEffect(() => {
-    fetchStudentTeam()
-  }, []);
-
+  
   const fetchStudentData = async () => {
     onAuthStateChanged(auth, async (user) => {
       // console.log(user);
@@ -37,6 +34,7 @@ export default function MainHome() {
         // console.log(data.rollNumber);
         localStorage.setItem('rollNumber', data.rollNumber);
         setStudentData(data);
+        fetchStudentTeam();
       } catch (error) {
         console.log(error);
       }

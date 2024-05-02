@@ -18,7 +18,7 @@ export const createTeam = async (req, res) => {
             teamcode: teamId,
             teammembers: req.body.studentId,
             cgpa : student.cgpa,
-            specalization : student.specalization
+            specialization : student.specialization
         });
         console.log(Team);
         const newteam = await Team.save();
@@ -34,7 +34,7 @@ export const joinTeam = async (req, res) => {
         if(teamFind.isopen){
             const student = await studentdata.findOne({rollNumber:req.body.studentId});
             teamFind.cgpa.push(student.cgpa);
-            teamFind.specalization.push(student.specalization);
+            teamFind.specialization.push(student.specialization);
             teamFind.teammembers.push(req.body.studentId);
             const newteam = await teamFind.save();
             res.status(201).json(newteam);

@@ -6,7 +6,7 @@ const Team=new mongoose.Schema({
     submitted:{type:Boolean,default:false},
     isopen:{type:Boolean,default:true},
     cgpa:{type:Array,default:[],required:true},
-    specalization:{type:Array,default:[],required:true},
+    specialization:{type:Array,default:[],required:true},
 });
 
 const team=mongoose.model('Team',Team);
