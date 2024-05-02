@@ -5,7 +5,8 @@ const Team=new mongoose.Schema({
     teammembers:{type:Array,required:true},
     submitted:{type:Boolean,default:false},
     isopen:{type:Boolean,default:true},
-    cgpa:{type:Array,default:[],required:true}
+    cgpa:{type:Array,default:[],required:true},
+    specalization:{type:Array,default:[],required:true},
 });
 
 const team=mongoose.model('Team',Team);
