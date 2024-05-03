@@ -220,27 +220,22 @@ export default function ManageApplications() {
                   <div className={`flex justify-between mb-4 ${sidebarOpen && window.innerWidth < 768  ? 'flex-col gap-3 mb-4':''} `}>
                   <h1 className='text-xl font-semibold '>{selectedApplications[0].projectName}</h1>
                     {/* Dropdown filter */}
-        <select
-          className="p-2 border-2 border-gray-300 rounded shadow-md"
-          value={filterCGPA}
-          onChange={handleFilterChange}
-        >
-          <option value="">Select CGPA Filter</option>
-          <option value="9">Above 9</option>
-          <option value="8">Above 8</option>
-          <option value="7">Above 7</option>
-          <option value="6">Above 6</option>
-          {/* Add more options as needed */}
-        </select>
-      
-      
-
-
-
+                      <select
+                        className="p-2 border-2 border-gray-300 rounded shadow-md"
+                        value={filterCGPA}
+                        onChange={handleFilterChange}
+                      >
+                        <option value="">Select CGPA Filter</option>
+                        <option value="9">Above 9</option>
+                        <option value="8">Above 8</option>
+                        <option value="7">Above 7</option>
+                        <option value="6">Above 6</option>
+                        {/* Add more options as needed */}
+                      </select>
                   </div>
                   {selectedApplications.map(application => !application.isrejected && areAllCGPAsAboveMark(application) && (
                     <div key={application.id} className=' flex flex-row justify-between max-w-200px border-2 border-solid bg-white shadow-md hover:shadow-lg hover:shadow-teal-100 rounded-md overflow-hidden pb-2 pl-4'>
-                      <div className='flex-col items-center pl-2 w-4/6 md:w-5/6 my-1'>
+                      <div className='flex-col items-center pl-2 w-4/6 md:w-5/6 my-1'>  
                         <div className='mr-2 font-bold'>Team Code : {application.teamcode} </div>
                         <div className='grid grid-cols-2' style={{ maxWidth: '300px' }}>
                           <h2 className='text-xl font-bold'>CGPA</h2>

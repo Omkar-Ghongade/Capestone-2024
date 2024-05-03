@@ -13,6 +13,7 @@ export default function ProjectsList() {
 
   const [projectData, setProjectsData] = useState(null);
   const [finalcount, setFinalCount] = useState(0);
+  const [searchQuery, setSearchQuery] = useState("");
   const [selectedProject, setSelectedProject] = useState(null);
   const [isApply, setIsApply] = useState(false);
   const [applyReason, setApplyReason] = useState("");
@@ -153,7 +154,7 @@ export default function ProjectsList() {
     const filteredData = filterProjects();
     setFilteredProjectsData(filteredData);
     setCurrentPage(1);
-  }, [filters, projectData]);
+  }, [filters, projectData,searchQuery]);
 
   const filterProjects = () => {
     if (!projectData) return [];
@@ -161,8 +162,13 @@ export default function ProjectsList() {
       (project) =>
         project.isopen &&
         (!Object.keys(filters).some((domain) => filters[domain]) ||
-          project.domains.some((domain) => filters[domain]))
+          project.domains.some((domain) => filters[domain])) && 
+          project.professor.toLowerCase().includes(searchQuery.toLowerCase())
     );
+  };
+
+  const handleSearchInputChange = (event) => {
+    setSearchQuery(event.target.value);
   };
 
   const handleFilterChange = (filterName, isChecked) => {
@@ -171,6 +177,7 @@ export default function ProjectsList() {
       [filterName]: isChecked,
     }));
   };
+
 
   const handlePageChange = ({ selected }) => {
     setCurrentPage(selected + 1);
@@ -353,7 +360,7 @@ export default function ProjectsList() {
     <>
       <div className="main-content mb-4">
         <button
-          className="fixed md:hidden bottom-10 right-8 bg-gray-700 rounded-full drop-shadow-lg flex justify-center items-center text-white text-4xl hover:bg-teal-800 z-50"
+          className={`fixed ${isApply && "invisible"} md:hidden bottom-10 right-8 bg-gray-700 rounded-full drop-shadow-lg flex justify-center items-center text-white text-4xl hover:bg-teal-800 z-50`}
           onClick={toggleSidebar}
         >
           <div className="flex w-10 h-10 justify-center items-center">
@@ -364,7 +371,7 @@ export default function ProjectsList() {
         <div className=" flex flex-row gap-1">
           <div
             className={`${
-              FilterbarOpen && !isApply ? "w-2/6 lg:w-72 px-2 " : "w-0 "
+              FilterbarOpen && !isApply ? "w-3/6 lg:w-72 px-2 z-40 bg-opacity-50" : "w-0"
             }  bg-gray-100 top-0 right-0 relative duration-500`}
           >
             {/* Responsive Filterbar */}
@@ -373,7 +380,7 @@ export default function ProjectsList() {
 
           <div
             className={`${
-              FilterbarOpen ? "w-5/6 px-2 z-40 " : "w-full"
+              FilterbarOpen ? "w-5/6 px-2 z-30 " : "w-full"
             } pr-2 pl-2 z-30 `}
           >
             {isApply ? (
@@ -459,6 +466,15 @@ export default function ProjectsList() {
                 )}
               </div>
             ) : (
+              <div>
+              <input
+  type="text"
+  style={{ maxWidth: '375px' }}
+  placeholder="Search by professor name"
+  className="w-full border rounded px-3 py-2"
+  value={searchQuery}
+  onChange={handleSearchInputChange}
+/>  
               <div className='flex flex-col gap-2 mb-4 mr-2 ml-2 mt-1'>
               {currentProjects.map((project, index) => (
                 <div key={index} className='flex flex-row max-w-200px border-2 border-solid bg-white shadow-sm hover:shadow-md hover:shadow-teal-100 transform hover:-translate-y-0.5 transition duration-200 ease-in-out rounded-lg overflow-hidden pb-2 pl-4 pt-2'>
@@ -476,6 +492,7 @@ export default function ProjectsList() {
                   </div>
                 </div>
               ))}
+            </div>
             </div>
             )}
           </div>
