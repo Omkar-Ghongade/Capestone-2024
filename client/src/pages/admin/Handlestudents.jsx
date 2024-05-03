@@ -184,7 +184,34 @@ export default function Handlestudents() {
   };
 
   const handleSave = async (user) => {
-    console.log(editedEmail)
+    try{
+      const res = await fetch(`${api}/api/auth/editstudent`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({user:editingUser,
+          name: editedUserName,
+          emailid: editedEmail,
+          rollNumber: editedRollNumber,
+          school: editedSchool,
+          stream: editedStream,
+          semester: editedSemester,
+          section: editedSection,
+          gender: editedGender,
+          contactNumber: editedContactNumber,
+        })
+      });
+      if (res.ok) {
+        console.log('User edited successfully');
+        displayallusers();
+        setEditingUser(null);
+      } else {
+        throw new Error('Failed to edit user');
+      }
+    }catch(err){
+        res.status(404).json({message:err.message});
+    }
   };
 
   return (
@@ -315,10 +342,10 @@ export default function Handlestudents() {
             {editingUser === user ? (
               <form onSubmit={(e) => handleSubmit(e, user)}>
                 <div className="flex items-center space-x-4">
-                  <input type="text" name="name" value={editedUserName}  placeholder="Name" required className="border border-gray-300 rounded px-3 py-2" />
+                  <input type="text" name="name" value={editedUserName} onChange={(e) => setEditedUserName(e.target.value)}  placeholder="Name" required className="border border-gray-300 rounded px-3 py-2" />
                   <input type="email" name="emailid" value={editedEmail} onChange={(e) => setEditedEmail(e.target.value)} placeholder="Email" required className="border border-gray-300 rounded px-3 py-2" />
-                  <input type="text" name="rollNumber" defaultValue={user.rollNumber} placeholder="Roll Number" required className="border border-gray-300 rounded px-3 py-2" />
-                  <select name="stream" defaultValue={user.stream} required className="border border-gray-300 rounded px-3 py-2">
+                  <input type="text" name="rollNumber" value={editedRollNumber} onChange={(e) => setEditedRollNumber(e.target.value)} placeholder="Roll Number" required className="border border-gray-300 rounded px-3 py-2" />
+                  <select name="stream" value={editedStream} onChange={(e) => setEditedStream(e.target.value)} required className="border border-gray-300 rounded px-3 py-2">
                     <option value="CSE">CSE</option>
                     <option value="ECE">ECE</option>
                     <option value="EEE">EEE</option>
@@ -327,7 +354,7 @@ export default function Handlestudents() {
                     <option value="CHE">CHE</option>
                     <option value="BT">BT</option>
                   </select>
-                  <select name="section" defaultValue={user.section} required className="border border-gray-300 rounded px-3 py-2">
+                  <select name="section" value={editedSection} onChange={(e) => setEditedSection(e.target.value)}  required className="border border-gray-300 rounded px-3 py-2">
                     <option value="A">A</option>
                     <option value="B">B</option>
                     <option value="C">C</option>
@@ -341,13 +368,13 @@ export default function Handlestudents() {
                     <option value="K">K</option>
                     <option value="L">L</option>
                   </select>
-                  <input type="text" name="semester" defaultValue={user.semester} placeholder="Semester" required className="border border-gray-300 rounded px-3 py-2" />
-                  <select name="gender" defaultValue={user.gender} required className="border border-gray-300 rounded px-3 py-2">
+                  <input type="text" name="semester" value={editedSemester} onChange={(e) => setEditedSemester(e.target.value)} placeholder="Semester" required className="border border-gray-300 rounded px-3 py-2" />
+                  <select name="gender" value={editedGender} onChange={(e) => setEditedGender(e.target.value)} required className="border border-gray-300 rounded px-3 py-2">
                     <option value="Male">Male</option>
                     <option value="Female">Female</option>
                     <option value="Other">Other</option>
                   </select>
-                  <input type="text" name="contactNumber" defaultValue={user.contactNumber} placeholder="Contact Number" required className="border border-gray-300 rounded px-3 py-2" />
+                  <input type="text" name="contactNumber" value={editedContactNumber} onChange={(e) => setEditedContactNumber(e.target.value)} placeholder="Contact Number" required className="border border-gray-300 rounded px-3 py-2" />
                   <div className='space-x-2'>
                     <button onClick={() => handleSave(user)} type="submit" className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
                       Save

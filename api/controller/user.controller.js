@@ -107,7 +107,20 @@ export const edituser = async (req, res) => {
 
 export const editstudent = async (req, res) => {
     try{
-        
+        const student = await studentdata.findOne({emailid:req.body.user.emailid});
+        // console.log(student);
+        student.name = req.body.name;
+        student.emailid = req.body.emailid;
+        student.rollNumber = req.body.rollNumber;
+        student.school = req.body.school;
+        student.stream = req.body.stream;
+        student.semester = req.body.semester;
+        student.section = req.body.section;
+        student.gender = req.body.gender;
+        student.contactNumber = req.body.contactNumber;
+        console.log(student);
+        student.save();
+        res.status(200).json({message:"User edited successfully"});
     }catch(err){
         res.status(404).json({message:err.message});
     }
