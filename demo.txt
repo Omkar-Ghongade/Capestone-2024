@@ -1,0 +1,11 @@
+Type 1
+student name
+student emailid
+student section
+student finalproject
+student 
+student emailid
+
+Type 2
+
+Type 3

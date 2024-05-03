@@ -19,8 +19,8 @@ export const navItems = [
     },
     {
       id: 4,
-      title: "Handle Professors",
-      path: "./handleprofessors",
+      title: "Download Data",
+      path: "./downloaddata",
       cName: "h-16 py-5",
     },
   ];
