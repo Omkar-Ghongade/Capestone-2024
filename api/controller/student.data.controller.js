@@ -1,4 +1,5 @@
 import studentdata from '../models/student.models.js';
+import projectdata from '../models/project.models.js';
 
 export const getstudentdata = async (req, res) => {
     const email = req.body.emailid;
@@ -13,6 +14,14 @@ export const getstudentdata = async (req, res) => {
             await user.save(); // Save the updated user
         }
         return res.status(200).json(user);
+    }catch(err){
+        res.status(404).json({message:err.message});
+    }
+}
+export const downloaddata = async (req, res) => {
+    try{
+        const user= await projectdata.find();
+        res.status(200).json(user);
     }catch(err){
         res.status(404).json({message:err.message});
     }
