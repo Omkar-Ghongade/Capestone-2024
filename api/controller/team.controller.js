@@ -78,3 +78,25 @@ export const submitTeam = async (req, res) => {
         res.status(404).json({message:err.message});
     }
 }
+
+export const teamgraph = async (req, res) => {
+    try {
+        const teams = await team.find();
+        const allStudents = await studentdata.find()
+        const totalStudents = allStudents.length;
+        let studentsInTeams = 0;
+        teams.forEach(team => {
+            if (team.teammembers && Array.isArray(team.teammembers)) {
+                studentsInTeams += team.teammembers.length;
+            }
+        });
+        const studentsNotInTeams = totalStudents - studentsInTeams;
+        res.status(200).json({
+            totalStudents: totalStudents,
+            studentsInTeams: studentsInTeams,
+            studentsNotInTeams: studentsNotInTeams
+        });
+    } catch(err) {
+        res.status(404).json({ message: err.message });
+    }
+}

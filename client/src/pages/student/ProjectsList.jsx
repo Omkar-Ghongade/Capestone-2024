@@ -512,7 +512,7 @@ export default function ProjectsList() {
           />
         )}
       </div>
-      <Footer />
+      {/* <Footer /> */}
     </>
   );
 }

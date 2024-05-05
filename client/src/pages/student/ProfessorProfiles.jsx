@@ -175,7 +175,7 @@ export default function ProfessorProfiles() {
           />
         </div>
       )}
-      <Footer />
+      {/* <Footer /> */}
     </div>
   );
 }

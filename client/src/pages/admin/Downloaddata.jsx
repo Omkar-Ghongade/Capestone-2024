@@ -1,10 +1,16 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import BarChart from './charts/barChart';
 
 export default function Downloaddata() {
+  const [graphData, setGraphData] = useState(null);
+
+  useEffect(() => {
+    teamgraph();
+  }, []);
 
   const handleStudentClick = async () => {
     try {
-      const res = await fetch('http://localhost:3000/api/student/downloaddata', {
+      const res = await fetch('http://localhost:3000/api/professor/professorData', {
         method: 'GET',
         headers: {}
       });
@@ -66,9 +72,27 @@ export default function Downloaddata() {
     document.body.removeChild(link);
   };
 
+  const teamgraph = async () => {
+    try {
+      const res = await fetch('http://localhost:3000/api/team/teamgraph', {
+        method: 'GET',
+        headers: {}
+      });
+
+      const data = await res.json();
+      console.log(data);
+      setGraphData(data); // Set the data to state
+
+    } catch (err) {
+      console.log(err.message);
+    }
+  };
+
   return (
     <div className='main-content'>
       <button onClick={handleStudentClick}>Submit</button>
+      <h1>Graph</h1>
+      {graphData && <BarChart graphData={graphData} />}
     </div>
   );
 }
