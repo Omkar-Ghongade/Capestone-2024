@@ -28,12 +28,12 @@ body{
   }
   
   .services-submenu li {
-    background: #14b8a6;
+    background: #4D4D29;
     cursor: pointer;
   }
   
   .services-submenu li a:hover {
-    background: #134e4a;
+    background: #535353;
   }
   
   .services-submenu.clicked {

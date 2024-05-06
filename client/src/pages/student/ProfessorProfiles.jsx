@@ -137,30 +137,31 @@ export default function ProfessorProfiles() {
         )}
       </div>
       </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 px-4">
-        {currentProfiles.map((professor, index) => (
-          <div
-            className="bg-white shadow-md hover:shadow-md hover:shadow-teal-200 transform hover:-translate-y-0.5 transition duration-200 ease-in-out rounded-md overflow-hidden"
-            key={index}
-          >
-            <a
-              href={professor.profilelink}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <img
-                src={professor.profilephoto}
-                alt={professor.name}
-                className="max-w-360px max-h-200px w-full h-41 object-cover"
-              />
-              <div className="p-4">
-                <h3 className="text-xl font-semibold mb-2">Name: {professor.name}</h3>
-                <p className="text-gray-800 font-bold mt-2">Email: {professor.emailid}</p>
-              </div>
-            </a>
-          </div>
-        ))}
-      </div>
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-5 px-4">
+  {currentProfiles.map((professor, index) => (
+    <div
+      className="bg-white shadow-md hover:shadow-md hover:shadow-teal-200 transform hover:-translate-y-0.5 transition duration-200 ease-in-out rounded-md overflow-hidden"
+      key={index}
+    >
+      <a
+        href={professor.profilelink}
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <img
+          src={professor.profilephoto}
+          alt={professor.name}
+          className="w-full h-64 object-cover"
+        />
+        <div className="p-4">
+          <h3 className="text-xl font-semibold mb-2">Name: {professor.name}</h3>
+          <p className="text-gray-800 font-bold mt-2">Email: {professor.emailid}</p>
+        </div>
+      </a>
+    </div>
+  ))}
+</div>
+
       {professorData && (
         <div className="p-4">
           <ReactPaginate

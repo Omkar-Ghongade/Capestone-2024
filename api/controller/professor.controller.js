@@ -66,8 +66,6 @@ export const professorData = async (req, res) => {
             Professor.projects = finalproject.length;
             professorDetailsProjects.push(Professor);
         }
-        
-
         res.status(200).json(professorDetailsProjects);
     } catch (err) {
         res.status(404).json({ message: err.message });

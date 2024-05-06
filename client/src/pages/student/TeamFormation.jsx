@@ -149,7 +149,7 @@ export default function TeamFormation() {
           <h2 className=' h-1/3 text-md pb-6'> Share the unique team code with potential teammates for them to join. </h2>
           <button
             onClick={handleCreateTeam}
-            className='h-1/3 w-1/3 max-sm:w-5/12 sm bg-blue-500 text-white py-2 px-4 rounded focus:outline-none focus:shadow-outline hover:bg-blue-600'
+            className='h-1/3 w-1/3 max-sm:w-5/12 sm bg-[#4D4D29] text-white py-2 px-4 rounded focus:outline-none focus:shadow-outline hover:bg-[#535353]'
           >
             Create Team
           </button>
@@ -179,7 +179,7 @@ export default function TeamFormation() {
           />
           <button
             onClick={handleJoinTeam}
-            className='bg-blue-500 text-white py-2  px-4 rounded focus:outline-none focus:shadow-outline hover:bg-blue-600'
+            className='bg-[#4D4D29] text-white py-2  px-4 rounded focus:outline-none focus:shadow-outline hover:bg-[#535353]'
             
           >
             Join Team
@@ -199,7 +199,7 @@ export default function TeamFormation() {
         <div className='mb-4'>
           <button
             onClick={handleSubmitTeam}
-            className='bg-blue-500 text-white py-2 px-4 rounded focus:outline-none focus:shadow-outline hover:bg-blue-600'
+            className='bg-[#4D4D29] text-white py-2 px-4 rounded focus:outline-none focus:shadow-outline hover:bg-[#535353]'
           >
             Submit Team
           </button>
@@ -209,7 +209,7 @@ export default function TeamFormation() {
         <div className='mb-4'>
           <button
             onClick={handleDeleteTeam}
-            className='bg-red-500 text-white py-2 px-4 rounded focus:outline-none focus:shadow-outline hover:bg-red-600'
+            className='bg-[#4D4D29] text-white py-2 px-4 rounded focus:outline-none focus:shadow-outline hover:bg-[#535353]'
           >
             Delete Team
           </button>

@@ -7,7 +7,8 @@ export default {
   theme: {
     extend: {},
     color:{
-      olive:'#A8CD9F'
+      olive:'#A8CD9F',
+      srm : "#4D4D29"
     },
   
   },
