@@ -213,7 +213,7 @@ export default function ProjectsList() {
   };
 
   const handleSubmit = async () => {
-    const minWords = 2;
+    const minWords = 50;
     const words = applyReason.trim().split(/\s+/);
     if (words.length < minWords) {
       alert(`Minimum ${minWords} words are required for the apply reason.`);
