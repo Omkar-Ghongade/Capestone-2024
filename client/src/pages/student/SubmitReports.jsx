@@ -26,8 +26,10 @@ export default function SubmitReports() {
         body: JSON.stringify({ studentId: rollNumber }),
       });
       const data = await res.json();
-      setTeamId(data.teamcode);
-      getmyproject(data.teamcode);
+      if(data!=null){
+        setTeamId(data.teamcode);
+        getmyproject(data.teamcode);
+      }
     } catch (error) {
       console.log(error);
       setLoading(false);

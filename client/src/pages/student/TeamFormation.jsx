@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Footer from './Footer';
+import { MdContentCopy } from "react-icons/md";
+
 
 
 export default function TeamFormation() {
@@ -10,11 +12,23 @@ export default function TeamFormation() {
   const [teamDeleteButton, setTeamDeleteButton] = useState(false);
   const [showSubmitAlert, setShowSubmitAlert] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [copied, setCopied] = useState(false);
   const api = import.meta.env.VITE_backend;
 
   useEffect(() => {
     isinTeam();
   }, []);
+
+  
+
+  const copyToClipboard = (text) => {
+    navigator.clipboard.writeText(text)
+      .then(() => {
+        setCopied(true);
+        setTimeout(() => setCopied(false), 2000); // Reset copied state after 2 seconds
+      })
+      .catch((err) => console.error('Failed to copy:', err));
+  };
 
   const handleCreateTeam = async () => {
     try {
@@ -142,7 +156,7 @@ export default function TeamFormation() {
 
   return (
     <>
-     <div className=' mt-28 flex flex-col p-8 rounded-lg shadow-xl bg-white border-solid border-2 self-center mb-11'>
+    <div className='mt-28 w-3/12 mx-auto flex flex-col p-8 rounded-lg shadow-xl bg-white border-solid border-2 self-center mb-11' style={{ fontFamily: 'Helvetica, Arial, sans-serif' }}>
       {!teamCreatedOrJoined && (
         <div className='mb-4 h-1/2 pt-2 flex flex-col '>
           <h2 className=' h-1/3 text-lg font-bold py-2'>Create Your Own Team</h2>
@@ -156,13 +170,9 @@ export default function TeamFormation() {
         </div>
       )}
 
-      <div className="h-0.5 relative ">
-        <div className="absolute left-0 right-0 top-0 bottom-0 bg-gradient-to-r from-transparent via-gray-300 to-transparent"></div>
-      </div>
-
       {!teamCreatedOrJoined && (
         <div className='mb-4'>
-          <h2 className='text-lg font-bold mt-6 mb-4'> Join a Team </h2>
+          <h2 className='text-lg font-bold mt-6 mb-4' > Join a Team </h2>
           
           <input
             type='text'
@@ -189,10 +199,17 @@ export default function TeamFormation() {
       {teamData && (
         <div className='mt-8 p-8 rounded-lg bg-white mb-8'>
           <h2 className='mt-0.5 text-lg font-bold mb-2'>Team Information</h2>
-          <p className='mb-2'>Team Code: {teamData.teamcode}</p>
+          <div className='flex items-center'>
+            <p className='mb-2 mr-2 pr-2'>Team Member: {teamData.teamcode}</p>
+            <div className="logo-container" onClick={() => copyToClipboard(teamData.teamcode)}>
+              <MdContentCopy />
+            </div>
+          </div>
           {teamData.teammembers.map((member, index) => (
             <p key={index} className='mb-1'>Creator: {member}</p>
           ))}
+          
+          {copied && <p className="copied-message">Code copied to clipboard!</p>}
         </div>
       )}
       {teamSubmitButton && (
