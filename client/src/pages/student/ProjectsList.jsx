@@ -154,7 +154,7 @@ export default function ProjectsList() {
     const filteredData = filterProjects();
     setFilteredProjectsData(filteredData);
     setCurrentPage(1);
-  }, [filters, projectData,searchQuery]);
+  }, [filters, projectData, searchQuery]);
 
   const filterProjects = () => {
     if (!projectData) return [];
@@ -162,8 +162,8 @@ export default function ProjectsList() {
       (project) =>
         project.isopen &&
         (!Object.keys(filters).some((domain) => filters[domain]) ||
-          project.domains.some((domain) => filters[domain])) && 
-          project.professor.toLowerCase().includes(searchQuery.toLowerCase())
+          project.domains.some((domain) => filters[domain])) &&
+        (project.professor.toLowerCase().includes(searchQuery.toLowerCase()) || project.name.toLowerCase().includes(searchQuery.toLowerCase()))
     );
   };
 
@@ -177,7 +177,6 @@ export default function ProjectsList() {
       [filterName]: isChecked,
     }));
   };
-
 
   const handlePageChange = ({ selected }) => {
     setCurrentPage(selected + 1);
@@ -296,32 +295,42 @@ export default function ProjectsList() {
     };
 
     return (
-      <div className={`bg-gray-100 p-4 ${(!FilterbarOpen || isApply) && "invisible"}`}>
-      <h2 className="text-xl font-bold mb-2">Filter Projects</h2>
-      <div className="flex flex-col space-y-2">
-        {allDomains.map((domain, index) => (
-          <div key={index} className="checkbox-wrapper-42 inline-flex items-center">
-            <input
-              type="checkbox"
-              id={`cbx-${index}`}
-              className="form-checkbox h-4 w-4 text-indigo-600"
-              onChange={(e) => {
-                handleFilterChange(domain, e.target.checked);
-              }}
-              checked={filters[domain]} // Ensure checkbox state is controlled
-            />
-            <label className="cbx" htmlFor={`cbx-${index}`}></label>
-            <label className="lbl" htmlFor={`cbx-${index}`}>{domain}</label>
-          </div>
-        ))}
-        <button
-          onClick={handleDeselectAll}
-          className="mt-2 mb-2 h-7 text-sm w-24 bg-teal-800 shadow-sm shadow-teal-100 hover:bg-black hover:shadow-md hover:shadow-teal-200 text-white font-semibold px-2 mt-2 rounded duration-300"
-        >
-          Deselect All
-        </button>
+      <div
+        className={` p-4 ${
+          (!FilterbarOpen || isApply) && "invisible"
+        }`}
+        style={{ fontFamily: "Helvetica, Arial, sans-serif" }}
+      >
+        <h2 className="text-xl font-bold mb-2">Filter Projects</h2>
+        <div className="flex flex-col space-y-2">
+          {allDomains.map((domain, index) => (
+            <div
+              key={index}
+              className="checkbox-wrapper-42 inline-flex items-center"
+            >
+              <input
+                type="checkbox"
+                id={`cbx-${index}`}
+                className="form-checkbox h-4 w-4 text-indigo-600"
+                onChange={(e) => {
+                  handleFilterChange(domain, e.target.checked);
+                }}
+                checked={filters[domain]} // Ensure checkbox state is controlled
+              />
+              <label className="cbx" htmlFor={`cbx-${index}`}></label>
+              <label className="lbl" htmlFor={`cbx-${index}`}>
+                {domain}
+              </label>
+            </div>
+          ))}
+          <button
+            onClick={handleDeselectAll}
+            className="mt-2 mb-2 h-7 text-sm w-24 bg-[#4D4D29] shadow-sm shadow-teal-100 hover:bg-[#535353] text-white font-semibold px-2 mt-2 rounded duration-300"
+          >
+            Deselect All
+          </button>
+        </div>
       </div>
-    </div>
     );
   };
 
@@ -371,8 +380,8 @@ export default function ProjectsList() {
         <div className=" flex flex-row gap-1">
           <div
             className={`${
-              FilterbarOpen && !isApply ? "w-3/6 lg:w-72 px-2 z-40 bg-opacity-50" : "w-0"
-            }  bg-gray-100 top-0 right-0 relative duration-500`}
+              FilterbarOpen && !isApply ? "w-1/5 lg:w-2/12 px-2 z-40 " : "w-0"
+            }   top-0 right-0 relative duration-500`}
           >
             {/* Responsive Filterbar */}
             <ProjectFilter handleFilterChange={handleFilterChange} />
@@ -380,11 +389,11 @@ export default function ProjectsList() {
 
           <div
             className={`${
-              FilterbarOpen ? "w-5/6 px-2 z-30 " : "w-full"
+              FilterbarOpen ? "w-4/5 px-2 z-30 " : "w-full"
             } pr-2 pl-2 z-30 `}
           >
             {isApply ? (
-              <div className="w-full bg-white rounded-lg shadow-md p-6 sm:ml-8 md:ml-16 lg:ml-24 mt-4">
+              <div className="w-full h-full bg-white rounded-lg shadow-md p-6 sm:ml-8 md:ml-16 lg:ml-24 mt-4">
                 <div className="flex flex-row justify-between">
                   <h2 className="text-2xl font-bold mb-3">Apply for Project</h2>
                   <button
@@ -452,7 +461,7 @@ export default function ProjectsList() {
                         </button>
                         <button
                           onClick={handleSubmit}
-                          className="bg-blue-500 text-white font-bold py-2 px-4 rounded hover:bg-blue-700 mr-2"
+                          className="bg-[#4D4D29] text-white font-bold py-2 px-4 rounded hover:bg-[#535353] mr-2"
                         >
                           Apply
                         </button>
@@ -466,34 +475,33 @@ export default function ProjectsList() {
                 )}
               </div>
             ) : (
-              <div>
-              <input
-  type="text"
-  style={{ maxWidth: '375px' }}
-  placeholder="Search by professor name"
-  className="w-full border rounded px-3 py-2"
-  value={searchQuery}
-  onChange={handleSearchInputChange}
-/>  
-              <div className='flex flex-col gap-2 mb-4 mr-2 ml-2 mt-1'>
-              {currentProjects.map((project, index) => (
-                <div key={index} className='flex flex-row max-w-200px border-2 border-solid bg-white shadow-sm hover:shadow-md hover:shadow-teal-100 transform hover:-translate-y-0.5 transition duration-200 ease-in-out rounded-lg overflow-hidden pb-2 pl-4 pt-2'>
-                  <div className='pl-2 w-4/6 md:w-5/6 my-1'>
-                    <h2 className='text-left text-xl mb-1 font-bold'>{project.name}</h2>
-                    <p className='text-left mb-2 text-gray-600'>{project.professor}</p>
-                    <div className='h-1/6'>
-                      {project.domains.map((domain, idx) => (
-                        <div key={idx} className="rounded-full bg-gray-200 px-3 py-2 text-sm inline-block mr-2 mb-2">{domain}</div>
-                      ))}
+              <div className="pt-2">
+                <input
+                  type="text"
+                  placeholder="Search By Professor Name or Project Name"
+                  className="w-full border rounded px-3 py-2 ml-2"
+                  value={searchQuery}
+                  onChange={handleSearchInputChange}
+                />
+                <div className='w-full flex flex-col gap-2 mb-4 mr-2 ml-2 mt-1 pt-2'>
+                  {currentProjects.map((project, index) => (
+                    <div key={index} className='flex flex-row w-full border-2 border-solid bg-white shadow-sm transform transition duration-200 ease-in-out rounded-lg overflow-hidden pb-2 pl-4 pt-2'>
+                      <div className='pl-2 w-4/6 md:w-5/6 my-1'>
+                        <h2 className='text-left text-xl mb-1 font-bold'>{project.name}</h2>
+                        <p className='text-left mb-2 text-gray-600'>{project.professor}</p>
+                        <div className='h-1/6'>
+                          {project.domains.map((domain, idx) => (
+                            <div key={idx} className="rounded-full bg-gray-200 px-3 py-2 text-sm inline-block mr-2 mb-2">{domain}</div>
+                          ))}
+                        </div>
+                      </div>
+                      <div className='w-2/6 md:w-1/6 flex justify-center items-center'>
+                        <button onClick={() => applyProjectClick(project)} className='h-8 w-auto text-center bg-[#4D4D29] text-white font-bold px-4 rounded hover:bg-[#535353] mt-2 sm:mt-0'>View</button>
+                      </div>
                     </div>
-                  </div>
-                  <div className='w-2/6 md:w-1/6 flex justify-center items-center'>
-                    <button onClick={() => applyProjectClick(project)} className='h-8 w-auto text-center bg-teal-800 text-white font-bold px-4 rounded hover:bg-teal-950 hover:shadow-teal-100 hover:shadow-md mt-2 sm:mt-0'>View</button>
-                  </div>
+                  ))}
                 </div>
-              ))}
-            </div>
-            </div>
+              </div>
             )}
           </div>
         </div>
