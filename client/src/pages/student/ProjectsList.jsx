@@ -323,12 +323,21 @@ export default function ProjectsList() {
               </label>
             </div>
           ))}
+          <div className="flex gap-2">
           <button
             onClick={handleDeselectAll}
             className="mt-2 mb-2 h-7 text-sm w-24 bg-[#4D4D29] shadow-sm shadow-teal-100 hover:bg-[#535353] text-white font-semibold px-2 mt-2 rounded duration-300"
           >
-            Deselect All
+            Clear
           </button>
+          
+          <button
+            onClick={toggleSidebar}
+            className="mt-2 sm:hidden mb-2 h-7 text-sm w-24 bg-[#4D4D29] shadow-sm shadow-teal-100 hover:bg-[#535353] text-white font-semibold px-2 mt-2 rounded duration-300"
+          >
+            OK
+          </button>
+        </div>
         </div>
       </div>
     );
@@ -378,14 +387,36 @@ export default function ProjectsList() {
         </button>
 
         <div className=" flex flex-row gap-1">
+          {window.innerWidth < 640 ? (
           <div
             className={`${
-              FilterbarOpen && !isApply ? "w-1/5 lg:w-2/12 px-2 z-40 " : "w-0"
-            }   top-0 right-0 relative duration-500`}
+              FilterbarOpen && !isApply ? "fixed top-0 left-0 w-full h-full flex justify-center items-center bg-gray-200 bg-opacity-80 z-40" : "w-0"
+            }  duration-300`}
           >
+            <div className="bg-[#272715] text-white rounded-md">
+            <ProjectFilter handleFilterChange={handleFilterChange} /></div>
+          </div>):(
+
+            <div
+            className={`${
+              FilterbarOpen && !isApply ? "w-2/6 lg:w-72 px-2 z-40 bg-opacity-50" : "w-0"
+            }  top-0 right-0 relative duration-500`}
+          >
+
+            <input
+  type="text"
+  
+  placeholder="Search by professor or project"
+  className={` ${FilterbarOpen && !isApply ? '':'hidden'} max-md:hidden w-64 border rounded px-3 py-2 mt-5`}
+  value={searchQuery}
+  onChange={handleSearchInputChange}
+/>
+
             {/* Responsive Filterbar */}
             <ProjectFilter handleFilterChange={handleFilterChange} />
           </div>
+
+          )}
 
           <div
             className={`${
@@ -478,8 +509,8 @@ export default function ProjectsList() {
               <div className="pt-2">
                 <input
                   type="text"
-                  placeholder="Search By Professor Name or Project Name"
-                  className="w-full border rounded px-3 py-2 ml-2"
+                  placeholder="Search By Professor or Project"
+                  className="w-full border rounded px-3 py-2 ml-2 md:hidden"
                   value={searchQuery}
                   onChange={handleSearchInputChange}
                 />
