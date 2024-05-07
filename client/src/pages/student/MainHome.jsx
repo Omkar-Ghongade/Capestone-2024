@@ -93,9 +93,8 @@ const MainHome = () => {
             )}
           </div>
           <div className="mt-6">
-            <h2 className="text-xl font-semibold">Project</h2>
             {project ? (
-              <p className="text-gray-300 pl-4">Project Title: {project.projectName}</p>
+              <p className="text-gray-300 pl-4"><b>Project Title : </b> {project.projectName}</p>
             ) : (
               <p className="text-gray-300 pl-4">Project not assigned</p>
             )}
