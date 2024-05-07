@@ -69,7 +69,7 @@ const MainHome = () => {
   return (
     <div className="main-content flex justify-center items-center h-full" style={{ fontFamily: 'Helvetica, Arial, sans-serif', textAlign: 'center' }}>
       {studentData && (
-        <div className="bg-[#4D4D29] rounded-lg p-6 shadow-md w-5/12 border-2 border-gray-300 text-white relative">
+        <div className="bg-[#4D4D29] rounded-lg p-6 shadow-md lg:w-5/12 md:w-3/4 w-full border-2 border-gray-300 text-white relative">
           <div className="rounded-full overflow-hidden mx-auto w-36 h-36 absolute top-[-50px] left-1/2 transform -translate-x-1/2">
             <img src={studentData.photo} alt="Student" className="w-full h-full object-cover" />
           </div>
