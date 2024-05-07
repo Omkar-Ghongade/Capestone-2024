@@ -475,7 +475,7 @@ export default function ProjectsList() {
                 )}
               </div>
             ) : (
-              <div className="pt-2">
+              <div className="pt-2 pr-4">
                 <input
                   type="text"
                   placeholder="Search By Professor Name or Project Name"
