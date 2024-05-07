@@ -108,7 +108,7 @@ export default function SignIn() {
     return (
       <div className="flex flex-col bg-white shadow-2xl p-6 rounded-lg justify-content-center align-items-center">
         <div className="flex flex-col w-parent justify-content-center ml-28 mr-28 ">
-          <img className="w-32" src="https://srmap.edu.in/file/2019/12/Logo-2.png" alt="SRM Logo" />
+          <img className="w-32" src="https://indiaeducationdiary.in/wp-content/uploads/2020/07/SRMAP-LOGO.jpg" alt="SRM Logo" />
         </div>
         {children}
       </div>
@@ -119,7 +119,7 @@ export default function SignIn() {
     return (
       <div className="flex justify-center items-center h-screen">
         <img 
-          src="https://srmap.edu.in/file/2019/12/Logo-2.png" 
+          src="https://indiaeducationdiary.in/wp-content/uploads/2020/07/SRMAP-LOGO.jpg" 
           alt="Loading..." 
           style={{ width: "200px", height: "auto" }} 
         />

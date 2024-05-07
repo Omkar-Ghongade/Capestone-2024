@@ -357,7 +357,7 @@ export default function ProjectsList() {
       <div className="flex justify-center items-center h-screen">
         {/* Loading screen content */}
         <img
-          src="https://srmap.edu.in/file/2019/12/Logo-2.png"
+          src="https://indiaeducationdiary.in/wp-content/uploads/2020/07/SRMAP-LOGO.jpg"
           alt="Loading..."
           style={{ width: "200px", height: "auto" }}
         />
