@@ -189,13 +189,13 @@ export default function TeamFormation() {
           <div className='mt-8 p-8 rounded-lg bg-white mb-8'>
             <h2 className='mt-0.5 text-lg font-bold mb-2'>Team Information</h2>
             <div className='flex items-center'>
-              <p className='mb-2 mr-2 pr-2'>Team Member: {teamData.teamcode}</p>
+              <p className='mb-2 mr-2 pr-2'>Team Code: {teamData.teamcode}</p>
               <div className="logo-container" onClick={() => copyToClipboard(teamData.teamcode)}>
                 <MdContentCopy />
               </div>
             </div>
             {teamData.teammembers.map((member, index) => (
-              <p key={index} className='mb-1'>Creator: {member}</p>
+              <p key={index} className='mb-1'>Member: {member}</p>
             ))}
 
             {copied && <p className="copied-message">Code copied to clipboard!</p>}
