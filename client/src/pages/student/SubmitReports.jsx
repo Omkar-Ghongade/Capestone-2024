@@ -136,16 +136,17 @@ export default function SubmitReports() {
                 </form>
 
                 </div>
-                <div className="flex space-x-2 pt-3">
+                <div className="flex flex-wrap pt-3">
                   {project[0].reports.map((report, index) => (
-                    <div key={index} className="bg-[#4D4D29] text-white rounded-lg shadow-md mb-2 border-solid border-2 p-2">
-                      <a href={report} target="_blank" rel="noreferrer">
-                        <p className='text-center'>Report {index + 1}</p>
-                      </a>
+                    <div key={index} className=" sm:w-1/2 md:w-1/12  px-2 mb-4">
+                      <div className="bg-[#4D4D29] text-white rounded-lg shadow-md mb-2 border-solid border-2 p-2">
+                        <a href={report} target="_blank" rel="noreferrer">
+                          <p className='text-center'>Report {index + 1}</p>
+                        </a>
+                      </div>
                     </div>
                   ))}
                 </div>
-
               </div>
               
             </div>
