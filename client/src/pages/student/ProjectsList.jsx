@@ -75,7 +75,8 @@ export default function ProjectsList() {
         finalproject(data.teamcode);
         setTeamsize(data.teammembers.length);
         console.log(teamid);
-        setValidTeam(true);
+        if(data.submitted)
+          setValidTeam(true);
       }
     } catch (error) {
       console.log(error);
