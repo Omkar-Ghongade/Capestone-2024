@@ -75,11 +75,6 @@ export default function ProfessorProfiles() {
     setCurrentPage(selected);
   };
 
-  const handleSearchInputChange = (event) => {
-    setSearchQuery(event.target.value);
-    setCurrentPage(0); // Reset to first page when search query changes
-  };
-
   const handleClearSearch = () => {
     setSearchQuery('');
   };
@@ -95,24 +90,8 @@ export default function ProfessorProfiles() {
   return (
     <div className="main-content" style={{ fontFamily: 'Helvetica, Arial, sans-serif' }}>
       <div className='flex flex-col md:flex-row justify-between'>
-      <div className="text-3xl mt-2 mb-2 mx-auto text-center josefin-sans">
-        <h1>Professor Profiles</h1>
-      </div>
       <div className="flex justify-center items-center mb-4 relative border border-gray-300 rounded-lg shadow-sm">
-        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 absolute left-3 text-gray-400" viewBox="0 0 20 20" fill="currentColor">
-          <path fillRule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1112 0A6 6 0 012 8z" clipRule="evenodd" />
-          <path d="M14.293 14.707a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L16.586 19l-2.293-2.293a1 1 0 010-1.414z" />
-        </svg>
-        <input
-          type="text"
-          placeholder="Search Professors..."
-          value={searchQuery}
-          onChange={handleSearchInputChange}
-          className="pl-10 pr-8 py-2 w-full rounded-lg"
-          style={{ transition: 'box-shadow .3s' }}
-          onFocus={(e) => e.target.style.boxShadow = '0 0 0 2px #4FD1C5'}
-          onBlur={(e) => e.target.style.boxShadow = 'none'}
-        />
+        
         {searchQuery && (
           <button
             onClick={handleClearSearch}
