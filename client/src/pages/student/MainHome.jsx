@@ -67,40 +67,49 @@ const MainHome = () => {
   };
 
   return (
-    <div className="main-content flex justify-center items-center h-full" style={{ fontFamily: 'Helvetica, Arial, sans-serif', textAlign: 'center' }}>
+    <div className=''>
+      <div><img className="w-full h-fit" src="https://student.srmap.edu.in/srmapstudentcorner/resources/images/Ariel-View-1.jpg" alt="mountain" /></div>
+    <div className="absolute mt-4 max-sm:mt-16 top-0 left-0 w-full h-full flex justify-center items-center " style={{ fontFamily: 'Helvetica, Arial, sans-serif', textAlign: 'center' }}>
       {studentData && (
-        <div className="bg-[#4D4D29] rounded-lg p-6 shadow-md lg:w-5/12 md:w-3/4 w-full border-2 border-gray-300 text-white relative">
-          <div className="rounded-full overflow-hidden mx-auto w-36 h-36 absolute top-[-50px] left-1/2 transform -translate-x-1/2">
+        <div className=" rounded-lg p-6 bg-[#4D4D29] bg-opacity-95 shadow-md lg:w-7/12 md:w-3/4 w-11/12 relative">
+          <div className="rounded-full overflow-hidden mx-auto w-32 md:w-40 h-32 md:h-40 absolute top-[-64px] md:top-[-80px] left-1/2 transform -translate-x-1/2">
             <img src={studentData.photo} alt="Student" className="w-full h-full object-cover" />
           </div>
-          <div className="mt-4 pt-20">
-            <h1 className="text-3xl font-bold">{studentData.name}</h1>
-            <p className="text-gray-300">{studentData.rollNumber}</p>
-            <p><b>{studentData.school}</b> </p>
-            <p><b>{studentData.stream} : </b>{studentData.section}</p>
-            <p className="truncate">{studentData.emailid}</p>
+          <div className="pt-20 text-white">
+            <h1 className="text-3xl py-2 font-bold">{studentData.name}</h1>
+            <p className="text-xl py-2 ">{studentData.rollNumber}</p>
+            <p className="truncate ">{studentData.emailid}</p>
+            <p className=''>{studentData.school} </p>
+            <p className='font-medium'>{studentData.stream} : {studentData.section}</p>
+            <p className=''>Spec: {studentData.specialization}</p>
+            
           </div>
-          <div className="mt-6">
-            <h2 className="text-xl font-semibold">Team</h2>
+          <div className='flex flex-row max-sm:flex-col'> 
+          <div className="mt-6 w-1/2 max-sm:w-full">
+            <h2 className="text-xl font-semibold text-white">Team</h2>
             {team.length === 0 ? (
-              <p className="text-gray-300 pl-4">Join a team or create a team</p>
+              <p className="text-white">Join a team or create a team</p>
             ) : (
-              <div className="text-gray-300 pl-4 justify-center">
+              <div className=" mt-3 justify-center">
                 {team.map((member, index) => (
                   <p key={index}>{index + 1}. {member}</p>
                 ))}
               </div>
             )}
           </div>
-          <div className="mt-6">
+          <div className="mt-6 w-1/2 max-sm:w-full">
+          <h2 className="text-xl text-white "><b>Project Title</b></h2>
             {project ? (
-              <p className="text-gray-300 pl-4"><b>Project Title : </b> {project.projectName}</p>
+              
+              <h2 className='text-lg text-white'>{project.projectName}</h2>
             ) : (
-              <p className="text-gray-300 pl-4">Project not assigned</p>
+              <p className="text-white">Project not assigned</p>
             )}
+          </div>
           </div>
         </div>
       )}
+    </div>
     </div>
   );
 };
