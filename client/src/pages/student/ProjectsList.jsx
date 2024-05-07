@@ -70,7 +70,7 @@ export default function ProjectsList() {
       });
       const data = await res.json();
       console.log(data);
-      if (data.submitted) {
+      if (data) {
         setTeamId(data.teamcode);
         finalproject(data.teamcode);
         setTeamsize(data.teammembers.length);
@@ -231,6 +231,7 @@ export default function ProjectsList() {
         body: JSON.stringify({ projectname: selectedProject.name }),
       });
       const data = await res.json();
+      console.log(data)
       Description = data.description;
       console.log(description);
     } catch (error) {
