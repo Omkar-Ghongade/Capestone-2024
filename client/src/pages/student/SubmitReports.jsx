@@ -151,7 +151,9 @@ export default function SubmitReports() {
               
             </div>
           ) : (
-            <p className='text-6xl mb-4 text-slate-300 text-center'>No projects accepted</p>
+            <div className='flex justify-center items-center h-screen'>
+              <p className='text-6xl mb-4 text-slate-300 text-center'>No projects accepted</p>
+            </div>
           )}
         </div>
       </div>
