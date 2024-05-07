@@ -90,7 +90,7 @@ const MainHome = () => {
             {team.length === 0 ? (
               <p className="text-white">Join a team or create a team</p>
             ) : (
-              <div className=" mt-3 justify-center">
+              <div className=" mt-3 justify-center text-white">
                 {team.map((member, index) => (
                   <p key={index}>{index + 1}. {member}</p>
                 ))}

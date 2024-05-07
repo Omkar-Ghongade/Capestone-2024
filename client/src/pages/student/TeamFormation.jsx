@@ -146,65 +146,64 @@ export default function TeamFormation() {
   }
 
   return (
-    <>
-      <div className='  main-content mt-10 sm:mt-28 w-11/12 sm:w-3/12 mx-auto flex flex-col p-8 rounded-lg shadow-xl bg-white border-solid border-2 self-center mb-11' style={{ fontFamily: 'Helvetica, Arial, sans-serif' }}>
+    <div className="flex items-center justify-center min-h-screen" style={{ fontFamily: 'Helvetica, Arial, sans-serif' }}>
+      <div className='main-content w-full max-w-3xl px-4 py-8 md:p-8 rounded-lg shadow-xl bg-white border-solid border-2 md:w-5/12 sm:w-5/12'>
         {!teamCreatedOrJoined && (
-            <div className='mb-4 h-1/2 pt-2 flex flex-col '>
-              <h2 className=' h-1/3 text-lg font-bold py-2'>Create Your Own Team</h2>
-              <h2 className=' h-1/3 text-md pb-6'> Share the unique team code with potential teammates for them to join. </h2>
-              <button
-                onClick={handleCreateTeam}
-                className='h-1/3 w-full sm:w-2/3 bg-[#4D4D29] text-white py-2 px-4 rounded focus:outline-none focus:shadow-outline hover:bg-[#535353]'
-              >
-                Create Team
-              </button>
-            </div>
+          <div className='flex flex-col items-center'>
+            <h2 className='text-lg font-bold py-2'>Create Your Own Team</h2>
+            <p>Share the unique team code with potential teammates for them to join.</p>
+            <button
+              onClick={handleCreateTeam}
+              className='bg-[#4D4D29] text-white py-2 px-4 rounded hover:bg-[#535353] mt-4'
+            >
+              Create Team
+            </button>
+          </div>
         )}
 
         {!teamCreatedOrJoined && (
-          <div className='mb-4'>
-            <h2 className='text-lg font-bold mt-6 mb-4'>Join a Team</h2>
+          <div className='mt-8'>
+            <h2 className='text-lg font-bold'>Join a Team</h2>
             <input
               type='text'
               placeholder='Enter team code'
               value={teamCode}
               onChange={(e) => setTeamCode(e.target.value)}
-              className='border border-gray-300 px-3 py-2 rounded focus:outline-none focus:shadow-outline w-full'
+              className='border border-gray-300 px-3 py-2 rounded w-full mt-4'
               onKeyDown={(e) => {
                 if (e.key === 'Enter') {
-                  e.preventDefault(); // Prevent form submission
-                  handleJoinTeam(); // Call the join team function
+                  e.preventDefault();
+                  handleJoinTeam();
                 }
               }}
             />
             <button
               onClick={handleJoinTeam}
-              className='mt-2 w-full bg-[#4D4D29] text-white py-2 px-4 rounded focus:outline-none focus:shadow-outline hover:bg-[#535353]'
+              className='bg-[#4D4D29] text-white py-2 px-4 rounded hover:bg-[#535353] mt-2 w-full'
             >
               Join Team
             </button>
           </div>
         )}
         {teamData && (
-          <div className='mt-8 p-8 rounded-lg bg-white mb-8'>
-            <h2 className='mt-0.5 text-lg font-bold mb-2'>Team Information</h2>
-            <div className='flex items-center'>
-              <p className='mb-2 mr-2 pr-2'>Team Code: {teamData.teamcode}</p>
-              <div className="logo-container" onClick={() => copyToClipboard(teamData.teamcode)}>
+          <div className='mt-8 p-8 bg-white rounded-lg shadow-md'>
+            <h2 className='text-lg font-bold'>Team Information</h2>
+            <div className='flex items-center mt-4'>
+              <p className='mr-2'>Team Code: {teamData.teamcode}</p>
+              <button onClick={() => copyToClipboard(teamData.teamcode)} className='text-lg'>
                 <MdContentCopy />
-              </div>
+              </button>
             </div>
             {teamData.teammembers.map((member, index) => (
-              <p key={index} className='mb-1'>Member: {member}</p>
+              <p key={index} className='mt-1'>Team Member {index+1} : {member}</p>
             ))}
-
-            {copied && <p className="copied-message">Code copied to clipboard!</p>}
+            {copied && <p className="text-sm text-green-600 mt-2">Code copied to clipboard!</p>}
           </div>
         )}
         {teamSubmitButton && (
           <button
             onClick={handleSubmitTeam}
-            className='w-full bg-[#4D4D29] text-white py-2 px-4 rounded focus:outline-none focus:shadow-outline hover:bg-[#535353]'
+            className='bg-[#4D4D29] text-white pt-2 py-2 px-4 rounded hover:bg-[#535353] mt-4 w-full'
           >
             Submit Team
           </button>
@@ -212,7 +211,7 @@ export default function TeamFormation() {
         {teamDeleteButton && (
           <button
             onClick={handleDeleteTeam}
-            className='w-full bg-[#4D4D29] text-white py-2 px-4 rounded focus:outline-none focus:shadow-outline hover:bg-[#535353]'
+            className='bg-[#4D4D29] text-white pt-2 py-2 px-4 rounded hover:bg-[#535353] mt-2 w-full'
           >
             Delete Team
           </button>
@@ -221,8 +220,8 @@ export default function TeamFormation() {
         {showSubmitAlert && (
           <div className="submit-alert-overlay fixed top-0 left-0 w-full h-full flex justify-center items-center bg-gray-900 bg-opacity-50 z-50">
             <div className="submit-alert-box bg-white p-4 rounded-lg shadow-md">
-              <p className="text-lg text-center font-semibold mb-4">Are you sure you want to submit the team?</p>
-              <p className='text-lg text-center font-semibold text-red-700 mb-4'>The members cannot join any other team once submitted</p>
+              <p className="text-lg font-semibold mb-4">Are you sure you want to submit the team?</p>
+              <p className='text-lg font-semibold text-red-700 mb-4'>The members cannot join any other team once submitted</p>
               <div className="flex justify-center">
                 <button onClick={handleConfirmSubmit} className="bg-blue-500 text-white px-4 py-2 rounded mr-4">Yes</button>
                 <button onClick={handleCancelSubmit} className="bg-gray-400 text-gray-800 px-4 py-2 rounded">No</button>
@@ -231,9 +230,7 @@ export default function TeamFormation() {
           </div>
         )}
       </div> 
-      <div className='fixed bottom-0 w-full'>
-        {/* <Footer/> */}
-      </div>
-    </>
+      {/* <Footer/> */}
+    </div>
   );
 }
