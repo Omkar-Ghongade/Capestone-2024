@@ -23,6 +23,11 @@ export default function ViewReports() {
     fetchProjecttitles();
   }, []);
 
+  useEffect(() => {
+    const titles = reports.map(application => application.projectName);
+    handleProjectClick(titles[0],0);
+  },[reports]);
+
   const fetchReportsFromBackend = async () => {
     try{
         const name=localStorage.getItem('professorName');

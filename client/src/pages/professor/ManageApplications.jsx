@@ -22,6 +22,11 @@ export default function ManageApplications() {
     fetchProjecttitles();
   }, []);
 
+  useEffect(() => {
+    const titles = applications.map(application => application.projectName);
+    handleProjectClick(titles[0],0);
+  },[applications]);
+
 
   useEffect(() => {
     const handleResize = () => {
@@ -45,8 +50,6 @@ export default function ManageApplications() {
       });
       const data = await res.json();
       setApplications(data);
-      const titles = data.map(application => application.projectName);
-      handleProjectClick(titles[0],0);
     } catch (err) {
       console.error(err);
     }
@@ -73,11 +76,13 @@ export default function ManageApplications() {
     setSidebarOpen(!sidebarOpen);
   };
 
-  const handleProjectClick = (title=uniqueTitles[0], index=0) => {
+  const handleProjectClick = (title, index) => {
     const filteredApplications = applications.filter(app => app.projectName === title);
+    console.log(filteredApplications); // Check what is being filtered
     setSelectedApplications(filteredApplications);
     setClickedButtonindex(index);
-  };
+    console.log(index); // Verify index is as expected
+};
 
   const handleViewClick = async (application) => {
     setIsView(true);
