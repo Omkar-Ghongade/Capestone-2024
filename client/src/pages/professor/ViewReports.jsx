@@ -6,6 +6,7 @@ import "./Navbar.css";
 export default function ViewReports() {
   const [reports, setReports] = useState([]);
   const [uniqueTitles, setUniqueTitles] = useState([]);
+  const [clickedButtonindex, setClickedButtonindex] = useState(null);
   const [viewReport, setViewReport] = useState(null);
   const [selectedReports, setselectedReports] = useState([]);
   const [sidebarOpen, setSidebarOpen] = useState(window.innerWidth >= 768);
@@ -16,6 +17,10 @@ export default function ViewReports() {
 
   useEffect(() => {
     fetchReportsFromBackend();
+  }, []);
+
+  useEffect(() => {
+    fetchProjecttitles();
   }, []);
 
   const fetchReportsFromBackend = async () => {
@@ -31,12 +36,30 @@ export default function ViewReports() {
         const data = await res.json();
         console.log(data);
         setReports(data);
-      const titles = data.map(application => application.projectName);
-      setUniqueTitles([...new Set(titles)]);
     }catch(err){
         console.log(err);
     }
   }
+
+
+  const fetchProjecttitles = async () => {
+    try {
+      const res = await fetch(`${api}/api/project/getprofessorproject`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ name: localStorage.getItem('professorName') })
+      });
+      const titdata = await res.json();
+      const titles = titdata.map(project => project.name);
+      setUniqueTitles([...new Set(titles)]);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+
 
 
   useEffect(() => {
@@ -55,9 +78,10 @@ export default function ViewReports() {
     setSidebarOpen(!sidebarOpen);
   };
 
-  const handleProjectClick = (title) => {
+  const handleProjectClick = (title,index) => {
     const filteredReports = reports.filter(app => app.projectName === title);
     setselectedReports(filteredReports);
+    setClickedButtonindex(index);
   };
 
   const handleViewClick = async (report) => {
@@ -92,24 +116,24 @@ export default function ViewReports() {
         className="fixed md:hidden bottom-10 right-8 bg-gray-700 rounded-full drop-shadow-lg flex justify-center items-center text-white text-4xl hover:bg-teal-800 z-50"
         onClick={toggleSidebar}>
         <div className='flex w-10 h-10 justify-center items-center'>
-          <FaFilter className='w-6 h-6 ' />
+          <FaFilter className='w-6 h-6' />
         </div>
       </button>
 
       <div className=" flex flex-row gap-1">
 
         <div
-          className={`${sidebarOpen && !isView && reports.length>0 ? 'w-2/6 max-sm:w-3/6 px-2 ' : 'w-0'
-            } bg-gray-100 top-0 right-0 relative duration-500`}
+          className={`${sidebarOpen && !isView ? 'w-2/6 max-sm:w-full  max-sm:flex max-sm:justify-center max-sm:items-center max-sm:bg-opacity-80 max-md:z-40' : 'w-0'
+        } bg-[#4b4b29] h-screen text-white top-0 right-0 max-sm:left-0 relative max-sm:fixed duration-500`}
         >
-          <div className={`bg-gray-100 p-4 ${(!sidebarOpen || isView || reports.length===0) && 'invisible'}`}>
-            <h2 className="text-xl font-semibold mb-2">Projects</h2>
-            <div className="flex flex-col space-y-2">
+          <div className={` p-4 ${(!sidebarOpen || isView) && 'invisible'}`}>
+            <h2 className="text-3xl text-center font-semibold mb-2">Projects</h2>
+            <div className="flex flex-col max-sm:border-2 max-sm:border-solid max-sm:bg-[#272715] max-sm:rounded-md">
               {uniqueTitles.map((title, index) => (
                 <button
                   key={index}
-                  className={`text-left py-2 px-4 w-full rounded bg-gray-200 ${selectedReports.length>0 && selectedReports[0].projectName === title ? 'bg-gray-400' : ''}`}
-                  onClick={() => handleProjectClick(title)}
+                  className={`text-left text-lg max-sm:border-y max-sm:border-solid max-sm:border-white hover:bg-[#272715] hover:border-2 py-2 px-2 w-full duration-300 ${clickedButtonindex === index ? 'bg-[#272715] border-2 font-semibold' : ''}`}
+                  onClick={() => {handleProjectClick(title, index); if (window.innerWidth < 640){toggleSidebar();}}}
                 >
                   {title}
                 </button>
@@ -120,6 +144,8 @@ export default function ViewReports() {
 
         <div className={`${sidebarOpen ? 'px-2 z-40 ' : ''
           } pr-4 z-30 w-full `}>
+          <h2 className="text-xl font-semibold mb-4">{uniqueTitles[clickedButtonindex]}</h2>
+
           { reports.length === 0 ? (<h2 className='w-full text-6xl text-slate-300 text-center'>No Application has been Accepted</h2>):
           
           ( selectedReports.length > 0 ? (
@@ -155,7 +181,6 @@ export default function ViewReports() {
               </div>
               ) : (
                   <div>
-                   <h1 className='text-xl font-semibold mb-4'>{selectedReports[0].projectName}</h1>
                   {selectedReports.map(report => report.isaccepted && (
 
                   <div key={report.id} className=' flex flex-row max-w-200px border-2 border-solid bg-white shadow-md hover:shadow-lg hover:shadow-teal-100 rounded-md overflow-hidden pb-2'>
@@ -172,7 +197,7 @@ export default function ViewReports() {
               )}
             </div>
           ) : (
-            <div className="text-lg font-semibold">Select a project from the sidebar to view the reports.</div>
+            <div className="w-full text-6xl text-slate-300 text-center">No application is accepted for this project.</div>
           )
         )
           

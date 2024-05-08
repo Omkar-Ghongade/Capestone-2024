@@ -20,17 +20,15 @@ export default function ManageApplications() {
 
   useEffect(() => {
     fetchProjecttitles();
-    
   }, []);
+
 
   useEffect(() => {
     const handleResize = () => {
       const screenWidth = window.innerWidth;
       setSidebarOpen(screenWidth >= 768);
     };
-    
-
-
+  
 
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
@@ -48,8 +46,7 @@ export default function ManageApplications() {
       const data = await res.json();
       setApplications(data);
       const titles = data.map(application => application.projectName);
-      setUniqueTitles([...new Set(titles)]);
-      handleProjectClick(uniqueTitles[0],0);
+      handleProjectClick(titles[0],0);
     } catch (err) {
       console.error(err);
     }
@@ -76,7 +73,7 @@ export default function ManageApplications() {
     setSidebarOpen(!sidebarOpen);
   };
 
-  const handleProjectClick = (title, index) => {
+  const handleProjectClick = (title=uniqueTitles[0], index=0) => {
     const filteredApplications = applications.filter(app => app.projectName === title);
     setSelectedApplications(filteredApplications);
     setClickedButtonindex(index);
@@ -163,11 +160,11 @@ export default function ManageApplications() {
       <div className=" flex flex-row gap-1">
 
         <div
-          className={`${sidebarOpen && !isView && applications.length > 0 ? 'w-2/6 max-sm:w-full  max-sm:flex max-sm:justify-center max-sm:items-center max-sm:bg-opacity-80 max-md:z-40' : 'w-0'
+          className={`${sidebarOpen && !isView ? 'w-2/6 max-sm:w-full  max-sm:flex max-sm:justify-center max-sm:items-center max-sm:bg-opacity-80 max-md:z-40' : 'w-0'
             } bg-[#4b4b29] h-screen text-white top-0 right-0 max-sm:left-0 relative max-sm:fixed duration-500`}
         >
-          <div className={`px-1 ${(!sidebarOpen || isView || applications.length === 0) && 'invisible'}`}>
-            <h2 className="text-3xl text-center font-semibold mb-8">Projects</h2>
+          <div className={`px-1 ${(!sidebarOpen || isView) && 'invisible'}`}>
+            <h2 className="text-3xl text-center font-semibold mt-3 mb-6">Projects</h2>
             <div className="flex flex-col max-sm:border-2 max-sm:border-solid max-sm:bg-[#272715] max-sm:rounded-md">
               {uniqueTitles.map((title, index) => (
                 <button
@@ -182,8 +179,8 @@ export default function ManageApplications() {
           </div>
         </div>
 
-        <div className={`${sidebarOpen ? ' px-2  ' : ''
-          } pr-4 z-30 w-full `}>
+        <div className={`${sidebarOpen ? ' pl-2 pr-4 ' : ''
+          } mt-2 z-30 w-full `}>
             <div className='flex justify-between mb-4 max-sm:flex-col max-sm:gap-3 max-sm:mb-4'>
                     {/* Dropdown filter */}
                     <h2 className="text-xl font-semibold mb-4">{uniqueTitles[clickedButtonindex]}</h2>
