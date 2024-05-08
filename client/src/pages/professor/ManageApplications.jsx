@@ -20,6 +20,7 @@ export default function ManageApplications() {
 
   useEffect(() => {
     fetchProjecttitles();
+    
   }, []);
 
   useEffect(() => {
@@ -27,6 +28,9 @@ export default function ManageApplications() {
       const screenWidth = window.innerWidth;
       setSidebarOpen(screenWidth >= 768);
     };
+    
+
+
 
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
@@ -45,6 +49,7 @@ export default function ManageApplications() {
       setApplications(data);
       const titles = data.map(application => application.projectName);
       setUniqueTitles([...new Set(titles)]);
+      
     } catch (err) {
       console.error(err);
     }
@@ -158,17 +163,17 @@ export default function ManageApplications() {
       <div className=" flex flex-row gap-1">
 
         <div
-          className={`${sidebarOpen && !isView && applications.length > 0 ? 'w-2/6 max-sm:w-3/6 px-2 ' : 'w-0'
-            } bg-gray-100 top-0 right-0 relative duration-500`}
+          className={`${sidebarOpen && !isView && applications.length > 0 ? 'w-2/6 max-sm:w-full  max-sm:flex max-sm:justify-center max-sm:items-center max-sm:bg-opacity-80 max-md:z-40' : 'w-0'
+            } bg-[#4b4b29] h-screen text-white top-0 right-0 max-sm:left-0 relative max-sm:fixed duration-500`}
         >
-          <div className={`bg-gray-100 p-4 ${(!sidebarOpen || isView || applications.length === 0) && 'invisible'}`}>
-            <h2 className="text-xl font-semibold mb-2">Projects</h2>
-            <div className="flex flex-col space-y-2">
+          <div className={`px-1 ${(!sidebarOpen || isView || applications.length === 0) && 'invisible'}`}>
+            <h2 className="text-3xl text-center font-semibold mb-8">Projects</h2>
+            <div className="flex flex-col">
               {uniqueTitles.map((title, index) => (
                 <button
                   key={index}
-                  className={`text-left py-2 px-4 w-full rounded bg-gray-200 ${clickedButtonindex === index ? 'bg-gray-400' : ''}`}
-                  onClick={() => handleProjectClick(title, index)}
+                  className={`text-left text-lg max-sm:border-y max-sm:border-solid max-sm:border-white hover:bg-[#272715] hover:border-2 py-2 px-2 w-full duration-300 ${clickedButtonindex === index ? 'bg-[#272715] border-2 font-semibold' : ''}`}
+                  onClick={() => {handleProjectClick(title, index); if (window.innerWidth < 640){toggleSidebar();}}}
                 >
                   {title}
                 </button>
@@ -177,8 +182,25 @@ export default function ManageApplications() {
           </div>
         </div>
 
-        <div className={`${sidebarOpen ? ' px-2 z-40 ' : ''
+        <div className={`${sidebarOpen ? ' px-2  ' : ''
           } pr-4 z-30 w-full `}>
+            <div className={`flex justify-between mb-4 ${sidebarOpen && window.innerWidth < 768  ? 'flex-col gap-3 mb-4':''} `}>
+                    {/* Dropdown filter */}
+                    <h2 className="text-xl font-semibold mb-4">{uniqueTitles[clickedButtonindex]}</h2>
+
+                      <select
+                        className="p-2 border-2 border-gray-300 rounded shadow-md"
+                        value={filterCGPA}
+                        onChange={handleFilterChange}
+                      >
+                        <option value="">Select CGPA Filter</option>
+                        <option value="9">Above 9</option>
+                        <option value="8">Above 8</option>
+                        <option value="7">Above 7</option>
+                        <option value="6">Above 6</option>
+                        {/* Add more options as needed */}
+                      </select>
+                  </div>
 
           {selectedApplications.length === 0 ? (
             <h2 className='w-full text-6xl text-slate-300 text-center'>No Applications made</h2>
@@ -188,13 +210,13 @@ export default function ManageApplications() {
                 <div>
                   <div className="border border-gray-200 rounded-lg shadow-md p-4">
                     <div className='flex flex-row justify-between'>
-                      <h2 className="text-xl font-semibold mb-4">{viewApplication.projectName}</h2>
+                    <h3 className="text-lg font-semibold mb-2">{viewApplication.teamcode}</h3>
+
                       <button onClick={handleViewCancel} className='top-2 right-2 text-gray-600 hover:text-gray-800'>
                         <IoIosClose size={32} />
                       </button>
                     </div>
 
-                    <h3 className="text-lg font-semibold mb-2">{viewApplication.teamcode}</h3>
                     <div className='grid grid-cols-2' style={{ maxWidth: '300px' }}>
                       <h2 className='text-xl font-bold'>CGPA</h2>
                       <h2 className='text-xl font-bold'>Spec.</h2>
@@ -217,22 +239,7 @@ export default function ManageApplications() {
               ) : (
                 <div>
 
-                  <div className={`flex justify-between mb-4 ${sidebarOpen && window.innerWidth < 768  ? 'flex-col gap-3 mb-4':''} `}>
-                  <h1 className='text-xl font-semibold '>{selectedApplications[0].projectName}</h1>
-                    {/* Dropdown filter */}
-                      <select
-                        className="p-2 border-2 border-gray-300 rounded shadow-md"
-                        value={filterCGPA}
-                        onChange={handleFilterChange}
-                      >
-                        <option value="">Select CGPA Filter</option>
-                        <option value="9">Above 9</option>
-                        <option value="8">Above 8</option>
-                        <option value="7">Above 7</option>
-                        <option value="6">Above 6</option>
-                        {/* Add more options as needed */}
-                      </select>
-                  </div>
+                  
                   {selectedApplications.map(application => !application.isrejected && areAllCGPAsAboveMark(application) && (
                     <div key={application.id} className=' flex flex-row justify-between max-w-200px border-2 border-solid bg-white shadow-md hover:shadow-lg hover:shadow-teal-100 rounded-md overflow-hidden pb-2 pl-4'>
                       <div className='flex-col items-center pl-2 w-4/6 md:w-5/6 my-1'>  
@@ -261,8 +268,6 @@ export default function ManageApplications() {
           ))}
         </div>
       </div>
-
-      
     </div>
   );
 }
