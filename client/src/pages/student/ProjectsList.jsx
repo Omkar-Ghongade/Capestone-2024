@@ -389,20 +389,10 @@ export default function ProjectsList() {
         </button>
 
         <div className=" flex flex-row gap-1">
-          {window.innerWidth < 640 ? (
-          <div
-            className={`${
-              FilterbarOpen && !isApply ? "fixed top-0 left-0 w-full h-full flex justify-center items-center bg-gray-200 bg-opacity-80 z-40" : "w-0"
-            }  duration-300`}
-          >
-            <div className="bg-[#272715] text-white rounded-md">
-            <ProjectFilter handleFilterChange={handleFilterChange} /></div>
-          </div>):(
-
             <div
             className={`${
-              FilterbarOpen && !isApply ? "w-2/6 lg:w-72 px-2 z-40 bg-opacity-50" : "w-0"
-            }  top-0 right-0 relative duration-500`}
+              FilterbarOpen && !isApply ? "w-2/6 max-sm:w-full max-sm:h-full max-sm:flex max-sm:justify-center max-sm:items-center max-sm:bg-gray-100 max-sm:bg-opacity-80  max-md:z-40 lg:w-72 px-2 z-40 bg-opacity-50" : "w-0"
+            }  top-0 right-0 max-sm:left-0 relative max-sm:fixed duration-500`}
           >
 
             <input
@@ -414,11 +404,12 @@ export default function ProjectsList() {
   onChange={handleSearchInputChange}
 />
 
-            {/* Responsive Filterbar */}
+            <div className="max-sm:rounded-md max-sm:bg-[#272715] max-sm:text-white">
             <ProjectFilter handleFilterChange={handleFilterChange} />
+            </div>
           </div>
 
-          )}
+          
 
           <div
             className={`${
