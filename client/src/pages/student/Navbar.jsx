@@ -12,17 +12,17 @@ const Navbar = () => {
 
     return (
         <div className='shadow-md w-full fixed top-0 left-0 z-50 bg-[#272715]' style={{ fontFamily: 'Helvetica, Arial, sans-serif' }}>
-            <div className='md:flex items-center justify-between bg-[#272715] py-3 h-16 md:px-10 px-7'>
+            <div className='md:flex items-center justify-between h-16 md:px-10 px-7 m-0'>
 
-                <div className='flex flex-row justify-between pt-1 relative'>
-                    <a href="/" className='block p-2 transform transition duration-200 ease-in-out'>
-                        <div className='font-bold text-2xl cursor-pointer flex items-center gap-1 text-white'>
-                            <BookOpenIcon className='w-7 h-7 text-white'/>
+                <div className=' flex flex-row justify-between'>
+                    <a href="/">
+                        <div className='max-md:pt-4 font-bold text-2xl text-white cursor-pointer flex items-center gap-1'>
+                            <BookOpenIcon className='w-7 h-7 '/>
                             <span>Capstone</span>
                         </div>
                     </a>
                     {/* Menu icon */}
-                    <div onClick={() => setOpen(!open)} className=' right-8 top-6 cursor-pointer md:hidden w-7 h-7'>
+                    <div onClick={() => setOpen(!open)} className='absolute text-white right-8 top-5 cursor-pointer md:hidden w-7 h-7'>
                         {open ? <XMarkIcon className="text-white" /> : <Bars3BottomRightIcon className="text-white" />}
                     </div>
                 </div>

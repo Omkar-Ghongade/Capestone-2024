@@ -68,8 +68,8 @@ const MainHome = () => {
 
   return (
     <div className=''>
-      <div><img className="w-full h-fit" src="https://student.srmap.edu.in/srmapstudentcorner/resources/images/Ariel-View-1.jpg" alt="mountain" /></div>
-    <div className="absolute mt-4 max-sm:mt-16 top-0 left-0 w-full h-full flex justify-center items-center " style={{ fontFamily: 'Helvetica, Arial, sans-serif', textAlign: 'center' }}>
+      <div className='max-sm:hidden'><img className="w-full h-screen " src="https://student.srmap.edu.in/srmapstudentcorner/resources/images/Ariel-View-1.jpg" alt="mountain" /></div>
+    <div className="absolute mt-3 top-0 max-sm:top-4 left-0 w-full h-full flex justify-center items-center " style={{ fontFamily: 'Helvetica, Arial, sans-serif', textAlign: 'center' }}>
       {studentData && (
         <div className=" rounded-lg p-6 bg-[#4D4D29] bg-opacity-95 shadow-md lg:w-7/12 md:w-3/4 w-11/12 relative">
           <div className="rounded-full overflow-hidden mx-auto w-32 md:w-40 h-32 md:h-40 absolute top-[-64px] md:top-[-80px] left-1/2 transform -translate-x-1/2">

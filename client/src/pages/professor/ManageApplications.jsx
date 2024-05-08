@@ -49,7 +49,7 @@ export default function ManageApplications() {
       setApplications(data);
       const titles = data.map(application => application.projectName);
       setUniqueTitles([...new Set(titles)]);
-      
+      handleProjectClick(uniqueTitles[0],0);
     } catch (err) {
       console.error(err);
     }
@@ -168,7 +168,7 @@ export default function ManageApplications() {
         >
           <div className={`px-1 ${(!sidebarOpen || isView || applications.length === 0) && 'invisible'}`}>
             <h2 className="text-3xl text-center font-semibold mb-8">Projects</h2>
-            <div className="flex flex-col">
+            <div className="flex flex-col max-sm:border-2 max-sm:border-solid max-sm:bg-[#272715] max-sm:rounded-md">
               {uniqueTitles.map((title, index) => (
                 <button
                   key={index}
@@ -184,10 +184,9 @@ export default function ManageApplications() {
 
         <div className={`${sidebarOpen ? ' px-2  ' : ''
           } pr-4 z-30 w-full `}>
-            <div className={`flex justify-between mb-4 ${sidebarOpen && window.innerWidth < 768  ? 'flex-col gap-3 mb-4':''} `}>
+            <div className='flex justify-between mb-4 max-sm:flex-col max-sm:gap-3 max-sm:mb-4'>
                     {/* Dropdown filter */}
                     <h2 className="text-xl font-semibold mb-4">{uniqueTitles[clickedButtonindex]}</h2>
-
                       <select
                         className="p-2 border-2 border-gray-300 rounded shadow-md"
                         value={filterCGPA}
