@@ -124,10 +124,10 @@ export default function ViewReports() {
 
       <div className="flex flex-row gap-1">
         <div
-          className={`${sidebarOpen && !isView ? 'w-2/6 max-sm:w-full  max-sm:flex max-sm:justify-center max-sm:items-center max-sm:bg-opacity-80 max-md:z-40' : 'w-0'
+          className={`${sidebarOpen ? 'w-2/6 max-sm:w-full  max-sm:flex max-sm:justify-center max-sm:items-center max-sm:bg-opacity-80 max-md:z-40' : 'w-0'
         } bg-[#4b4b29] h-screen text-white top-0 right-0 max-sm:left-0 relative max-sm:fixed duration-500`}
         >
-          <div className={` p-4 ${(!sidebarOpen || isView) && 'invisible'}`}>
+          <div className={` p-4 ${(!sidebarOpen) && 'invisible'}`}>
             <h2 className="text-3xl text-center font-semibold mb-2">Projects</h2>
             <div className="flex flex-col max-sm:border-2 max-sm:border-solid max-sm:bg-[#272715] max-sm:rounded-md">
               {uniqueTitles.map((title, index) => (
@@ -145,11 +145,10 @@ export default function ViewReports() {
 
         <div className={`${sidebarOpen ? 'px-2 z-40 ' : ''
           } pr-4 z-30 w-full `}>
-          {/* <h2 className="text-xl font-semibold mb-4">{uniqueTitles[clickedButtonindex]}</h2> */}
+          <h2 className="text-xl text-center font-semibold mt-4 mb-4">{uniqueTitles[clickedButtonindex]}</h2>
 
-          { reports.length === 0 ? (<h2 className='w-full text-6xl text-slate-300 text-center'>No Application has been Accepted</h2>):
-          
-          ( selectedReports.length > 0 ? (
+          {           
+           selectedReports.length > 0 ? (
             <div>
               <div>
                 <div className="border border-gray-200 rounded-lg shadow-md p-4">
@@ -179,8 +178,8 @@ export default function ViewReports() {
               </div>
             </div>
           ) : (
-            <div className="w-full text-6xl text-slate-300 text-center">No application is accepted for this project.</div>
-          ))}
+            <div className="w-full text-6xl text-slate-300 text-center">No application is accepted for this project</div>
+          )}
         </div>
       </div>
     </div>
