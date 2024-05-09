@@ -153,7 +153,7 @@ export default function ManageApplications() {
   };
 
   return (
-    <div className='main-content mb-4'>
+    <div className='main-content mb-4' style={{ fontFamily: 'Helvetica, Arial, sans-serif' }}>
       <button
         className="fixed md:hidden bottom-10 right-8 bg-gray-700 rounded-full drop-shadow-lg flex justify-center items-center text-white text-4xl hover:bg-teal-800 z-50"
         onClick={toggleSidebar}>
@@ -186,9 +186,9 @@ export default function ManageApplications() {
 
         <div className={`${sidebarOpen ? ' pl-2 pr-4 ' : ''
           } mt-2 z-30 w-full `}>
-            <div className='flex justify-between mb-4 max-sm:flex-col max-sm:gap-3 max-sm:mb-4'>
+            {(!(!sidebarOpen || isView)) && <div className='flex justify-between mb-4 max-sm:flex-col max-sm:gap-3 max-sm:mb-4'>
                     {/* Dropdown filter */}
-                    <h2 className="text-xl font-semibold mb-4">{uniqueTitles[clickedButtonindex]}</h2>
+                    {/* <h2 className="text-xl font-semibold mb-4">{uniqueTitles[clickedButtonindex]}</h2> */}
                       <select
                         className="p-2 border-2 border-gray-300 rounded shadow-md"
                         value={filterCGPA}
@@ -201,7 +201,7 @@ export default function ManageApplications() {
                         <option value="6">Above 6</option>
                         {/* Add more options as needed */}
                       </select>
-                  </div>
+            </div>}
 
           {selectedApplications.length === 0 ? (
             <h2 className='w-full text-6xl text-slate-300 text-center'>No Applications made</h2>
@@ -231,8 +231,8 @@ export default function ManageApplications() {
                     <p className="my-3 text-xl"><b>Reason:</b> {viewApplication.applyReason}</p>
                     {(viewApplication.isaccepted === viewApplication.isrejected) ? (
                       <div className="flex">
-                        <button onClick={() => rejectApplication(viewApplication.projectName, viewApplication.teamcode)} className="bg-blue-500 text-white font-semibold py-2 px-4 rounded hover:bg-blue-700">Reject</button>
-                        <button onClick={() => acceptApplication(viewApplication.projectName, viewApplication.teamcode)} className="bg-red-500 text-white font-semibold py-2 px-4 rounded hover:bg-red-700 ml-4">Accept</button>
+                        <button onClick={() => rejectApplication(viewApplication.projectName, viewApplication.teamcode)} className="bg-[#535353] hover:bg-[#535353] text-white font-semibold py-2 px-4 rounded">Reject</button>
+                        <button onClick={() => acceptApplication(viewApplication.projectName, viewApplication.teamcode)} className="bg-[#4D4D29] text-white font-semibold py-2 px-4 rounded ml-4">Accept</button>
                       </div>
                     ) : (<h1>Already Accepted</h1>)}
                   </div>
@@ -257,7 +257,7 @@ export default function ManageApplications() {
                         </div>
                       </div>
                       <div className=' w-2/6 md:w-1/6 flex items-center max-sm:pr-32'>
-                        <button onClick={() => handleViewClick(application)} className='h-8 w-auto text-center bg-blue-500 text-white font-bold px-4 rounded hover:bg-blue-700'>View</button>
+                        <button onClick={() => handleViewClick(application)} className='h-8 w-auto text-center text-white font-bold px-4 rounded bg-[#4D4D29] hover:bg-[#535353]'>View</button>
                       </div>
                     </div>
                   ))}
