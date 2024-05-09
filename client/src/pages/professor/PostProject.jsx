@@ -153,7 +153,7 @@ export default function PostProject() {
             />
           </div>
         </div>
-        <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+        <button type="submit" className=" bg-[#272715] text-white px-4 py-2 rounded hover:bg-blue-600">
           Post Project
         </button>
         {errorMessage && <div className="text-red-500  my-4">{errorMessage}</div>}

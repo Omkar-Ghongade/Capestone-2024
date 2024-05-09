@@ -81,6 +81,8 @@ export default function ManageApplications() {
     console.log(filteredApplications); // Check what is being filtered
     setSelectedApplications(filteredApplications);
     setClickedButtonindex(index);
+    setIsView(false);
+    setFilterCGPA("");
     console.log(index); // Verify index is as expected
 };
 
@@ -165,10 +167,10 @@ export default function ManageApplications() {
       <div className=" flex flex-row gap-1">
 
         <div
-          className={`${sidebarOpen && !isView ? 'w-2/6 max-sm:w-full  max-sm:flex max-sm:justify-center max-sm:items-center max-sm:bg-opacity-80 max-md:z-40' : 'w-0'
+          className={`${sidebarOpen ? 'w-2/6 max-sm:w-full  max-sm:flex max-sm:justify-center max-sm:items-center max-sm:bg-opacity-80 max-md:z-40' : 'w-0'
             } bg-[#4b4b29] h-screen text-white top-0 right-0 max-sm:left-0 relative max-sm:fixed duration-500`}
         >
-          <div className={`px-1 ${(!sidebarOpen || isView) && 'invisible'}`}>
+          <div className={`px-1 ${(!sidebarOpen ) && 'invisible'}`}>
             <h2 className="text-3xl text-center font-semibold mt-3 mb-6">Projects</h2>
             <div className="flex flex-col max-sm:border-2 max-sm:border-solid max-sm:bg-[#272715] max-sm:rounded-md">
               {uniqueTitles.map((title, index) => (
@@ -186,9 +188,10 @@ export default function ManageApplications() {
 
         <div className={`${sidebarOpen ? ' pl-2 pr-4 ' : ''
           } mt-2 z-30 w-full `}>
-            {(!(!sidebarOpen || isView)) && <div className='flex justify-between mb-4 max-sm:flex-col max-sm:gap-3 max-sm:mb-4'>
+            <h2 className="text-xl font-semibold mb-4 text-center">{uniqueTitles[clickedButtonindex]}</h2>
+
+            {(!(isView)) && <div className='flex justify-end mb-4 max-sm:flex-col max-sm:gap-3 max-sm:mb-4'>
                     {/* Dropdown filter */}
-                    {/* <h2 className="text-xl font-semibold mb-4">{uniqueTitles[clickedButtonindex]}</h2> */}
                       <select
                         className="p-2 border-2 border-gray-300 rounded shadow-md"
                         value={filterCGPA}
@@ -242,16 +245,16 @@ export default function ManageApplications() {
 
                   
                   {selectedApplications.map(application => !application.isrejected && areAllCGPAsAboveMark(application) && (
-                    <div key={application.id} className=' flex flex-row justify-between max-w-200px border-2 border-solid bg-white shadow-md hover:shadow-lg hover:shadow-teal-100 rounded-md overflow-hidden pb-2 pl-4'>
+                    <div key={application.id} className=' flex flex-row justify-between max-w-200px border-2 border-solid bg-white shadow-sm hover:shadow-md hover:shadow-teal-100 rounded-md overflow-hidden pb-2 pl-4'>
                       <div className='flex-col items-center pl-2 w-4/6 md:w-5/6 my-1'>  
                         <div className='mr-2 font-bold'>Team Code : {application.teamcode} </div>
-                        <div className='grid grid-cols-2' style={{ maxWidth: '300px' }}>
-                          <h2 className='text-xl font-bold'>CGPA</h2>
-                          <h2 className='text-xl font-bold'>Spec.</h2>
+                        <div className='ml-1 grid grid-cols-2' style={{ maxWidth: '250px' }}>
+                          <h2 className='text-lg font-bold'>CGPA</h2>
+                          <h2 className='text-lg font-bold'>Spec.</h2>
                           {application.cgpa.map((cgpa, index) => (
                             <React.Fragment key={cgpa}>
-                              <h2 className='text-xl'>{cgpa}</h2>
-                              <h2 className='text-xl'>{application.specialization[index]}</h2>
+                              <h2 className='text-lg'>{cgpa}</h2>
+                              <h2 className='text-lg'>{application.specialization[index]}</h2>
                             </React.Fragment>
                           ))}
                         </div>

@@ -136,7 +136,7 @@ export default function MyProjects() {
         <p className='text-6xl text-slate-300 self-items-center'>No projects applied</p>
       ) : (
         projects.map((project, index) => (
-          <div key={index} className="border-solid border-2 bg-white flex flex-col rounded-lg shadow-md hover:shadow-lg p-4 w-full">
+          <div key={index} className="border-solid border-2 bg-white flex flex-col rounded-lg hover:shadow-sm p-4 w-full">
             {edit && project.name === editProject.name ? (
               <div>
                 <div className="main-content w-full mx-auto p-6 bg-white rounded-lg shadow-xl">
@@ -220,7 +220,7 @@ export default function MyProjects() {
                       </button>
                       <button
                         onClick={() => handleDelete(project.name)}
-                        className='btn mt-2 h-6 w-16 bg-red-500  text-white md:ml-8 font-semibold px-2 rounded duration-300 md:static'
+                        className='btn mt-2 h-6 w-16 bg-red-700  text-white md:ml-8 font-semibold px-2 rounded duration-300 md:static'
                       >
                         Delete
                       </button>
