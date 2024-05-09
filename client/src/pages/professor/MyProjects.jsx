@@ -132,16 +132,15 @@ export default function MyProjects() {
 
   return (
     <div className={`${projects.length === 0 ? 'h-screen' : ''} main-content relative flex flex-col gap-2 items-center bg-white shadow-md rounded-lg p-6 w-screen `}>
-      <h2 className="text-2xl font-bold mb-4">My Projects</h2>
       {projects.length === 0 ? (
         <p className='text-6xl text-slate-300 self-items-center'>No projects applied</p>
       ) : (
         projects.map((project, index) => (
-          <div key={index} className="border-solid border-2 bg-white flex flex-col rounded-lg shadow-md hover:shadow-lg hover:bg-teal-50 p-4 w-full">
+          <div key={index} className="border-solid border-2 bg-white flex flex-col rounded-lg shadow-md hover:shadow-lg p-4 w-full">
             {edit && project.name === editProject.name ? (
               <div>
                 <div className="main-content w-full mx-auto p-6 bg-white rounded-lg shadow-xl">
-                  <h2 className="text-2xl font-bold mb-4">Post a Project</h2>
+                  <h2 className="text-2xl font-bold mb-4">Edit Project</h2>
                   <form onSubmit={handleSave}>
                     <div className="mb-4">
                       <label className="block mb-1">Name of Project:</label>
@@ -200,7 +199,7 @@ export default function MyProjects() {
                         />
                       </div>
                     </div>
-                    <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+                    <button type="submit" className=" bg-[#4D4D29] hover:bg-[#535353] text-white px-4 py-2 rounded ">
                       Save
                     </button>
                     {errorMessage && <div className="text-red-500  my-4">{errorMessage}</div>}
@@ -215,13 +214,13 @@ export default function MyProjects() {
                     <div>
                       <button
                         onClick={() => handleEdit(project)}
-                        className='btn mt-2 h-6 w-16 bg-blue-500 hover:bg-blue-700 text-white md:ml-8 font-semibold px-2 rounded duration-300 md:static'
+                        className=' bg-[#4D4D29] hover:bg-[#535353] btn mt-2 h-6 w-16 text-white md:ml-8 font-semibold px-2 rounded duration-300 md:static'
                       >
                         Edit
                       </button>
                       <button
                         onClick={() => handleDelete(project.name)}
-                        className='btn mt-2 h-6 w-16 bg-red-500 hover:bg-red-700 text-white md:ml-8 font-semibold px-2 rounded duration-300 md:static'
+                        className='btn mt-2 h-6 w-16 bg-red-500  text-white md:ml-8 font-semibold px-2 rounded duration-300 md:static'
                       >
                         Delete
                       </button>
