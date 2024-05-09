@@ -113,7 +113,7 @@ export default function ViewReports() {
   }
 
   return (
-    <div className='main-content mb-4'>
+    <div className='main-content mb-4' style={{ fontFamily: 'Helvetica, Arial, sans-serif' }}>
       <button
         className="fixed md:hidden bottom-10 right-8 bg-gray-700 rounded-full drop-shadow-lg flex justify-center items-center text-white text-4xl hover:bg-teal-800 z-50"
         onClick={toggleSidebar}>
@@ -157,19 +157,21 @@ export default function ViewReports() {
                     <h2 className="text-xl font-semibold mb-4">{viewReport.projectName}</h2>
                   </div>
                 
-                  <h3 className="text-lg font-semibold mb-2">{viewReport.teamcode}</h3>
+                  <h3 className="text-lg-2"><b>Team Code : </b>{viewReport.teamcode}</h3>
+                  <br></br>
                   <p className="mb-2">{viewReport.applyReason}</p>
                 
                   <div>
                     <h2 className="text-2xl font-bold mt-4">Reports</h2>
-                    <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6  gap-2 ">
+                    <div className="flex flex-wrap pt-3">
                       {selectedReports[0].reports.map((report, index) => (
-                        <div key={index} className="bg-white rounded-lg shadow-md mb-2 border-solid border-2 ">
+                        <div key={index} className=" sm:w-1/2 md:w-2/12  px-2 mb-4">
+                        <div className="bg-[#4D4D29] text-white rounded-lg shadow-md mb-2 border-solid border-2 p-2">
                           <a href={report} target="_blank" rel="noreferrer">
-                            <img src="https://logodownload.org/wp-content/uploads/2021/05/adobe-acrobat-reader-logo-0-1536x1536.png" alt="Report Placeholder" className=" h-48 rounded-t-lg w-full object-cover mb-1" />
                             <p className='text-center'>Report {index + 1}</p>
                           </a>
                         </div>
+                      </div>
                       ))}
                     </div>
                   </div>
