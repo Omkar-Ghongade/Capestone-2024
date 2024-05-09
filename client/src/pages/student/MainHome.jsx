@@ -24,9 +24,11 @@ const MainHome = () => {
           body: JSON.stringify({ emailid: user.email, url: user.photoURL }),
         });
         const data = await res.json();
-        localStorage.setItem('rollNumber', data.rollNumber);
-        setStudentData(data);
-        fetchStudentTeam();
+        if(data.emailid === user.email){
+          localStorage.setItem('rollNumber', data.rollNumber);
+          setStudentData(data);
+          fetchStudentTeam();
+        }
       } catch (error) {
         console.log(error);
       }
