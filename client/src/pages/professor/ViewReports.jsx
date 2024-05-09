@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { FaFilter } from "react-icons/fa";
-import { IoIosClose } from "react-icons/io";
 import "./Navbar.css";
 
 export default function ViewReports() {
@@ -13,8 +12,6 @@ export default function ViewReports() {
   const [isView, setIsView] = useState(false);
   const api = import.meta.env.VITE_backend;
 
-
-
   useEffect(() => {
     fetchReportsFromBackend();
   }, []);
@@ -24,28 +21,28 @@ export default function ViewReports() {
   }, []);
 
   useEffect(() => {
-    const titles = reports.map(application => application.projectName);
+    console.log(reports);
+    const titles = uniqueTitles.map(application => application.projectName);
     handleProjectClick(titles[0],0);
   },[reports]);
 
   const fetchReportsFromBackend = async () => {
-    try{
-        const name=localStorage.getItem('professorName');
+    try {
+        const name = localStorage.getItem('professorName');
         const res = await fetch(`${api}/api/project/getreportlink`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({name:name}),
+          body: JSON.stringify({name: name}),
         });
         const data = await res.json();
         console.log(data);
         setReports(data);
-    }catch(err){
+    } catch (err) {
         console.log(err);
     }
   }
-
 
   const fetchProjecttitles = async () => {
     try {
@@ -64,9 +61,6 @@ export default function ViewReports() {
     }
   };
 
-
-
-
   useEffect(() => {
     const handleResize = () => {
       const screenWidth = window.innerWidth;
@@ -78,18 +72,23 @@ export default function ViewReports() {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-
   const toggleSidebar = () => {
     setSidebarOpen(!sidebarOpen);
   };
 
-  const handleProjectClick = (title,index) => {
+  const handleProjectClick = (title, index) => {
+    console.log(title);
+    console.log(index);
     const filteredReports = reports.filter(app => app.projectName === title);
+    console.log(reports)
+    console.log(filteredReports);
     setselectedReports(filteredReports);
+    setViewReport(filteredReports[0]);
     setClickedButtonindex(index);
   };
 
   const handleViewClick = async (report) => {
+    console.log(report);
     setIsView(true);
     setViewReport(report);
     console.log(viewReport);
@@ -113,8 +112,6 @@ export default function ViewReports() {
     }
   }
 
-  
-
   return (
     <div className='main-content mb-4'>
       <button
@@ -125,8 +122,7 @@ export default function ViewReports() {
         </div>
       </button>
 
-      <div className=" flex flex-row gap-1">
-
+      <div className="flex flex-row gap-1">
         <div
           className={`${sidebarOpen && !isView ? 'w-2/6 max-sm:w-full  max-sm:flex max-sm:justify-center max-sm:items-center max-sm:bg-opacity-80 max-md:z-40' : 'w-0'
         } bg-[#4b4b29] h-screen text-white top-0 right-0 max-sm:left-0 relative max-sm:fixed duration-500`}
@@ -149,64 +145,40 @@ export default function ViewReports() {
 
         <div className={`${sidebarOpen ? 'px-2 z-40 ' : ''
           } pr-4 z-30 w-full `}>
-          <h2 className="text-xl font-semibold mb-4">{uniqueTitles[clickedButtonindex]}</h2>
+          {/* <h2 className="text-xl font-semibold mb-4">{uniqueTitles[clickedButtonindex]}</h2> */}
 
           { reports.length === 0 ? (<h2 className='w-full text-6xl text-slate-300 text-center'>No Application has been Accepted</h2>):
           
           ( selectedReports.length > 0 ? (
             <div>
-              {isView ? (
-                <div>
+              <div>
                 <div className="border border-gray-200 rounded-lg shadow-md p-4">
                   <div className='flex flex-row justify-between'>
                     <h2 className="text-xl font-semibold mb-4">{viewReport.projectName}</h2>
-                    <button onClick={handleViewCancel} className='top-2 right-2 text-gray-600 hover:text-gray-800'>
-                      <IoIosClose size={32} />
-                    </button>
                   </div>
                 
                   <h3 className="text-lg font-semibold mb-2">{viewReport.teamcode}</h3>
                   <p className="mb-2">{viewReport.applyReason}</p>
                 
                   <div>
-              <h2 className="text-2xl font-bold mt-4">Reports</h2>
-              <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6  gap-2 ">
-                {selectedReports[0].reports.map((report, index) => (
-                  <div key={index} className="bg-white rounded-lg shadow-md mb-2 border-solid border-2 ">
-                    
-                    <a href={report} target="_blank" rel="noreferrer">
-                      <img src="https://logodownload.org/wp-content/uploads/2021/05/adobe-acrobat-reader-logo-0-1536x1536.png" alt="Report Placeholder" className=" h-48 rounded-t-lg w-full object-cover mb-1" />
-                      <p className='text-center'>Report {index + 1}</p>
-                    </a>
-                  </div>
-                ))}
-              </div>
-            </div>
-                </div>
-              </div>
-              ) : (
-                  <div>
-                  {selectedReports.map(report => report.isaccepted && (
-
-                  <div key={report.id} className=' flex flex-row max-w-200px border-2 border-solid bg-white shadow-md hover:shadow-lg hover:shadow-teal-100 rounded-md overflow-hidden pb-2'>
-                    <div className=' pl-2 w-5/6 my-1 '>
-                      <h2 className='text-left text-xl mb-1  font-bold'>{report.teamcode}</h2>
-                      <p className='text-left mb-2 text-gray-600 '>{report.applyReason}</p>
-                    </div>
-                    <div className=' w-1/6 flex justify-center items-center'>
-                    <button onClick={() => handleViewClick(report)} className='h-8 w-auto text-center bg-blue-500 text-white font-bold px-4 rounded hover:bg-blue-700'>View</button>
+                    <h2 className="text-2xl font-bold mt-4">Reports</h2>
+                    <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6  gap-2 ">
+                      {selectedReports[0].reports.map((report, index) => (
+                        <div key={index} className="bg-white rounded-lg shadow-md mb-2 border-solid border-2 ">
+                          <a href={report} target="_blank" rel="noreferrer">
+                            <img src="https://logodownload.org/wp-content/uploads/2021/05/adobe-acrobat-reader-logo-0-1536x1536.png" alt="Report Placeholder" className=" h-48 rounded-t-lg w-full object-cover mb-1" />
+                            <p className='text-center'>Report {index + 1}</p>
+                          </a>
+                        </div>
+                      ))}
                     </div>
                   </div>
-                  ))}
                 </div>
-              )}
+              </div>
             </div>
           ) : (
             <div className="w-full text-6xl text-slate-300 text-center">No application is accepted for this project.</div>
-          )
-        )
-          
-          }
+          ))}
         </div>
       </div>
     </div>

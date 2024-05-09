@@ -23,7 +23,7 @@ export default function ManageApplications() {
   }, []);
 
   useEffect(() => {
-    const titles = applications.map(application => application.projectName);
+    const titles = uniqueTitles.map(application => application.projectName);
     handleProjectClick(titles[0],0);
   },[applications]);
 
