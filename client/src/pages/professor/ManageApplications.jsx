@@ -207,7 +207,7 @@ export default function ManageApplications() {
             </div>}
 
           {selectedApplications.length === 0 ? (
-            <h2 className='w-full text-6xl text-slate-300 text-center'>No Applications made</h2>
+            <h2 className='w-full text-6xl text-slate-300 text-center'>No Applications made for this Project</h2>
           ) : (selectedApplications.length > 0 ? (
             <div>
               {isView ? (

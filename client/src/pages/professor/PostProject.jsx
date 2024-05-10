@@ -93,7 +93,7 @@ export default function PostProject() {
   };
 
   return (
-    <div className="main-content w-full mx-auto p-6 bg-white rounded-lg shadow-xl">
+    <div className="main-content w-full mx-auto p-6 bg-white rounded-lg shadow-xl" style={{ fontFamily: 'Helvetica, Arial, sans-serif' }} >
       <h2 className="text-2xl font-bold mb-4">Post a Project</h2>
       <form onSubmit={handleSubmit}>
         <div className="mb-4">

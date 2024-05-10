@@ -35,7 +35,7 @@ const Navbar= () => {
 
 
     return (
-        <div className='shadow-md w-full bg-[#272715] fixed top-0 left-0 z-50'>
+        <div className='shadow-md w-full bg-[#272715] fixed top-0 left-0 z-50' style={{ fontFamily: 'Helvetica, Arial, sans-serif' }}>
            <div className='md:flex items-center justify-between h-16 md:px-10 px-7 m-0'>
             {/* logo section */}
             <a href="/">
