@@ -193,7 +193,7 @@ export default function ManageApplications() {
             {(!(isView)) && <div className='flex justify-end mb-4 max-sm:flex-col max-sm:gap-3 max-sm:mb-4'>
                     {/* Dropdown filter */}
                       <select
-                        className="p-2 border-2 border-gray-300 rounded shadow-md"
+                        className="p-2 border-2 border-gray-300 rounded shadow-md cursor-pointer"
                         value={filterCGPA}
                         onChange={handleFilterChange}
                       >
@@ -247,14 +247,14 @@ export default function ManageApplications() {
                   {selectedApplications.map(application => !application.isrejected && areAllCGPAsAboveMark(application) && (
                     <div key={application.id} className=' flex flex-row justify-between max-w-200px border-2 border-solid bg-white shadow-sm hover:shadow-md hover:shadow-teal-100 rounded-md overflow-hidden pb-2 pl-4'>
                       <div className='flex-col items-center pl-2 w-4/6 md:w-5/6 my-1'>  
-                        <div className='mr-2 font-bold'>Team Code : {application.teamcode} </div>
-                        <div className='ml-1 grid grid-cols-2' style={{ maxWidth: '250px' }}>
-                          <h2 className='text-lg font-bold'>CGPA</h2>
-                          <h2 className='text-lg font-bold'>Spec.</h2>
+                        <div className='mr-2 font-bold pb-2'>Team Code : {application.teamcode} </div>
+                        <div className='flex flex-row gap-1' style={{ maxWidth: '250px' }}>
+                          {/* <h2 className='text-lg font-bold'>CGPA</h2>
+                          <h2 className='text-lg font-bold'>Spec.</h2> */}
                           {application.cgpa.map((cgpa, index) => (
                             <React.Fragment key={cgpa}>
-                              <h2 className='text-lg'>{cgpa}</h2>
-                              <h2 className='text-lg'>{application.specialization[index]}</h2>
+                              <h2 className='rounded-full bg-gray-200 px-1 text-md mr-2 mb-2 w-fit'>{cgpa} {application.specialization[index]}</h2>
+                              {/* <h2 className='text-lg'></h2> */}
                             </React.Fragment>
                           ))}
                         </div>
