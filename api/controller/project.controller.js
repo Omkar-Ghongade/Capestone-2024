@@ -330,3 +330,34 @@ export const saveEditProject = async (req, res) => {
         res.status(404).json({message:err.message});
     }
 }
+
+export const getProjectSpecs = async (req, res) => {
+    try {
+        const projects = await project.find();  // Assuming 'project' is a model from Mongoose or similar ORM
+        let domainCount = 0;
+        let individualDomainCounts = {};
+
+        // Iterate over each project and update domain counts
+        projects.forEach(project => {
+            if (project.domains && Array.isArray(project.domains)) {
+                domainCount += project.domains.length;
+
+                // Count each individual domain
+                project.domains.forEach(domain => {
+                    if (individualDomainCounts[domain]) {
+                        individualDomainCounts[domain]++;
+                    } else {
+                        individualDomainCounts[domain] = 1;
+                    }
+                });
+            }
+        });
+
+        // Send the total count of domains and individual domain counts in the response
+        res.status(200).json(
+            individualDomainCounts
+        );
+    } catch (err) {
+        res.status(404).json({ message: err.message });
+    }
+}

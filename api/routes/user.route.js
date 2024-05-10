@@ -12,6 +12,7 @@ import { getallstudents } from '../controller/user.controller.js';
 import { deletestudent } from '../controller/user.controller.js';
 import { addstudent } from '../controller/user.controller.js';
 import { editstudent } from '../controller/user.controller.js';
+import { getalldetails } from '../controller/user.controller.js';
 import multer from 'multer';
 
 const router = express.Router();
@@ -31,5 +32,6 @@ router.post('/getallstudents',getallstudents);
 router.post('/deletestudent',deletestudent);
 router.post('/addstudent',addstudent);
 router.post('/editstudent',editstudent);
+router.get('/getalldetails',getalldetails);
 
 export default router;

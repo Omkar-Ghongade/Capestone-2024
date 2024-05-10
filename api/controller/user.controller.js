@@ -1,7 +1,11 @@
 import user from "../models/user.models.js";
 import team from "../models/team.models.js";
-import Finalproject from '../models/finalproject.models.js';
 import studentdata from "../models/student.models.js";
+import professordata from '../models/professor.models.js';
+import projectdata from '../models/project.models.js';
+import Finalproject from '../models/finalproject.models.js';
+import Appliedproject from '../models/applied.project.models.js';
+import teamdata from '../models/team.models.js';
 import jwt from 'jsonwebtoken';
 import xlsx from 'xlsx';
 
@@ -177,6 +181,27 @@ export const addstudent = async (req, res) => {
         console.log(newUser);
         newUser.save();
         res.status(200).json({message:"User added successfully"});
+    }catch(err){
+        res.status(404).json({message:err.message});
+    }
+}
+
+export const getalldetails = async (req, res) => {
+    try{
+        const Students = await studentdata.find();
+        const Professors = await professordata.find();
+        const Projects = await projectdata.find();
+        const Teams = await teamdata.find();
+        const FinalProjects = await Finalproject.find();
+        const AppliedProjects = await Appliedproject.find();
+        res.status(200).json({
+            Students:Students.length,
+            Professors:Professors.length,
+            Projects:Projects.length,
+            Teams:Teams.length,
+            FinalProjects:FinalProjects.length,
+            AppliedProjects:AppliedProjects.length
+        });
     }catch(err){
         res.status(404).json({message:err.message});
     }

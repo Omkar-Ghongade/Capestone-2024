@@ -1,5 +1,6 @@
 import team from "../models/team.models.js";
 import studentdata from '../models/student.models.js';
+import Finalproject from "../models/finalproject.models.js";
 
 function generateRandomString(length) {
     let result = '';
@@ -97,6 +98,21 @@ export const teamgraph = async (req, res) => {
             studentsNotInTeams: studentsNotInTeams
         });
     } catch(err) {
+        res.status(404).json({ message: err.message });
+    }
+}
+
+export const teamprojectgraph = async (req, res) => {
+    try{
+        const teams = await team.find();
+        const projects = await Finalproject.find();
+        const teaminProject=projects.length;
+        const teamsNotInProject=teams.length-projects.length;
+        res.status(200).json({
+            teamsinProject:teaminProject,
+            teamsNotInProject:teamsNotInProject
+        });
+    }catch(err){
         res.status(404).json({ message: err.message });
     }
 }
