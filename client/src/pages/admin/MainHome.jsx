@@ -2,98 +2,81 @@ import React, { useEffect, useState } from 'react';
 import BarChart from './charts/barChart';
 import PieChart from './charts/pieChart';
 
-
-
 export default function MainHome() {
   const [graphData, setGraphData] = useState(null);
   const [projectGraphData, setProjectGraphData] = useState(null);
   const [domainData, setDomainData] = useState(null);
+  const [details, setDetails] = useState(null);  // Initialize as null
 
   const api = import.meta.env.VITE_backend;
 
   useEffect(() => {
     teamgraph();
-  }, []);
-
-  useEffect(() => {
     teamprojectgraph();
-  }, []);
-
-  useEffect(() => {
     projectdomains();
+    getdetails();
   }, []);
 
   const teamgraph = async () => {
-    try {
-      const res = await fetch(`${api}/api/team/teamgraph`, {
-        method: 'GET',
-        headers: {}
-      });
-
-      const data = await res.json();
-      console.log(data);
-      setGraphData(data); // Set the data to state
-
-    } catch (err) {
-      console.log(err.message);
-    }
+    const res = await fetch(`${api}/api/team/teamgraph`);
+    const data = await res.json();
+    setGraphData(data);
   };
 
   const teamprojectgraph = async () => {
-    try {
-      const res = await fetch(`${api}/api/team/teamprojectgraph`, {
-        method: 'GET',
-        headers: {}
-      });
-
-      const data = await res.json();
-      console.log(data);
-      setProjectGraphData(data); // Set the data to state
-    } catch (err) {
-      console.log(err.message);
-    }
+    const res = await fetch(`${api}/api/team/teamprojectgraph`);
+    const data = await res.json();
+    setProjectGraphData(data);
   };
 
   const projectdomains = async () => {
-    try{
-      const res = await fetch(`${api}/api/project/getprojectspecs`,{
-        method: 'POST',
-        headers: {}
-      });
+    const res = await fetch(`${api}/api/project/getprojectspecs`, { method: 'POST' });
+    const data = await res.json();
+    setDomainData(data);
+  };
 
-      const data = await res.json();
-      console.log(data);
-      setDomainData(data);
-    }catch(err){
-      console.log(err.message);
-    }
-  }
+  const getdetails = async () => {
+    const res = await fetch(`${api}/api/auth/getalldetails`);
+    const data = await res.json();
+    setDetails(data);
+  };
 
+  const renderTable = () => {
+    if (!details) return null;  // Ensure details is not null before proceeding
+
+    const detailEntries = Object.entries(details);  // Convert details object to an array of entries
+    return (
+      <table className="w-full border-collapse">
+        <thead>
+          <tr className="bg-gray-200">
+            <th className="border px-4 py-2">Attribute</th>
+            <th className="border px-4 py-2">Count</th>
+          </tr>
+        </thead>
+        <tbody>
+          {detailEntries.map(([key, value], index) => (
+            <tr key={key} className={`bg-${index % 2 === 0 ? 'gray-100' : 'white'}`}>
+              <td className="border px-4 py-2">{key}</td>
+              <td className="border px-4 py-2">{value}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    );
+  };
 
   return (
-    <div style={{ fontFamily: 'Helvetica, Arial, sans-serif' }}>
-      <div className='main-content' style={{ display: 'flex', height: '100vh' }} >
-        <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
-          <div >
-            <h1>Team </h1>
-            {graphData && <BarChart graphData={graphData} />}
-          </div>
-          <div>
-            <h2>Student Details</h2>
-            {/* Content for the lower student section */}
-            {projectGraphData && <BarChart graphData={projectGraphData} />}
-          </div>
+    <div className="main-content font-sans flex h-screen">
+      <div className="flex-1 flex flex-col">
+        <div>{graphData && <BarChart graphData={graphData} />}</div>
+        <div>{projectGraphData && <BarChart graphData={projectGraphData} />}</div>
+      </div>
+      <div className="flex-1 flex flex-col">
+        <div className="flex-1 p-5">
+          {domainData && <PieChart graphData={domainData} />}
         </div>
-        <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
-          <div style={{ flex: 1, padding: '20px'}}>
-            <h1>Professor</h1>
-            {/* Content for the upper professor section */}
-            {domainData && <PieChart graphData={domainData} />}
-          </div>
-          <div style={{ flex: 1, padding: '20px' }}>
-            <h2>Professor Details</h2>
-            {/* Content for the lower professor section */}
-          </div>
+        <div className="flex-1 p-5">
+          {renderTable()}
         </div>
       </div>
     </div>

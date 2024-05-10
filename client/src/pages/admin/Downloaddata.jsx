@@ -91,8 +91,6 @@ export default function Downloaddata() {
   return (
     <div className='main-content'>
       <button onClick={handleStudentClick}>Submit</button>
-      <h1>Graph</h1>
-      {graphData && <BarChart graphData={graphData} />}
     </div>
   );
 }
