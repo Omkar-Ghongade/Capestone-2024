@@ -216,34 +216,29 @@ export default function Handlestudents() {
 
   return (
     <div className='main-content'>
-      <h1 className="text-3xl font-bold mb-4">Handle Students</h1>
-      <form onSubmit={handleSubmit} className="mb-8">
+      <h1 className="text-3xl font-bold mb-4 ml-2">Handle Students</h1>
+      <form onSubmit={handleSubmit} className="mb-8 ml-2">
         <input
           type="file"
           accept=".xlsx"
           onChange={handleFileChange}
           className="mr-2"
         />
-        <button type="submit" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+        <button type="submit" className="bg-[#272715] hover:bg-gray-700 text-white font-bold py-2 px-4">
           Submit
         </button>
       </form>
       <div>
-        <h2 className="text-2xl font-semibold mb-4">Users</h2>
-        <input
-          type="text"
-          placeholder="Search by email"
-          value={searchQuery}
-          onChange={handleSearchChange}
-          className="mb-4 p-2 border border-gray-300 rounded-md"
-        />
-        <div className="mb-4">
-          <button onClick={handleAddUser} className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mr-2">
+        <h2 className="text-2xl font-semibold mb-4 ml-2">Users</h2>
+
+        <div className="mb-4 ml-2">
+          <button onClick={handleAddUser} className="bg-green-700 hover:bg-green-900 text-white font-bold py-2 px-4 mr-2">
             Add User
           </button>
         </div>
         {showAddForm && (
-          <form onSubmit={handleNewUserSubmit} className="mb-4">
+          <form onSubmit={handleNewUserSubmit} className="mb-4 flex flex-col gap-2 ml-2">
+            <div>
             <input
               type="text"
               placeholder="Enter Name"
@@ -328,80 +323,129 @@ export default function Handlestudents() {
               onChange={(e) => setNewUserContactNumber(e.target.value)}
               className="mr-2 p-2 border border-gray-300 rounded-md"
             />
-            <button type="submit" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-              Submit
-            </button>
-            <button type="button" onClick={handleCancelAddUser} className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded ml-2">
+            </div>
+            <div className='flex gap-2'>
+            <button type="button" onClick={handleCancelAddUser} className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded ">
               Cancel
             </button>
+            <button type="submit" className="bg-[#272715] hover:bg-gray-800 text-white font-bold py-2 px-4 rounded">
+              Submit
+            </button>
+            
+            </div>
           </form>
         )}
-        <ul>
+        <input
+          type="text"
+          placeholder="Search any field"
+          value={searchQuery}
+          onChange={handleSearchChange}
+          className="mb-4 p-2 border border-gray-300 rounded-md ml-2"
+        />
+        
+        <table className="w-full text-center border-collapse border border-gray-300">
+        <thead>
+            <tr className="bg-[#272715]  text-white">
+              <th className="py-2 px-4 border border-2 border-white border-t-0 border-t-0  border-b-0">Name</th>
+              <th className="py-2 px-4 border border-2 border-white border-t-0 border-b-0">Email Id</th>
+              <th className="py-2 px-4 border border-2 border-white border-t-0 border-b-0">Roll No</th>
+              <th className="py-2 px-4 border border-2 border-white border-t-0 border-b-0">Stream</th>
+              <th className="py-2 px-4 border border-2 border-white border-t-0 border-b-0">Section</th>
+              <th className="py-2 px-4 border border-2 border-white border-t-0 border-b-0">Actions</th>
+            </tr>
+          </thead>
+        <tbody className="bg-gray-100 font-semibold">
         {filteredUsers.map(user => (
-          <li key={user.id} className="flex items-center justify-between mb-4">
+          <tr key={user.id} className='hover:bg-gray-200' >
+          <td className="py-2 px-4 border border-2 border-white border-t-0 border-b-0">
             {editingUser === user ? (
-              <form onSubmit={(e) => handleSubmit(e, user)}>
-                <div className="flex items-center space-x-4">
-                  <input type="text" name="name" value={editedUserName} onChange={(e) => setEditedUserName(e.target.value)}  placeholder="Name" required className="border border-gray-300 rounded px-3 py-2" />
-                  <input type="email" name="emailid" value={editedEmail} onChange={(e) => setEditedEmail(e.target.value)} placeholder="Email" required className="border border-gray-300 rounded px-3 py-2" />
-                  <input type="text" name="rollNumber" value={editedRollNumber} onChange={(e) => setEditedRollNumber(e.target.value)} placeholder="Roll Number" required className="border border-gray-300 rounded px-3 py-2" />
-                  <select name="stream" value={editedStream} onChange={(e) => setEditedStream(e.target.value)} required className="border border-gray-300 rounded px-3 py-2">
-                    <option value="CSE">CSE</option>
-                    <option value="ECE">ECE</option>
-                    <option value="EEE">EEE</option>
-                    <option value="ME">ME</option>
-                    <option value="CE">CE</option>
-                    <option value="CHE">CHE</option>
-                    <option value="BT">BT</option>
-                  </select>
-                  <select name="section" value={editedSection} onChange={(e) => setEditedSection(e.target.value)}  required className="border border-gray-300 rounded px-3 py-2">
-                    <option value="A">A</option>
-                    <option value="B">B</option>
-                    <option value="C">C</option>
-                    <option value="D">D</option>
-                    <option value="E">E</option>
-                    <option value="F">F</option>
-                    <option value="G">G</option>
-                    <option value="H">H</option>
-                    <option value="I">I</option>
-                    <option value="J">J</option>
-                    <option value="K">K</option>
-                    <option value="L">L</option>
-                  </select>
-                  <input type="text" name="semester" value={editedSemester} onChange={(e) => setEditedSemester(e.target.value)} placeholder="Semester" required className="border border-gray-300 rounded px-3 py-2" />
-                  <select name="gender" value={editedGender} onChange={(e) => setEditedGender(e.target.value)} required className="border border-gray-300 rounded px-3 py-2">
-                    <option value="Male">Male</option>
-                    <option value="Female">Female</option>
-                    <option value="Other">Other</option>
-                  </select>
-                  <input type="text" name="contactNumber" value={editedContactNumber} onChange={(e) => setEditedContactNumber(e.target.value)} placeholder="Contact Number" required className="border border-gray-300 rounded px-3 py-2" />
-                  <div className='space-x-2'>
-                    <button onClick={() => handleSave(user)} type="submit" className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
+              <input
+              type="text"
+              value={editedUserName}
+              onChange={(e) => setEditedUserName(e.target.value)}
+              className="p-2 border border-gray-300 rounded-md"
+            />
+            ) : (<span>{user.name}</span>)}
+          </td>
+
+          <td className="py-2 px-4 border border-2 border-white border-t-0 border-b-0">
+            {editingUser === user ? (
+              <input
+              type="text"
+              value={editedEmail}
+              onChange={(e) => setEditedEmail(e.target.value)}
+              className="p-2 border border-gray-300 rounded-md"
+            />
+            ) : (<span>{user.emailid}</span>)}
+          </td>
+
+          <td className="py-2 px-4 border border-2 border-white border-t-0 border-b-0">
+            {editingUser === user ? (
+              <input
+              type="text"
+              value={editedRollNumber}
+              onChange={(e) => setEditedRollNumber(e.target.value)}
+              className="p-2 border border-gray-300 rounded-md"
+            />
+            ) : (<span>{user.rollNumber}</span>)}
+          </td>
+          <td className="py-2 px-4 border border-2 border-white border-t-0 border-b-0">
+            {editingUser === user ? (
+              <select
+              value={editedStream}
+              onChange={(e) => editedStream(e.target.value)}
+              className="mr-2 p-2 border border-gray-300 rounded-md"
+            >
+              <option value="CSE">CSE</option>
+              <option value="ECE">ECE</option>
+              <option value="EEE">EEE</option>
+              <option value="ME">ME</option>
+              <option value="CE">CE</option>
+              <option value="CHE">CHE</option>
+              <option value="BT">BT</option>
+
+            </select>
+            ) : (<span>{user.stream}</span>)}
+          </td>
+          <td className="py-2 px-4 border border-2 border-white border-t-0 border-b-0">
+            {editingUser === user ? (
+              <select
+              value={editedSection}
+              onChange={(e) => editedSection(e.target.value)}
+              className="mr-2 p-2 border border-gray-300 rounded-md"
+            >
+              <option value="A">A</option>
+              <option value="B">B</option>
+              <option value="C">C</option>
+              <option value="D">D</option>
+              <option value="E">E</option>
+              <option value="F">F</option>
+              <option value="G">G</option>
+              <option value="H">H</option>
+              <option value="I">I</option>
+              <option value="J">J</option>
+              <option value="K">K</option>
+              <option value="L">L</option>
+            </select>
+            ) : (<span>{user.section}</span>)}
+          </td>
+          <td className="py-2 px-4 border border-2 border-white border-t-0 border-b-0">
+                  {editingUser === user ? (
+                    <button onClick={handleSave} className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
                       Save
                     </button>
-                  </div>
-                </div>
-              </form>            
-            ) : (
-              <div className="space-x-4">
-                <span>{user.name}</span>
-                <span>{user.emailid}</span>
-                <span>{user.rollNumber}</span>
-                <span>{user.stream}</span>
-                <span>{user.section}</span>
-                <div className='space-x-2'>
-                  <button onClick={() => handleEdit(user)} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                    Edit
-                  </button>
-                  <button onClick={() => handleDelete(user)} className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
-                    Delete
-                  </button>
-                </div>
-              </div>
-            )}
-          </li>
+                  ) : (
+                    <div className='flex justify-center gap-2'>
+                      <img className='cursor-pointer' onClick={() => handleEdit(user)} width="24" height="24" src="https://img.icons8.com/windows/32/create-new.png" alt="create-new" title='Edit'/>
+                      <img className='cursor-pointer' onClick={()=> handleDelete(user)} width="24" height="24" src="https://img.icons8.com/carbon-copy/100/filled-trash.png" alt="filled-trash" title='Delete'/>
+                    </div>
+                  )}
+          </td>
+          </tr>
+              
         ))}
-        </ul>
+        </tbody>
+        </table>
       </div>
     </div>
   );

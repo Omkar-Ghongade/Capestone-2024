@@ -31,7 +31,7 @@ const Navbar= () => {
            <div className='md:flex items-center justify-between bg-[#272715] h-16 md:px-10 px-7 m-0'>
             {/* logo section */}
             <a href="/">
-            <div className='font-bold text-2xl cursor-pointer flex items-center gap-1'>
+            <div className='max-md:pt-4 font-bold text-2xl cursor-pointer flex items-center gap-1'>
               
                 <BookOpenIcon className='text-white w-7 h-7 text-lime-950'/>
                 <span className='text-white'>Capstone</span>
@@ -39,7 +39,7 @@ const Navbar= () => {
             </div>
             </a>
            
-            <div onClick={()=>setOpen(!open)} className='absolute right-8 top-6 cursor-pointer md:hidden w-7 h-7'>
+            <div onClick={()=>setOpen(!open)} className='absolute text-white right-8 top-5 cursor-pointer md:hidden w-7 h-7'>
                 {
                     open ? <XMarkIcon/> : <Bars3BottomRightIcon />
                 }

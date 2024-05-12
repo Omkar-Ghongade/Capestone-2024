@@ -89,8 +89,34 @@ export default function Downloaddata() {
   };
 
   return (
-    <div className='main-content'>
-      <button onClick={handleStudentClick}>Submit</button>
+    <div className='main-content w-full'>
+      <div className='absolute max-sm:mt-16 top-0 left-0 w-full h-full flex justify-center items-center'>
+      <div className=" rounded-lg p-6 bg-gray-100 bg-opacity-95 flex flex-col justify-center gap-2 shadow-md w-/12 md:w-8/12 relative">
+        <div className='flex justify-between items-center text-xl border-b-2 border-solid'>
+          <h1>Data of students with No team</h1>
+          <button className='bg-green-500 hover:bg-green-700 text-white font-bold my-2 py-2 px-4 rounded'>Download</button>
+        </div>
+        <div className='flex justify-between items-center text-xl border-b-2 border-solid'>
+          <h1>List of Projects not Allocated</h1>
+          <button className='bg-green-500 hover:bg-green-700 text-white my-2 font-bold py-2 px-4 rounded'>Download</button>
+        </div>
+        <div className='flex justify-between items-center text-xl border-b-2 border-solid'>
+          <h1>Professor Progress</h1>
+          <button className='bg-green-500 hover:bg-green-700 text-white my-2 font-bold py-2 px-4 rounded'>Download</button>
+        </div>
+        <div className='flex justify-between items-center text-xl'>
+          <h1>All Project Details</h1>
+          <button className='bg-green-500 hover:bg-green-700 text-white my-2 font-bold py-2 px-4 rounded'>Download</button>
+        </div>
+        
+
+      </div>
+      </div>
+
+
+
+
+      {/* <button onClick={handleStudentClick}>Submit</button> */}
     </div>
   );
 }
