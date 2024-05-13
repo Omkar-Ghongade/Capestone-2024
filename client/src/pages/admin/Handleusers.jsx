@@ -19,13 +19,32 @@ export default function Handleusers() {
     displayallusers();
   }, []);
 
-  const handleFileChange = (e) => {
-    setFile(e.target.files[0]);
+  const handleDrop = (event) => {
+    event.preventDefault();
+    event.stopPropagation();
+    const newFile = event.dataTransfer.files[0];  // Only take the first file
+    if (newFile) {
+      setFile(newFile);
+    }
   };
 
+  const handleChange = (event) => {
+    const newFile = event.target.files[0];  // Only take the first file
+    if (newFile) {
+      setFile(newFile);
+    }
+  };
+
+  const handleDragOver = (event) => {
+    event.preventDefault();
+    event.stopPropagation();
+  };
+
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (file) {
+      console.log('Uploading file:', file);
       const formData = new FormData();
       formData.append('file', file);
       try {
@@ -35,7 +54,6 @@ export default function Handleusers() {
         });
         if (response.ok) {
           console.log('File uploaded successfully');
-          // Refresh the user list after successful upload
           displayallusers();
         } else {
           throw new Error('Failed to upload file');
@@ -161,60 +179,77 @@ export default function Handleusers() {
 
   return (
     <div className='main-content'>
-      <h1 className="text-3xl font-bold mb-4">Handle Users</h1>
-      <form onSubmit={handleSubmit} className="mb-8">
-        <input
-          type="file"
-          accept=".xlsx"
-          onChange={handleFileChange}
-          className="mr-2"
-        />
-        <button type="submit" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-          Submit
-        </button>
-      </form>
+      <h1 className="text-3xl font-bold mb-4 ml-2">Handle Users</h1>
+      <div className='flex justify-center items-center ml-2'>
+      <div
+        onDrop={handleDrop}
+        onDragOver={handleDragOver}
+        onClick={() => document.getElementById('fileInput').click()}
+        style={{ width: '60%', height: '200px'}}
+        className='border border-solid border-gray-300 rounded-md p-4 cursor-pointer text-center flex items-center justify-center'
+      >
+        <div>
+        { file ?(<div><h1>{file.name}</h1></div>) :(<h1>Drag files here or click to select files</h1>)}
+        </div>
+        
+      </div>
+      </div>
+      <input
+        id="fileInput"
+        type="file"
+        multiple
+        onChange={handleChange}
+        style={{ display: 'None' }}
+      />
       <div>
-        <h2 className="text-2xl font-semibold mb-4">Users</h2>
-        <input
-          type="text"
-          placeholder="Search by email"
-          value={searchQuery}
-          onChange={handleSearchChange}
-          className="mb-4 p-2 border border-gray-300 rounded-md"
-        />
-        <div className="mb-4">
-          <button onClick={handleAddUser} className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mr-2">
+      <button onClick={handleSubmit} className="bg-[#272715] hover:bg-gray-700 text-white font-bold py-2 px-4 mt-4">
+        Submit Files
+      </button>
+        <h2 className="text-2xl font-semibold mb-4 ml-2">Users</h2>
+        <div className="mb-4 ml-2">
+          <button onClick={handleAddUser} className="bg-green-700 hover:bg-green-700 text-white font-bold py-2 px-4 mr-2">
             Add User
           </button>
         </div>
         {showAddForm && (
-          <form onSubmit={handleNewUserSubmit} className="mb-4">
-            <div className='flex flex-col'>
+          <form onSubmit={handleNewUserSubmit} className="mb-4 ">
+            <div className='ml-2 flex gap-2'>
             <input
               type="text"
               placeholder="Enter email"
               value={newUserEmail}
               onChange={(e) => setNewUserEmail(e.target.value)}
-              className="mr-2 p-2 border border-gray-300 rounded-md"
+              className=" p-2 border border-gray-300 rounded-md"
             />
             <select
               value={newUserRole}
               onChange={(e) => setNewUserRole(e.target.value)}
-              className="mr-2 p-2 border border-gray-300 rounded-md"
+              className=" p-2 border border-gray-300 rounded-md"
             >
               <option value="student">Student</option>
               <option value="professor">Professor</option>
               <option value="admin">Admin</option>
             </select>
+            <button type="button" onClick={handleCancelAddUser} className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">
+              Cancel
+            </button>
+
             <button type="submit" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
               Submit
             </button>
-            <button type="button" onClick={handleCancelAddUser} className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded ml-2">
-              Cancel
-            </button>
+            
             </div>
           </form>
         )}
+        <input
+          type="text"
+          placeholder="Search by email"
+          value={searchQuery}
+          onChange={handleSearchChange}
+          className="mb-4 p-2 border border-gray-300 rounded-md ml-2"
+        />
+        
+        
         
         <div className="ml-1">
           <button onClick={() => setSelectedRole('student')} className={` bg-${selectedRole === 'student' ? '[#272715] text-white' : 'gray-200 text-black'}  font-bold py-2 px-4 `}>

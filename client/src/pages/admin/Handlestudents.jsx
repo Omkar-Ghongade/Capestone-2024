@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
 export default function Handlestudents() {
-  const [file, setFile] = useState(null);
+  const [file, setFile] = useState(null);  // Updated to handle a single file
   const [users, setUsers] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [showAddForm, setShowAddForm] = useState(false);
@@ -15,17 +15,6 @@ export default function Handlestudents() {
   const [newUserGender, setNewUserGender] = useState('Male');
   const [newUserContactNumber, setNewUserContactNumber] = useState('');
   const [editingUser, setEditingUser] = useState(null);
-  const [editedUserName, setEditedUserName] = useState('');
-  const [editedEmail, setEditedEmail] = useState('');
-  const [editedRollNumber, setEditedRollNumber] = useState('');
-  const [editedSchool, setEditedSchool] = useState('');
-  const [editedStream, setEditedStream] = useState('');
-  const [editedSemester, setEditedSemester] = useState('');
-  const [editedSection, setEditedSection] = useState('');
-  const [editedGender, setEditedGender] = useState('')
-  const [editedContactNumber, setEditedContactNumber] = useState('');
-
-
 
   const api = import.meta.env.VITE_backend;
 
@@ -33,8 +22,25 @@ export default function Handlestudents() {
     displayallusers();
   }, []);
 
-  const handleFileChange = (e) => {
-    setFile(e.target.files[0]);
+  const handleDrop = (event) => {
+    event.preventDefault();
+    event.stopPropagation();
+    const newFile = event.dataTransfer.files[0];  // Only take the first file
+    if (newFile) {
+      setFile(newFile);
+    }
+  };
+
+  const handleChange = (event) => {
+    const newFile = event.target.files[0];  // Only take the first file
+    if (newFile) {
+      setFile(newFile);
+    }
+  };
+
+  const handleDragOver = (event) => {
+    event.preventDefault();
+    event.stopPropagation();
   };
 
   const handleSubmit = async (e) => {
@@ -49,7 +55,6 @@ export default function Handlestudents() {
         });
         if (response.ok) {
           console.log('File uploaded successfully');
-          // Refresh the user list after successful upload
           displayallusers();
         } else {
           throw new Error('Failed to upload file');
@@ -59,6 +64,7 @@ export default function Handlestudents() {
       }
     }
   };
+
 
   const displayallusers = async () => {
     try {
@@ -217,17 +223,29 @@ export default function Handlestudents() {
   return (
     <div className='main-content'>
       <h1 className="text-3xl font-bold mb-4 ml-2">Handle Students</h1>
-      <form onSubmit={handleSubmit} className="mb-8 ml-2">
-        <input
-          type="file"
-          accept=".xlsx"
-          onChange={handleFileChange}
-          className="mr-2"
-        />
-        <button type="submit" className="bg-[#272715] hover:bg-gray-700 text-white font-bold py-2 px-4">
-          Submit
-        </button>
-      </form>
+      <div className='flex justify-center items-center'>
+      <div
+        onDrop={handleDrop}
+        onDragOver={handleDragOver}
+        onClick={() => document.getElementById('fileInput').click()}
+        style={{ width: '60%', height: '200px'}}
+        className='border border-solid border-gray-300 rounded-md p-4 cursor-pointer text-center flex items-center justify-center'
+      >
+        <div>
+        { file ?(<div><h1>{file.name}</h1><button onClick={handleSubmit} className="bg-[#272715] hover:bg-gray-700 text-white font-bold py-2 px-4 mt-4">
+        Submit Files
+      </button></div>) :(<h1>Drag files here or click to select files</h1>)}
+        </div>
+      </div>
+      </div>
+      <input
+        id="fileInput"
+        type="file"
+        multiple
+        onChange={handleChange}
+        style={{ display: 'None' }}
+      />
+      
       <div>
         <h2 className="text-2xl font-semibold mb-4 ml-2">Users</h2>
 
