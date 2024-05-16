@@ -102,7 +102,7 @@ export default function Downloaddata() {
         </div>
         <div className='flex justify-between items-center text-xl border-b-2 border-solid'>
           <h1>Professor Progress</h1>
-          <button className='bg-green-500 hover:bg-green-700 text-white my-2 font-bold py-2 px-4 rounded'>Download</button>
+          <button className='bg-green-500 hover:bg-green-700 text-white my-2 font-bold py-2 px-4 rounded' onClick={handleStudentClick}>Download</button>
         </div>
         <div className='flex justify-between items-center text-xl'>
           <h1>All Project Details</h1>
