@@ -128,3 +128,12 @@ export const teammarks = async (req, res) => {
         res.status(404).json({ message: err.message });
     }
 }
+
+export const teamdetails = async (req, res) => {
+    try{
+        const teamFind=await team.findOne({teamcode:req.body.teamcode});
+        res.status(200).json(teamFind);
+    }catch(err){
+        res.status(404).json({message:err.message});
+    }
+}

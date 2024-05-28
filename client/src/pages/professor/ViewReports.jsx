@@ -11,7 +11,9 @@ export default function ViewReports() {
   const [sidebarOpen, setSidebarOpen] = useState(window.innerWidth >= 768);
   const [isView, setIsView] = useState(false);
   const [showModal, setShowModal] = useState(false);
-  const [formData, setFormData] = useState({ field1: '', field2: '', field3: '' });
+  const [teamlen, setTeamlen] = useState(0);
+  const [teamMarks, setTeamMarks] = useState([]);
+  const [teammembers, setTeammembers] = useState([]);
   const api = import.meta.env.VITE_backend;
 
   useEffect(() => {
@@ -82,18 +84,34 @@ export default function ViewReports() {
     console.log(title);
     console.log(index);
     const filteredReports = reports.filter(app => app.projectName === title);
-    console.log(reports)
-    console.log(filteredReports);
+    teammates(filteredReports[0]);
     setselectedReports(filteredReports);
     setViewReport(filteredReports[0]);
     setClickedButtonindex(index);
   };
 
+  const teammates = async (report) => {
+    try{
+      const team = report.teamcode;
+      const res = await fetch(`${api}/api/team/teamdetails`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ teamcode: team })
+      });
+      const data = await res.json();
+      setTeamlen(data.teammembers.length);
+      setTeammembers(data.teammembers);
+      setTeamMarks(Array(data.teammembers.length).fill(''));
+    }catch(err){
+      console.error(err);
+    }
+  }
+
   const handleViewClick = async (report) => {
-    console.log(report);
     setIsView(true);
     setViewReport(report);
-    console.log(viewReport);
   };
 
   const handleViewCancel = () => {
@@ -120,17 +138,19 @@ export default function ViewReports() {
 
   const handleModalClose = () => {
     setShowModal(false);
-    setFormData({ field1: '', field2: '', field3: '' });
+    setTeamMarks(Array(teamlen).fill(''));
   };
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData(prevState => ({ ...prevState, [name]: value }));
+  const handleInputChange = (e, index) => {
+    const { value } = e.target;
+    const newMarks = [...teamMarks];
+    newMarks[index] = value;
+    setTeamMarks(newMarks);
   };
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
-    console.log('Form data:', formData);
+    console.log('Team Marks:', teamMarks);
     handleModalClose();
   };
 
@@ -211,36 +231,18 @@ export default function ViewReports() {
           <div className="bg-white p-6 rounded-lg shadow-lg w-80">
             <h2 className="text-xl font-bold mb-4">Enter Marks</h2>
             <form onSubmit={handleFormSubmit}>
-              <div className="mb-4">
-                <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="field1">Field 1</label>
-                <input
-                  type="text"
-                  name="field1"
-                  value={formData.field1}
-                  onChange={handleInputChange}
-                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                />
-              </div>
-              <div className="mb-4">
-                <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="field2">Field 2</label>
-                <input
-                  type="text"
-                  name="field2"
-                  value={formData.field2}
-                  onChange={handleInputChange}
-                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                />
-              </div>
-              <div className="mb-4">
-                <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="field3">Field 3</label>
-                <input
-                  type="text"
-                  name="field3"
-                  value={formData.field3}
-                  onChange={handleInputChange}
-                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                />
-              </div>
+              {teammembers.map((member, index) => (
+                <div key={index} className="mb-4">
+                  <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor={`teamMember${index + 1}`}>{teammembers[index]}</label>
+                  <input
+                    type="text"
+                    name={`teamMember${index + 1}`}
+                    value={teamMarks[index] || ''}
+                    onChange={(e) => handleInputChange(e, index)}
+                    className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                  />
+                </div>
+              ))}
               <div className="flex items-center justify-between">
                 <button
                   type="submit"
