@@ -116,3 +116,15 @@ export const teamprojectgraph = async (req, res) => {
         res.status(404).json({ message: err.message });
     }
 }
+
+export const teammarks = async (req, res) => {
+    try{
+        const teamFind=await team.findOne({teamcode:req.body.teamcode});
+        const marks = req.body.marks;
+        teamFind.marks.push(marks);
+        await teamFind.save();
+        res.status(201).json(teamFind);
+    }catch(err){
+        res.status(404).json({ message: err.message });
+    }
+}
