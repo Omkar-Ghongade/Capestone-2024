@@ -2,13 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { storage } from '../config';
 import { ref, getDownloadURL, uploadBytesResumable } from "firebase/storage";
 
-
 export default function SubmitReports() {
   const [imgUrl, setImgUrl] = useState(null);
   const [progresspercent, setProgresspercent] = useState(0);
   const [teamId, setTeamId] = useState('');
-  const [project, setProject] = useState(null); // Moved project state to the top level
+  const [project, setProject] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [marks, setMarks] = useState([]);
   const api = import.meta.env.VITE_backend;
 
   useEffect(() => {
@@ -29,6 +29,13 @@ export default function SubmitReports() {
       if(data!=null){
         setTeamId(data.teamcode);
         getmyproject(data.teamcode);
+        const memberIndex = data.teammembers.findIndex(member => member === rollNumber);
+        data.marks.forEach(row => {
+          if (row[memberIndex] !== undefined) {
+            marks.push(row[memberIndex]);
+          }
+        });
+        console.log(marks);
       }
     } catch (error) {
       console.log(error);
@@ -37,12 +44,10 @@ export default function SubmitReports() {
   }
 
   const handleSubmit = (e) => {
-    e.preventDefault()
-    const file = e.target[0]?.files[0]
-
+    e.preventDefault();
+    const file = e.target[0]?.files[0];
     const foldername = teamId;
     if (file.type === "application/pdf") {
-
       const storageRef = ref(storage, `${foldername}/${file.name}`);
       const uploadTask = uploadBytesResumable(storageRef, file);
 
@@ -57,16 +62,14 @@ export default function SubmitReports() {
         },
         () => {
           getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-            setImgUrl(downloadURL)
+            setImgUrl(downloadURL);
             savetoteam(downloadURL);
             window.location.reload();
           });
         }
       );
-
     } else {
-
-      alert("Please upload a PDF file")
+      alert("Please upload a PDF file");
     }
   }
 
@@ -86,9 +89,7 @@ export default function SubmitReports() {
   }
 
   const getmyproject = async (teamcode) => {
-
     try {
-
       const res = await fetch(`${api}/api/project/getacceptedproject`, {
         method: 'POST',
         headers: {
@@ -117,38 +118,39 @@ export default function SubmitReports() {
   }
 
   return (
-    <div className=' p-3 '>
+    <div className='p-3'>
       <div className={`${project.length === 0 ? 'h-screen' : ''} main-content flex flex-col items-center`} style={{ fontFamily: 'Helvetica, Arial, sans-serif' }}>
-        <div className={` bg-white  w-full px-4  `}>
+        <div className={`bg-white w-full px-4`}>
           {project && project.length > 0 ? (
             <div>
               <div>
                 <h2 className="text-2xl font-bold mt-4">{project[0].projectName}</h2>
-                <p className='text-lg' ><b>Project Description : </b> {project[0].projectDescription}</p>
+                <p className='text-lg'><b>Project Description : </b> {project[0].projectDescription}</p>
               </div>
 
               <div>
-                <h2 className="text-2xl font-bold mt-4">Submit & ViewReports</h2>
+                <h2 className="text-2xl font-bold mt-4">Submit & View Reports</h2>
                 <div className='mt-4'>
-                <form onSubmit={handleSubmit} className='form flex flex-col md:flex-row md:items-center'>
-                  <input type='file' className='mb-2 md:mb-0 md:mr-2' />
-                  <button type='submit' className='bg-[#4D4D29] text-white rounded-lg shadow-md border-solid border-2 p-2'>Upload Report</button>
-                </form>
-
+                  <form onSubmit={handleSubmit} className='form flex flex-col md:flex-row md:items-center'>
+                    <input type='file' className='mb-2 md:mb-0 md:mr-2' />
+                    <button type='submit' className='bg-[#4D4D29] text-white rounded-lg shadow-md border-solid border-2 p-2'>Upload Report</button>
+                  </form>
                 </div>
-                <div className="flex flex-wrap pt-3">
+                <div className="flex flex-col pt-3">
                   {project[0].reports.map((report, index) => (
-                    <div key={index} className=" sm:w-1/2 md:w-1/12  px-2 mb-4">
-                      <div className="bg-[#4D4D29] text-white rounded-lg shadow-md mb-2 border-solid border-2 p-2">
+                    <div key={index} className="flex flex-col md:flex-row md:items-center mb-4">
+                      <div className="bg-[#4D4D29] text-white rounded-lg shadow-md mb-2 md:mb-0 md:mr-2 border-solid border-2 p-2">
                         <a href={report} target="_blank" rel="noreferrer">
                           <p className='text-center'>Report {index + 1}</p>
                         </a>
+                      </div>
+                      <div className="bg-gray-200 text-black rounded-lg shadow-md border-solid border-2 p-2">
+                        <p className='text-center'>Mark: {marks[index]}</p>
                       </div>
                     </div>
                   ))}
                 </div>
               </div>
-              
             </div>
           ) : (
             <div className='flex justify-center items-center h-screen'>
