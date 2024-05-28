@@ -328,14 +328,14 @@ export default function ProjectsList() {
           <div className="flex gap-2">
           <button
             onClick={handleDeselectAll}
-            className="mt-2 mb-2 h-7 text-sm w-24 bg-[#4D4D29] shadow-sm shadow-teal-100 hover:bg-[#535353] text-white font-semibold px-2 mt-2 rounded duration-300"
+            className="mt-2 mb-2 h-7 text-sm w-24 bg-[#4D4D29] shadow-sm shadow-teal-100 hover:bg-[#535353] text-white font-semibold px-2 rounded duration-300"
           >
             Clear
           </button>
           
           <button
             onClick={toggleSidebar}
-            className="mt-2 sm:hidden mb-2 h-7 text-sm w-24 bg-[#4D4D29] shadow-sm shadow-teal-100 hover:bg-[#535353] text-white font-semibold px-2 mt-2 rounded duration-300"
+            className="mt-2 sm:hidden mb-2 h-7 text-sm w-24 bg-[#4D4D29] shadow-sm shadow-teal-100 hover:bg-[#535353] text-white font-semibold px-2 rounded duration-300"
           >
             OK
           </button>

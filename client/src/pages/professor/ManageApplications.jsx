@@ -11,7 +11,8 @@ export default function ManageApplications() {
   const [selectedApplications, setSelectedApplications] = useState([]);
   const [sidebarOpen, setSidebarOpen] = useState(window.innerWidth >= 768);
   const [isView, setIsView] = useState(false);
-  const [filterCGPA, setFilterCGPA] = useState(null); // State to store the filter value
+  const [filterCGPA, setFilterCGPA] = useState(null); // State to store the CGPA filter 
+  const [filterDomain, setFilterDomain] = useState(null); // State to store the domain filter
   const api = import.meta.env.VITE_backend;
 
   useEffect(() => {
@@ -83,6 +84,7 @@ export default function ManageApplications() {
     setClickedButtonindex(index);
     setIsView(false);
     setFilterCGPA("");
+    setFilterDomain("");
     console.log(index); // Verify index is as expected
 };
 
@@ -143,9 +145,14 @@ export default function ManageApplications() {
   }
 
   // Function to handle filtering based on CGPA
-  const handleFilterChange = (event) => {
+  const handleCGPAFilterChange = (event) => {
     const value = event.target.value;
     setFilterCGPA(value);
+  };
+
+  const handleDomainFilterChange = (event) => {
+    const value = event.target.value;
+    setFilterDomain(value);
   };
 
   // Function to check if all CGPA's are above a certain mark
@@ -153,6 +160,13 @@ export default function ManageApplications() {
     if (!filterCGPA) return true; // If no filter applied, return true
     return application.cgpa.every(cgpa => cgpa >= filterCGPA);
   };
+
+  const Domainmatch = (application) => {
+    if (!filterDomain) return true; // If no filter applied, return true
+    return application.specialization.some(specialization => specialization === filterDomain);
+  };
+
+
 
   return (
     <div className='main-content mb-4' style={{ fontFamily: 'Helvetica, Arial, sans-serif' }}>
@@ -172,11 +186,11 @@ export default function ManageApplications() {
         >
           <div className={`px-1 ${(!sidebarOpen ) && 'invisible'}`}>
             <h2 className="text-3xl text-center font-semibold mt-3 mb-6">Projects</h2>
-            <div className="flex flex-col max-sm:border-2 max-sm:border-solid max-sm:bg-[#272715] max-sm:rounded-md">
+            <div className="flex flex-col  max-sm:border-solid max-sm:bg-[#4b4b29] max-sm:rounded-md">
               {uniqueTitles.map((title, index) => (
                 <button
                   key={index}
-                  className={`text-left text-lg max-sm:border-y max-sm:border-solid max-sm:border-white hover:bg-[#272715] hover:border-2 py-2 px-2 w-full duration-300 ${clickedButtonindex === index ? 'bg-[#272715] border-2 font-semibold' : ''}`}
+                  className={`text-left text-lg hover:bg-[#272715] py-2 px-2 w-full duration-300 ${clickedButtonindex === index ? 'bg-[#272715] font-semibold' : ''}`}
                   onClick={() => {handleProjectClick(title, index); if (window.innerWidth < 640){toggleSidebar();}}}
                 >
                   {title}
@@ -192,10 +206,23 @@ export default function ManageApplications() {
 
             {(!(isView)) && <div className='flex justify-end mb-4 max-sm:flex-col max-sm:gap-3 max-sm:mb-4'>
                     {/* Dropdown filter */}
+                    <select
+                        className="p-2 border-2 border-gray-300 rounded shadow-md cursor-pointer"
+                        value={filterDomain}
+                        onChange={handleDomainFilterChange}
+                      >
+                        <option value="">Select Domain Filter</option>
+                        <option value="CyberSecurity">CyberSecurity</option>
+                        <option value="AIML">AIML</option>
+                        <option value="DataScience">DataScience</option>
+                        <option value="VLSI">VLSI</option>
+                        {/* Add more options as needed */}
+                      </select>
+
                       <select
                         className="p-2 border-2 border-gray-300 rounded shadow-md cursor-pointer"
                         value={filterCGPA}
-                        onChange={handleFilterChange}
+                        onChange={handleCGPAFilterChange}
                       >
                         <option value="">Select CGPA Filter</option>
                         <option value="9">Above 9</option>
@@ -244,7 +271,7 @@ export default function ManageApplications() {
                 <div>
 
                   
-                  {selectedApplications.map(application => !application.isrejected && areAllCGPAsAboveMark(application) && (
+                  {selectedApplications.map(application => !application.isrejected && areAllCGPAsAboveMark(application) && Domainmatch(application) && (
                     <div key={application.id} className=' flex flex-row justify-between max-w-200px border-2 border-solid bg-white shadow-sm hover:shadow-md hover:shadow-teal-100 rounded-md overflow-hidden pb-2 pl-4'>
                       <div className='flex-col items-center pl-2 w-4/6 md:w-5/6 my-1'>  
                         <div className='mr-2 font-bold pb-2'>Team Code : {application.teamcode} </div>
