@@ -5,6 +5,6 @@ import { updateLimits } from '../controller/admin.limits.controller.js';
 const router = express.Router();
 
 router.get('/getlimits', getLimits);
-router.post('/updatelimits',updateLimits)
+router.post('/updatelimits',updateLimits);
 
 export default router;
