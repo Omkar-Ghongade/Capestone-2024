@@ -14,6 +14,7 @@ export default function ViewReports() {
   const [teamlen, setTeamlen] = useState(0);
   const [teamMarks, setTeamMarks] = useState([]);
   const [teammembers, setTeammembers] = useState([]);
+  const [clickedReport, setClickedReport] = useState(0);
   const api = import.meta.env.VITE_backend;
 
   useEffect(() => {
@@ -132,8 +133,9 @@ export default function ViewReports() {
     }
   }
 
-  const handleMarksClick = () => {
+  const handleMarksClick = (index) => {
     setShowModal(true);
+    setClickedReport(index);
   };
 
   const handleModalClose = () => {
@@ -166,8 +168,8 @@ export default function ViewReports() {
 
       <div className="flex flex-row gap-1">
         <div
-          className={`${sidebarOpen ? 'w-2/6 max-sm:w-full  max-sm:flex max-sm:justify-center max-sm:items-center max-sm:bg-opacity-80 max-md:z-40' : 'w-0'
-            } bg-[#4b4b29] h-screen text-white top-0 right-0 max-sm:left-0 relative max-sm:fixed duration-500`}
+          className={`${sidebarOpen ? 'w-2/6 max-sm:w-full  max-sm:flex max-sm:justify-center max-sm:items-center max-sm:bg-opacity-80 ' : 'w-0'
+            } bg-[#4b4b29] h-screen text-white top-0 right-0 max-sm:left-0 relative max-sm:fixed duration-500 z-40`}
         >
           <div className={` p-4 ${(!sidebarOpen) && 'invisible'}`}>
             <h2 className="text-3xl text-center font-semibold mb-2">Projects</h2>
@@ -185,7 +187,7 @@ export default function ViewReports() {
           </div>
         </div>
 
-        <div className={`${sidebarOpen ? 'px-2 z-40 ' : ''
+        <div className={`${sidebarOpen ? 'px-2 z-30' : ''
           } pr-4 z-30 w-full `}>
           <h2 className="text-xl text-center font-semibold mt-4 mb-4">{uniqueTitles[clickedButtonindex]}</h2>
 
@@ -195,7 +197,6 @@ export default function ViewReports() {
                 <div>
                   <div className="border border-gray-200 rounded-lg shadow-md p-4">
                     <div className='flex flex-row justify-between'>
-                      <h2 className="text-xl font-semibold mb-4">{viewReport.projectName}</h2>
                     </div>
 
                     <h3 className="text-lg-2"><b>Team Code : </b>{viewReport.teamcode}</h3>
@@ -206,13 +207,13 @@ export default function ViewReports() {
                       <h2 className="text-2xl font-bold mt-4">Reports</h2>
                       <div className="flex flex-col pt-3">
                         {selectedReports[0].reports.map((report, index) => (
-                          <div key={index} className="w-full px-2 mb-4 flex">
+                          <div key={index} className="w-full px-2 mb-4 flex items-center">
                             <div className="bg-[#4D4D29] text-white rounded-lg shadow-md mb-2 border-solid border-2 p-2 flex justify-between items-center">
                               <a href={report} target="_blank" rel="noreferrer">
                                 <p className='text-center'>Report {index + 1}</p>
                               </a>
                             </div>
-                            <button className="ml-4 bg-blue-500 text-white px-2 py-1 rounded" onClick={handleMarksClick}>Marks</button>
+                            <button className="ml-4 text-[#272715] font-bold hover:text-gray-500 underline rounded" onClick={(e)=> handleMarksClick(index+1)}>Marks</button>
                           </div>
                         ))}
                       </div>
@@ -229,7 +230,8 @@ export default function ViewReports() {
       {showModal && (
         <div className="fixed inset-0 bg-gray-500 bg-opacity-75 flex items-center justify-center z-50">
           <div className="bg-white p-6 rounded-lg shadow-lg w-80">
-            <h2 className="text-xl font-bold mb-4">Enter Marks</h2>
+          <h2 className="text-2xl font-bold mb-4">Marks</h2>
+            <h2 className="text-xl font-bold mb-4">Report {clickedReport}</h2>
             <form onSubmit={handleFormSubmit}>
               {teammembers.map((member, index) => (
                 <div key={index} className="mb-4">

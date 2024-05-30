@@ -331,6 +331,42 @@ export const saveEditProject = async (req, res) => {
     }
 }
 
+export const saveEditProjectTitle = async (req, res) => {
+    try {
+        // Log the incoming request body for debugging
+        console.log('Request Body:', req.body);
+
+        const findProjectName = req.body.editProject.name;
+        const findProjectProfessor = req.body.editProject.professor;
+        
+        // Find the project
+        const findProject = await project.findOne({ name: findProjectName, professor: findProjectProfessor });
+        
+
+        // Find the applied projects
+        const findappliedproject = await Appliedproject.find({ projectName: findProjectName });
+        const findfinalProject = await Finalproject.findOne({ projectName: findProjectName });
+        for (let i = 0; i < findappliedproject.length; i++) {
+            findappliedproject[i].projectName = req.body.name;
+            await findappliedproject[i].save(); // Ensure to await the save operation
+        }
+        for (let i = 0; i < findfinalProject.length; i++) {
+            findfinalProject[i].projectName = req.body.name;
+            await findfinalProject[i].save(); // Ensure to await the save operation
+        }
+
+        // Update the project's name
+        findProject.name = req.body.name;
+        await findProject.save(); // Ensure to await the save operation
+
+        console.log("Project updated successfully");
+        res.status(200).json({ message: "Project updated successfully" });
+    } catch (err) {
+        console.error("Error occurred:", err);
+        res.status(500).json({ message: err.message }); // Use status 500 for server errors
+    }
+};
+
 export const getProjectSpecs = async (req, res) => {
     try {
         const projects = await project.find();  // Assuming 'project' is a model from Mongoose or similar ORM

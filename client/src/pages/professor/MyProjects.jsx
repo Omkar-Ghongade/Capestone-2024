@@ -6,6 +6,7 @@ export default function MyProjects() {
   const [showDeleteAlert, setShowDeleteAlert] = useState(false);
   const [projectToDelete, setProjectToDelete] = useState(null); // New state to store the project to be deleted
   const [edit, setEdit] = useState(false);
+  const [edittitle, setEditTitle] = useState(null);
   const [editProject, setEditProject] = useState(null);
   const [errorMessage, setErrorMessage] = useState('');
   const [domains, setDomains] = useState({
@@ -63,6 +64,16 @@ export default function MyProjects() {
     console.log(project);
   }
 
+  const handleEdittitle = (project) => {
+    setProjectName(project.name);
+    setEditTitle(true);
+    setEditProject(project);
+  }
+
+
+  
+  
+
   const handleSave = async (e) => { 
     try{
       const selectedDomains = Object.keys(domains).filter(domain => domains[domain]);
@@ -99,6 +110,40 @@ export default function MyProjects() {
     setErrorMessage('');
     console.log('Save');
   }
+
+
+
+  const handleSaveTitle = async (e) => {
+    e.preventDefault();
+    try {
+      console.log(editProject);
+      const res = await fetch(`${api}/api/project/saveEditProjectTitle`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          editProject: editProject,
+          name: projectName,
+        })
+      });
+  
+      if (!res.ok) {
+        // Handle error response
+        const errorData = await res.json();
+        setErrorMessage(errorData.message || 'An error occurred while saving the title.');
+        return;
+      }
+  
+      fetchProjectsFromBackend();
+      setEditTitle(false);
+    } catch (err) {
+      console.error(err);
+      setErrorMessage('An error occurred while saving the title.');
+    }
+    setErrorMessage('');
+    console.log('Save Title');
+  };
 
   const handleCheckboxChange = (domain) => {
     setDomains(prevDomains => ({
@@ -208,9 +253,46 @@ export default function MyProjects() {
               </div>
             ) : (
               <div>
-                <div className='flex flex-row justify-between'>
-                  <h3 className="text-2xl font-semibold">{project.name}</h3>
-                  {!project.isopen ? (<p className="text-green-500">Accepted</p>) : (
+                <div className={`flex flex-row justify-between`}>
+                <h3 className="text-2xl font-semibold">{project.name}</h3>
+                  {!project.isopen ? (<>
+
+                    
+                  {edittitle ?(<>
+                    <form onSubmit={handleSaveTitle}>
+                    <div className="mb-4">
+                      <label className="block mb-1">Name of Project:</label>
+                      <input
+                        type="text"
+                        value={projectName}
+                        onChange={(e) => setProjectName(e.target.value)}
+                        className="border rounded-md border-gray-300 px-2 py-1 w-fit"
+                        required
+                      />
+                    </div>
+                    <button type="submit" className=" bg-[#4D4D29] hover:bg-[#535353] text-white px-4 py-2 rounded ">
+                      Save
+                    </button>
+                    {errorMessage && <div className="text-red-500  my-4">{errorMessage}</div>}
+                  </form>
+                  </>):
+                  
+                  
+                  (<>
+
+                  <div className='flex justify-between'><p className="text-green-500">Accepted</p>
+                  <button
+                        onClick={() => handleEdittitle(project)}
+                        className=' bg-[#4D4D29] hover:bg-[#535353] btn mt-2 h-6 w-24 text-white md:ml-8 font-semibold px-2 rounded duration-300 md:static'
+                      >
+                        Edit title
+                      </button></div></>)}
+
+                    
+                  
+                  
+                  
+                  </>) : (
                     <div>
                       <button
                         onClick={() => handleEdit(project)}

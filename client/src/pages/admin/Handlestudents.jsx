@@ -15,6 +15,15 @@ export default function Handlestudents() {
   const [newUserGender, setNewUserGender] = useState('Male');
   const [newUserContactNumber, setNewUserContactNumber] = useState('');
   const [editingUser, setEditingUser] = useState(null);
+  const [editedUserName, setEditedUserName] = useState('');
+  const [editedEmail, setEditedEmail] = useState('');
+  const [editedRollNumber, setEditedRollNumber] = useState('');
+  const [editedSchool, setEditedSchool] = useState('SEAS');
+  const [editedStream, setEditedStream] = useState('CSE');
+  const [editedSemester, setEditedSemester] = useState('');
+  const [editedSection, setEditedSection] = useState('A');
+  const [editedGender, setEditedGender] = useState('Male');
+  const [editedContactNumber, setEditedContactNumber] = useState('');
 
   const api = import.meta.env.VITE_backend;
 

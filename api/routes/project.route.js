@@ -1,5 +1,5 @@
 import express from 'express';
-import {getprojectdata} from '../controller/project.controller.js';
+import {getprojectdata, saveEditProjectTitle} from '../controller/project.controller.js';
 import {applyproject} from '../controller/project.controller.js';
 import {getappliedproject} from '../controller/project.controller.js';
 import {createproject} from '../controller/project.controller.js';
@@ -41,6 +41,7 @@ router.post('/isteamproject',isteamproject);
 router.post('/isteamprojectaccept',isteamprojectaccept);
 router.post('/sendemail',sendemail);
 router.post('/saveEditProject',saveEditProject);
+router.post('/saveEditProjectTitle',saveEditProjectTitle);
 router.post('/getprojectspecs',getProjectSpecs);
 
 export default router;

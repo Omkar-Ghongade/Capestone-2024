@@ -13,7 +13,7 @@ export const navItems = [
     },
     {
       id: 3,
-      title: "Handle Students",
+      title: "Students",
       path: "./handlestudents",
       cName: "h-16 py-5",
     },

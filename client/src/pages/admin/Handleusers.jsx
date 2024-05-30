@@ -189,7 +189,9 @@ export default function Handleusers() {
         className='border border-solid border-gray-300 rounded-md p-4 cursor-pointer text-center flex items-center justify-center'
       >
         <div>
-        { file ?(<div><h1>{file.name}</h1></div>) :(<h1>Drag files here or click to select files</h1>)}
+        { file ?(<div><h1>{file.name}</h1><button onClick={handleSubmit} className="bg-[#272715] hover:bg-gray-700 text-white font-bold py-2 px-4 mt-4">
+        Submit Files
+      </button></div>) :(<h1>Drag files here or click to select files</h1>)}
         </div>
         
       </div>
@@ -202,9 +204,7 @@ export default function Handleusers() {
         style={{ display: 'None' }}
       />
       <div>
-      <button onClick={handleSubmit} className="bg-[#272715] hover:bg-gray-700 text-white font-bold py-2 px-4 mt-4">
-        Submit Files
-      </button>
+      
         <h2 className="text-2xl font-semibold mb-4 ml-2">Users</h2>
         <div className="mb-4 ml-2">
           <button onClick={handleAddUser} className="bg-green-700 hover:bg-green-700 text-white font-bold py-2 px-4 mr-2">
