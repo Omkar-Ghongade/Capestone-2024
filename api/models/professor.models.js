@@ -5,8 +5,8 @@ const professordata=new mongoose.Schema({
     name:{type:String,required:true},
     emailid:{type:String,required:true},
     designation:{type:String,required:true},
-    profilelink:{type:String,required:true},
-    profilephoto:{type:String,required:true}
+    profilelink:{type:String},
+    profilephoto:{type:String}
 });
 
 const user=mongoose.model('professordata',professordata);

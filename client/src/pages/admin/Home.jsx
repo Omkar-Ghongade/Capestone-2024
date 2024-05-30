@@ -2,7 +2,7 @@
 import React from 'react'
 import Navbar from './Navbar'
 import MainHome from './MainHome'
-import Handleusers from './Handleusers'
+import Handleprofessors from './Handleprofessors'
 import Handlestudents from './Handlestudents'
 import Downloaddata from './Downloaddata'
 import {BrowserRouter, Routes , Route} from 'react-router-dom'
@@ -13,7 +13,7 @@ export default function AHome() {
       <Navbar />
       <Routes>
         <Route path="/" element={<MainHome />} />
-        <Route path="/handleusers" element={<Handleusers />} />
+        <Route path="/handleprofessors" element={<Handleprofessors />} />
         <Route path="/handlestudents" element={<Handlestudents />} />
         <Route path="/downloaddata" element={<Downloaddata />} />
       </Routes>

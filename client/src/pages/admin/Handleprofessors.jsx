@@ -5,18 +5,22 @@ export default function Handleusers() {
   const [file, setFile] = useState(null);
   const [users, setUsers] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
-  const [selectedRole, setSelectedRole] = useState('student');
-  const [editingUser, setEditingUser] = useState(null);
-  const [editedEmail, setEditedEmail] = useState('');
-  const [editedRole, setEditedRole] = useState('');
   const [showAddForm, setShowAddForm] = useState(false);
+  const [newUserName, setNewUserName] = useState('');
   const [newUserEmail, setNewUserEmail] = useState('');
-  const [newUserRole, setNewUserRole] = useState('student'); // Default role
+  const [newUserdesignation, setNewUserDesignation] = useState('');
+
+  const [editingUser, setEditingUser] = useState(null);
+  const [editedName, setEditedName] = useState('');
+  const [editedEmail, setEditedEmail] = useState('');
+  const [editeddesignation, setEditedDesignation] = useState('');
+  
+  
 
   const api = import.meta.env.VITE_backend;
 
   useEffect(() => {
-    displayallusers();
+    displayallprofessors();
   }, []);
 
   const handleDrop = (event) => {
@@ -48,13 +52,13 @@ export default function Handleusers() {
       const formData = new FormData();
       formData.append('file', file);
       try {
-        const response = await fetch(`${api}/api/auth/uploadUsers`, {
+        const response = await fetch(`${api}/api/auth/uploadProfessors`, {
           method: 'POST',
           body: formData
         });
         if (response.ok) {
           console.log('File uploaded successfully');
-          displayallusers();
+          displayallprofessors();
         } else {
           throw new Error('Failed to upload file');
         }
@@ -64,9 +68,9 @@ export default function Handleusers() {
     }
   };
 
-  const displayallusers = async () => {
+  const displayallprofessors = async () => {
     try {
-      const response = await fetch(`${api}/api/auth/getallusers`, {
+      const response = await fetch(`${api}/api/auth/getallprofessors`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json'
@@ -88,12 +92,14 @@ export default function Handleusers() {
   const handleEdit = (user) => {
     setEditingUser(user);
     setEditedEmail(user.emailid);
-    setEditedRole(user.role);
+    setEditedName(user.name);
+    setEditedDesignation(user.designation);
+    
   };
 
   const handleDelete = async (user) => {
     try {
-      const res = await fetch(`${api}/api/auth/deleteuser`, {
+      const res = await fetch(`${api}/api/auth/deleteprofessor`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -103,7 +109,7 @@ export default function Handleusers() {
       if (res.ok) {
         console.log('User deleted successfully');
         // Refresh the user list after successful deletion
-        displayallusers();
+        displayallprofessors();
       } else {
         throw new Error('Failed to delete user');
       }
@@ -114,19 +120,19 @@ export default function Handleusers() {
 
   const handleSave = async () => {
     console.log('Edited email:', editedEmail);
-    console.log('Edited role:', editedRole);
+    
     try {
-      const res = await fetch(`${api}/api/auth/edituser`, {
+      const res = await fetch(`${api}/api/auth/editprofessor`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ pemailid: editingUser.emailid, emailid: editedEmail, role: editedRole })
+        body: JSON.stringify({ name:editedName, emailid: editedEmail, designation:editeddesignation})
       });
       if (res.ok) {
         console.log('User edited successfully');
         // Refresh the user list after successful edit
-        displayallusers();
+        displayallprofessors();
       } else {
         throw new Error('Failed to edit user');
       }
@@ -145,26 +151,25 @@ export default function Handleusers() {
   const handleCancelAddUser = () => {
     setShowAddForm(false);
     setNewUserEmail('');
-    setNewUserRole('student');
+    
   };
 
   const handleNewUserSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch(`${api}/api/auth/adduser`, {
+      const response = await fetch(`${api}/api/auth/addprofessor`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ emailid: newUserEmail, role: newUserRole })
+        body: JSON.stringify({})
       });
       if (response.ok) {
         console.log('User added successfully');
         // Refresh the user list after successful addition
-        displayallusers();
+        displayallprofessors();
         setShowAddForm(false);
         setNewUserEmail('');
-        setNewUserRole('student');
       } else {
         throw new Error('Failed to add user');
       }
@@ -174,7 +179,7 @@ export default function Handleusers() {
   };
 
   const filteredUsers = users.filter(user =>
-    user.emailid.toLowerCase().includes(searchQuery.toLowerCase()) && (user.role.toLowerCase() === selectedRole.toLowerCase()) && user.role !== 'admin'
+    user.emailid.toLowerCase().includes(searchQuery.toLowerCase()) && user.role !== 'admin'
   );
 
   return (
@@ -216,20 +221,26 @@ export default function Handleusers() {
             <div className='ml-2 flex gap-2'>
             <input
               type="text"
+              placeholder="Enter Name"
+              value={newUserName}
+              onChange={(e) => setNewUserName(e.target.value)}
+              className=" p-2 border border-gray-300 rounded-md"
+            />
+            <input
+              type="text"
               placeholder="Enter email"
               value={newUserEmail}
               onChange={(e) => setNewUserEmail(e.target.value)}
               className=" p-2 border border-gray-300 rounded-md"
             />
-            <select
-              value={newUserRole}
-              onChange={(e) => setNewUserRole(e.target.value)}
+            <input
+              type="text"
+              placeholder="Enter Designation"
+              value={newUserdesignation}
+              onChange={(e) => setNewUserDesignation(e.target.value)}
               className=" p-2 border border-gray-300 rounded-md"
-            >
-              <option value="student">Student</option>
-              <option value="professor">Professor</option>
-              <option value="admin">Admin</option>
-            </select>
+            />
+            
             <button type="button" onClick={handleCancelAddUser} className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">
               Cancel
             </button>
@@ -248,30 +259,29 @@ export default function Handleusers() {
           onChange={handleSearchChange}
           className="mb-4 p-2 border border-gray-300 rounded-md ml-2"
         />
-        
-        
-        
-        <div className="ml-1">
-          <button onClick={() => setSelectedRole('student')} className={` bg-${selectedRole === 'student' ? '[#272715] text-white' : 'gray-200 text-black'}  font-bold py-2 px-4 `}>
-            Student
-          </button>
-          <button onClick={() => setSelectedRole('professor')} className={` bg-${selectedRole === 'professor' ? '[#272715] text-white' : 'gray-200 text-black'}  font-bold py-2 px-4`}>
-            Professor
-          </button>
-        </div>
 
-       
         <table className="w-full text-center border-collapse border border-gray-300">
           <thead>
             <tr className="bg-[#272715]  text-white">
-              <th className="py-2 px-4 border border-2 border-white border-t-0 border-t-0  border-b-0">Email ID</th>
-              <th className="py-2 px-4 border border-2 border-white border-t-0 border-b-0">Role</th>
+            <th className="py-2 px-4 border border-2 border-white border-t-0 border-t-0  border-b-0">Name</th>
+            <th className="py-2 px-4 border border-2 border-white border-t-0 border-t-0  border-b-0">Email ID</th>
+              <th className="py-2 px-4 border border-2 border-white border-t-0 border-t-0  border-b-0">Designation</th>
               <th className="py-2 px-4 border border-2 border-white border-t-0 border-b-0">Actions</th>
             </tr>
           </thead>
           <tbody className="bg-gray-100 font-semibold">
             {filteredUsers.map(user => (
               <tr key={user.id} className='hover:bg-gray-200' >
+                <td className="py-2 px-4 border border-2 border-white border-t-0 border-b-0">{editingUser === user ? (
+                  <input
+                    type="text"
+                    value={editedName}
+                    onChange={(e) => setEditedName(e.target.value)}
+                    className="p-2 border border-gray-300 rounded-md"
+                  />
+                ) : (
+                  <span>{user.name}</span>
+                )}</td>
                 <td className="py-2 px-4 border border-2 border-white border-t-0 border-b-0">{editingUser === user ? (
                   <input
                     type="text"
@@ -282,19 +292,18 @@ export default function Handleusers() {
                 ) : (
                   <span>{user.emailid}</span>
                 )}</td>
+
                 <td className="py-2 px-4 border border-2 border-white border-t-0 border-b-0">{editingUser === user ? (
-                  <select
-                    value={editedRole}
-                    onChange={(e) => setEditedRole(e.target.value)}
+                  <input
+                    type="text"
+                    value={editeddesignation}
+                    onChange={(e) => setEditedDesignation(e.target.value)}
                     className="p-2 border border-gray-300 rounded-md"
-                  >
-                    <option value="student">Student</option>
-                    <option value="professor">Professor</option>
-                    <option value="admin">Admin</option>
-                  </select>
+                  />
                 ) : (
-                  <span>{user.role}</span>
+                  <span>{user.designation}</span>
                 )}</td>
+                
                 <td className="py-2 px-4 border border-2 border-white border-t-0 border-b-0">
                   {editingUser === user ? (
                     <button onClick={handleSave} className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">

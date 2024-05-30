@@ -11,6 +11,7 @@ export default function Handlestudents() {
   const [newUserSchool, setNewUserSchool] = useState('SEAS');
   const [newUserStream, setNewUserStream] = useState('CSE');
   const [newUserSemester, setNewUserSemester] = useState('');
+  const [newUserCGPA, setNewUserCGPA] = useState('');
   const [newUserSection, setNewUserSection] = useState('A');
   const [newUserGender, setNewUserGender] = useState('Male');
   const [newUserContactNumber, setNewUserContactNumber] = useState('');
@@ -21,6 +22,7 @@ export default function Handlestudents() {
   const [editedSchool, setEditedSchool] = useState('SEAS');
   const [editedStream, setEditedStream] = useState('CSE');
   const [editedSemester, setEditedSemester] = useState('');
+  const [editedCGPA, setEditedCGPA] = useState('');
   const [editedSection, setEditedSection] = useState('A');
   const [editedGender, setEditedGender] = useState('Male');
   const [editedContactNumber, setEditedContactNumber] = useState('');
@@ -192,6 +194,7 @@ export default function Handlestudents() {
     setEditedSchool(user.school);
     setEditedStream(user.stream);
     setEditedSemester(user.semester);
+    setEditedCGPA(user.cgpa)
     setEditedSection(user.section);
     setEditedGender(user.gender);
     setEditedContactNumber(user.contactNumber);
@@ -212,6 +215,7 @@ export default function Handlestudents() {
           school: editedSchool,
           stream: editedStream,
           semester: editedSemester,
+          cgpa: editedCGPA,
           section: editedSection,
           gender: editedGender,
           contactNumber: editedContactNumber,
@@ -316,6 +320,13 @@ export default function Handlestudents() {
               onChange={(e) => setNewUserSemester(e.target.value)}
               className="mr-2 p-2 border border-gray-300 rounded-md"
             />
+            <input
+              type="text"
+              placeholder="Enter CGPA"
+              value={newUserCG}
+              onChange={(e) => setNewUserCGPA(e.target.value)}
+              className="mr-2 p-2 border border-gray-300 rounded-md"
+            />
             <select
               value={newUserSection}
               onChange={(e) => setNewUserSection(e.target.value)}
@@ -378,6 +389,7 @@ export default function Handlestudents() {
               <th className="py-2 px-4 border border-2 border-white border-t-0 border-b-0">Roll No</th>
               <th className="py-2 px-4 border border-2 border-white border-t-0 border-b-0">Stream</th>
               <th className="py-2 px-4 border border-2 border-white border-t-0 border-b-0">Section</th>
+              <th className="py-2 px-4 border border-2 border-white border-t-0 border-b-0">CGPA</th>
               <th className="py-2 px-4 border border-2 border-white border-t-0 border-b-0">Actions</th>
             </tr>
           </thead>
@@ -456,6 +468,17 @@ export default function Handlestudents() {
             </select>
             ) : (<span>{user.section}</span>)}
           </td>
+          <td className="py-2 px-4 border border-2 border-white border-t-0 border-b-0">
+            {editingUser === user ? (
+              <input
+              type="text"
+              value={editedCGPA}
+              onChange={(e) => setEditedCGPA(e.target.value)}
+              className="p-2 border border-gray-300 rounded-md"
+            />
+            ) : (<span>{user.cgpa}</span>)}
+          </td>
+
           <td className="py-2 px-4 border border-2 border-white border-t-0 border-b-0">
                   {editingUser === user ? (
                     <button onClick={handleSave} className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">

@@ -44,13 +44,13 @@ export const getproject = async (req, res) => {
     }
 }
 
-export const uploadUsers = async (req, res) => {
+export const uploadProfessors = async (req, res) => {
     const workbook = xlsx.read(req.file.buffer, { type: 'buffer' });
     const sheetName = workbook.SheetNames[0];
     const sheet = workbook.Sheets[sheetName];
     const data = xlsx.utils.sheet_to_json(sheet);
-
-    user.insertMany(data)
+    console.log(data);
+    professordata.insertMany(data)
     .then(() => {
       res.status(200).send('Data uploaded successfully');
     })
@@ -72,13 +72,13 @@ export const uploadStudents = async (req, res) => {
     })
     .catch(err => {
       console.error(err);
-      res.status(500).send('Error uploading data');
+      res.status(500).send('Error uploading data'); 
     });
 }
 
-export const getallusers = async (req, res) => {
+export const getallprofessors = async (req, res) => {
     try{
-        const Users = await user.find();
+        const Users = await professordata.find();
         res.status(200).json(Users);
     }catch(err){
         res.status(404).json({message:err.message});
@@ -120,6 +120,7 @@ export const editstudent = async (req, res) => {
         student.stream = req.body.stream;
         student.semester = req.body.semester;
         student.section = req.body.section;
+        student.cgpa = req.body.cgpa
         student.gender = req.body.gender;
         student.contactNumber = req.body.contactNumber;
         console.log(student);
@@ -145,7 +146,7 @@ export const deletestudent = async (req, res) => {
         const email = req.body.emailid;
         const User = await studentdata.deleteOne({emailid:email});
         const nUser = await user.deleteOne({emailid:email});
-        res.status(200).json({message:"User deleted successfully"});
+        res.status(200).json({message:"Student deleted successfully"});
     }catch(err){
         res.status(404).json({message:err.message});
     }
@@ -180,7 +181,7 @@ export const addstudent = async (req, res) => {
         const newUser = await studentdata({name:name, emailid:emailid,rollNumber:rollNumber, school:school, stream:stream, semester:semester, section:section, gender:gender, contactNumber:contactNumber});
         console.log(newUser);
         newUser.save();
-        res.status(200).json({message:"User added successfully"});
+        res.status(200).json({message:"Student added successfully"});
     }catch(err){
         res.status(404).json({message:err.message});
     }
@@ -202,6 +203,53 @@ export const getalldetails = async (req, res) => {
             FinalProjects:FinalProjects.length,
             AppliedProjects:AppliedProjects.length
         });
+    }catch(err){
+        res.status(404).json({message:err.message});
+    }
+}
+
+export const addprofessor = async (req, res) => {
+    try{
+        const id = await professordata.findOne().sort({ id: -1 }).exec();
+        const name=req.body.name;
+        const emailid=req.body.emailid;
+        const designation=req.body.designation;
+        
+        const User = await user({emailid:req.body.emailid,role:"professor"});
+        User.save();
+        
+        const newUser = await professordata({id:id+1, name:name, emailid:emailid,designation:designation});
+        console.log(newUser);
+        newUser.save();
+        res.status(200).json({message:"Professor added successfully"});
+    }catch(err){
+        res.status(404).json({message:err.message});
+    }
+}
+
+
+export const deleteprofessor = async (req, res) => {
+    try{
+        const email = req.body.emailid;
+        const User = await studentdata.deleteOne({emailid:email});
+        const nUser = await user.deleteOne({emailid:email});
+        res.status(200).json({message:"Professor deleted successfully"});
+    }catch(err){
+        res.status(404).json({message:err.message});
+    }
+}
+
+
+export const editprofessor = async (req, res) => {
+    try{
+        const professor = await professordata.findOne({emailid:req.body.user.emailid});
+        // console.log(student);
+        professor.name = req.body.name;
+        professor.emailid = req.body.emailid;
+        professor.designation = req.body.designation;
+        console.log(professor);
+        professor.save();
+        res.status(200).json({message:"Professor edited successfully"});
     }catch(err){
         res.status(404).json({message:err.message});
     }
