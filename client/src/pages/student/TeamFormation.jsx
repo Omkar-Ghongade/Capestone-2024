@@ -11,11 +11,23 @@ export default function TeamFormation() {
   const [showSubmitAlert, setShowSubmitAlert] = useState(false);
   const [loading, setLoading] = useState(true);
   const [copied, setCopied] = useState(false);
+  const [limits, setLimits] = useState(null);
   const api = import.meta.env.VITE_backend;
 
   useEffect(() => {
     isinTeam();
+    getLimits();
   }, []);
+
+  const getLimits = async () => {
+    try{
+      const res = await fetch(`${api}/api/admin/getlimits`);
+      const data = await res.json();
+      setLimits(data);
+    }catch(err){
+      console.log(err);
+    }
+  }
 
   const copyToClipboard = (text) => {
     navigator.clipboard.writeText(text)
@@ -75,7 +87,7 @@ export default function TeamFormation() {
       const data = await response.json();
       if (data) {
         setTeamData(data);
-        if (data.submitted === false && data.teammembers[0] === rollNumber && data.teammembers.length >= 2)
+        if (data.submitted === false && data.teammembers[0] === rollNumber && data.teammembers.length >= 1)
           setTeamSubmitButton(true);
         if (data.submitted === false && data.teammembers[0] === rollNumber)
           setTeamDeleteButton(true);
