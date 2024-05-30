@@ -341,19 +341,33 @@ export const saveEditProjectTitle = async (req, res) => {
         
         // Find the project
         const findProject = await project.findOne({ name: findProjectName, professor: findProjectProfessor });
-        
+        if (!findProject) {
+            console.log("Project not found");
+            return res.status(404).json({ message: "Project not found" });
+        }
+        console.log("Project found:", findProject);
 
         // Find the applied projects
         const findappliedproject = await Appliedproject.find({ projectName: findProjectName });
+        console.log("Applied projects found:", findappliedproject.length);
+
+        // Find the final project
         const findfinalProject = await Finalproject.findOne({ projectName: findProjectName });
+        if (!findfinalProject) {
+            console.log("Final project not found");
+            return res.status(404).json({ message: "Final project not found" });
+        }
+        console.log("Final project found:", findfinalProject);
+
+        // Update the applied projects' names
         for (let i = 0; i < findappliedproject.length; i++) {
             findappliedproject[i].projectName = req.body.name;
             await findappliedproject[i].save(); // Ensure to await the save operation
         }
-        for (let i = 0; i < findfinalProject.length; i++) {
-            findfinalProject[i].projectName = req.body.name;
-            await findfinalProject[i].save(); // Ensure to await the save operation
-        }
+
+        // Update the final project's name
+        findfinalProject.projectName = req.body.name;
+        await findfinalProject.save(); // Ensure to await the save operation
 
         // Update the project's name
         findProject.name = req.body.name;
@@ -366,6 +380,7 @@ export const saveEditProjectTitle = async (req, res) => {
         res.status(500).json({ message: err.message }); // Use status 500 for server errors
     }
 };
+
 
 export const getProjectSpecs = async (req, res) => {
     try {
