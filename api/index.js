@@ -7,6 +7,7 @@ import studentRouter from './routes/student.route.js';
 import professortRouter from './routes/professor.route.js';
 import projectRouter from './routes/project.route.js';
 import teamRouter from './routes/team.route.js';
+import adminlimit from './routes/admin.limits.route.js';
 dotenv.config();
 
 mongoose.connect(process.env.MONGO).then(()=>{
@@ -30,3 +31,4 @@ app.use('/api/student',studentRouter)
 app.use('/api/professor',professortRouter)
 app.use('/api/project',projectRouter)
 app.use('/api/team',teamRouter)
+app.use('/api/admin',adminlimit)
