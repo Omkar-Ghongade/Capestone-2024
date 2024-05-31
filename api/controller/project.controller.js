@@ -412,3 +412,15 @@ export const getProjectSpecs = async (req, res) => {
         res.status(404).json({ message: err.message });
     }
 }
+
+export const getTeamprojects = async (req, res) => {
+    try {
+        const rollNumber = req.body.rollNumber;
+        const Team = await team.findOne({ teammembers: rollNumber });
+        const teamcode = Team.teamcode;
+        const teamprojects = await Appliedproject.find({ teamcode : teamcode });
+        res.status(200).json(teamprojects);
+    } catch (err) {
+        res.status(404).json({ message: err.message });
+    }
+}

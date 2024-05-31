@@ -3,7 +3,6 @@ import { FaFilter } from "react-icons/fa";
 import ReactPaginate from "react-paginate";
 import { IoIosClose } from "react-icons/io";
 
-import { set } from "mongoose";
 import Footer from "./Footer";
 
 export default function ProjectsList() {
@@ -12,16 +11,11 @@ export default function ProjectsList() {
   const [FilterbarOpen, setFilterbarOpen] = useState(true); // State to manage Filterbar visibility
 
   const [projectData, setProjectsData] = useState(null);
-  const [finalcount, setFinalCount] = useState(0);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedProject, setSelectedProject] = useState(null);
   const [isApply, setIsApply] = useState(false);
   const [applyReason, setApplyReason] = useState("");
-  const [filters, setFilters] = useState({
-    filter1: false,
-    filter2: false,
-    // Add more filters here
-  });
+  const [filters, setFilters] = useState({});
   const [currentPage, setCurrentPage] = useState(1);
   const [projectsPerPage, setProjectsPerPage] = useState(10); // Number of projects to display per page
   const [filteredProjectsData, setFilteredProjectsData] = useState([]);
@@ -30,11 +24,15 @@ export default function ProjectsList() {
   const [applied, setApplied] = useState(false);
   const [acceptance, setAcceptance] = useState(false);
   const [teamsize, setTeamsize] = useState(0);
+  const [limits, setLimits] = useState(null);
+  const [maxApplications, setMaxApplications] = useState(0);
+  const [appliedProjectsCount, setAppliedProjectsCount] = useState(0);
   const api = import.meta.env.VITE_backend;
 
   useEffect(() => {
     const fetchData = async () => {
       await isvalidteam();
+      await getLimits();
     };
     fetchData();
   }, []);
@@ -42,6 +40,7 @@ export default function ProjectsList() {
   useEffect(() => {
     const fetchData = async () => {
       await fetchProjectData();
+      await fetchAppliedProjectsCount();
     };
     fetchData();
   }, [teamsize]);
@@ -58,6 +57,36 @@ export default function ProjectsList() {
     setIsApply(false);
   }, []);
 
+  const fetchAppliedProjectsCount = async () => {
+    try {
+      const rollNumber = localStorage.getItem("rollNumber");
+      console.log(rollNumber)
+      const res = await fetch(`${api}/api/project/getteamprojects`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ rollNumber : rollNumber }),
+      });
+      const data = await res.json();
+      setAppliedProjectsCount(data.length);
+      console.log(appliedProjectsCount)
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const getLimits = async () => {
+    try {
+      const res = await fetch(`${api}/api/admin/getlimits`);
+      const data = await res.json();
+      setLimits(data);
+      setMaxApplications(data.maxstudentapplications);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   const isvalidteam = async () => {
     try {
       const rollNumber = localStorage.getItem("rollNumber");
@@ -69,14 +98,11 @@ export default function ProjectsList() {
         body: JSON.stringify({ studentId: rollNumber }),
       });
       const data = await res.json();
-      console.log(data);
       if (data) {
         setTeamId(data.teamcode);
         finalproject(data.teamcode);
         setTeamsize(data.teammembers.length);
-        console.log(teamid);
-        if(data.submitted)
-          setValidTeam(true);
+        if (data.submitted) setValidTeam(true);
       }
     } catch (error) {
       console.log(error);
@@ -93,7 +119,6 @@ export default function ProjectsList() {
         body: JSON.stringify({ teamcode: teamcode }),
       });
       const data = await res.json();
-      // console.log(data.isaccepted);
       setAcceptance(data.isaccepted);
     } catch (error) {
       console.log(error);
@@ -101,10 +126,7 @@ export default function ProjectsList() {
   };
 
   async function isTeamSubmitted(projectName) {
-    console.log(teamid);
-    console.log(projectName);
     const submitted = await isSubmitted(teamid, projectName);
-    console.log(submitted);
     return submitted;
   }
 
@@ -118,12 +140,10 @@ export default function ProjectsList() {
         body: JSON.stringify({ teamcode, projectName }),
       });
       const data = await res.json();
-      console.log(data);
       if (data.projectName === projectName) return true;
       return false;
     } catch (error) {
       return false;
-      console.log(error);
     }
   };
 
@@ -141,7 +161,6 @@ export default function ProjectsList() {
           teamsize >= project.minteamsize && teamsize <= project.maxteamsize
       );
       setProjectsData(teamsizedData);
-      console.log(teamsize);
       setLoading(false);
     } catch (error) {
       console.log(error);
@@ -164,7 +183,8 @@ export default function ProjectsList() {
         project.isopen &&
         (!Object.keys(filters).some((domain) => filters[domain]) ||
           project.domains.some((domain) => filters[domain])) &&
-        (project.professor.toLowerCase().includes(searchQuery.toLowerCase()) || project.name.toLowerCase().includes(searchQuery.toLowerCase()))
+        (project.professor.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          project.name.toLowerCase().includes(searchQuery.toLowerCase()))
     );
   };
 
@@ -191,6 +211,12 @@ export default function ProjectsList() {
   const pageCount = Math.ceil(filteredProjectsData.length / projectsPerPage);
 
   const applyProjectClick = async (project) => {
+    console.log(appliedProjectsCount, maxApplications);
+    if (appliedProjectsCount >= maxApplications) {
+      alert("Maximum limit of applying has been exceeded.");
+      return;
+    }
+
     setSelectedProject(project);
     setIsApply(true);
     localStorage.setItem("isApply", JSON.stringify(true));
@@ -232,9 +258,7 @@ export default function ProjectsList() {
         body: JSON.stringify({ projectname: selectedProject.name }),
       });
       const data = await res.json();
-      console.log(data)
       Description = data.description;
-      console.log(description);
     } catch (error) {
       console.log(error);
     }
@@ -249,9 +273,6 @@ export default function ProjectsList() {
       studentId: localStorage.getItem("rollNumber"),
     };
 
-    console.log(selectedProject.domains);
-
-    console.log(data);
     try {
       const res = await fetch(`${api}/api/project/applyproject`, {
         method: "POST",
@@ -261,13 +282,12 @@ export default function ProjectsList() {
         body: JSON.stringify(data),
       });
       const result = await res.json();
-      // console.log(result);
 
+      setAppliedProjectsCount((prevCount) => prevCount + 1); // Update applied projects count
       cancelApply();
     } catch (error) {
-      // console.log(error);
       alert("Error in applying project. Please try again.");
-      cancelApply;
+      cancelApply();
     }
   };
 
@@ -298,9 +318,7 @@ export default function ProjectsList() {
 
     return (
       <div
-        className={` p-4 ${
-          (!FilterbarOpen || isApply) && "invisible"
-        }`}
+        className={` p-4 ${(!FilterbarOpen || isApply) && "invisible"}`}
         style={{ fontFamily: "Helvetica, Arial, sans-serif" }}
       >
         <h2 className="text-xl font-bold mb-2">Filter Projects</h2>
@@ -326,20 +344,20 @@ export default function ProjectsList() {
             </div>
           ))}
           <div className="flex gap-2">
-          <button
-            onClick={handleDeselectAll}
-            className="mt-2 mb-2 h-7 text-sm w-24 bg-[#4D4D29] shadow-sm shadow-teal-100 hover:bg-[#535353] text-white font-semibold px-2 rounded duration-300"
-          >
-            Clear
-          </button>
-          
-          <button
-            onClick={toggleSidebar}
-            className="mt-2 sm:hidden mb-2 h-7 text-sm w-24 bg-[#4D4D29] shadow-sm shadow-teal-100 hover:bg-[#535353] text-white font-semibold px-2 rounded duration-300"
-          >
-            OK
-          </button>
-        </div>
+            <button
+              onClick={handleDeselectAll}
+              className="mt-2 mb-2 h-7 text-sm w-24 bg-[#4D4D29] shadow-sm shadow-teal-100 hover:bg-[#535353] text-white font-semibold px-2 rounded duration-300"
+            >
+              Clear
+            </button>
+
+            <button
+              onClick={toggleSidebar}
+              className="mt-2 sm:hidden mb-2 h-7 text-sm w-24 bg-[#4D4D29] shadow-sm shadow-teal-100 hover:bg-[#535353] text-white font-semibold px-2 rounded duration-300"
+            >
+              OK
+            </button>
+          </div>
         </div>
       </div>
     );
@@ -380,7 +398,9 @@ export default function ProjectsList() {
     <>
       <div className="main-content mb-4">
         <button
-          className={`fixed ${isApply && "invisible"} md:hidden bottom-10 right-8 bg-gray-700 rounded-full drop-shadow-lg flex justify-center items-center text-white text-4xl hover:bg-teal-800 z-50`}
+          className={`fixed ${
+            isApply && "invisible"
+          } md:hidden bottom-10 right-8 bg-gray-700 rounded-full drop-shadow-lg flex justify-center items-center text-white text-4xl hover:bg-teal-800 z-50`}
           onClick={toggleSidebar}
         >
           <div className="flex w-10 h-10 justify-center items-center">
@@ -389,27 +409,27 @@ export default function ProjectsList() {
         </button>
 
         <div className=" flex flex-row gap-1">
-            <div
+          <div
             className={`${
-              FilterbarOpen && !isApply ? "w-2/6 max-sm:w-full max-sm:h-full max-sm:flex max-sm:justify-center max-sm:items-center max-sm:bg-gray-100 max-sm:bg-opacity-80  max-md:z-40 lg:w-72 px-2 z-40 bg-opacity-50" : "w-0"
+              FilterbarOpen && !isApply
+                ? "w-2/6 max-sm:w-full max-sm:h-full max-sm:flex max-sm:justify-center max-sm:items-center max-sm:bg-gray-100 max-sm:bg-opacity-80  max-md:z-40 lg:w-72 px-2 z-40 bg-opacity-50"
+                : "w-0"
             }  top-0 right-0 max-sm:left-0 relative max-sm:fixed duration-500`}
           >
-
             <input
-  type="text"
-  
-  placeholder="Search by professor or project"
-  className={` ${FilterbarOpen && !isApply ? '':'hidden'} max-md:hidden w-64 border rounded px-3 py-2 mt-5`}
-  value={searchQuery}
-  onChange={handleSearchInputChange}
-/>
+              type="text"
+              placeholder="Search by professor or project"
+              className={` ${
+                FilterbarOpen && !isApply ? "" : "hidden"
+              } max-md:hidden w-64 border rounded px-3 py-2 mt-5`}
+              value={searchQuery}
+              onChange={handleSearchInputChange}
+            />
 
             <div className="max-sm:rounded-md max-sm:bg-[#272715] max-sm:text-white">
-            <ProjectFilter handleFilterChange={handleFilterChange} />
+              <ProjectFilter handleFilterChange={handleFilterChange} />
             </div>
           </div>
-
-          
 
           <div
             className={`${
@@ -473,7 +493,7 @@ export default function ProjectsList() {
                           className="w-full border rounded px-3 py-2"
                           value={applyReason}
                           onChange={handleApplyReasonChange}
-                          autocomplete="off"
+                          autoComplete="off"
                         />
                       </div>
                       <div className="flex flex-row">
@@ -507,20 +527,37 @@ export default function ProjectsList() {
                   value={searchQuery}
                   onChange={handleSearchInputChange}
                 />
-                <div className='w-full flex flex-col gap-2 mb-4 mr-2 ml-2 mt-1 pt-2'>
+                <div className="w-full flex flex-col gap-2 mb-4 mr-2 ml-2 mt-1 pt-2">
                   {currentProjects.map((project, index) => (
-                    <div key={index} className='flex flex-row w-full border-2 border-solid bg-white shadow-sm transform transition duration-200 ease-in-out rounded-lg overflow-hidden pb-2 pl-4 pt-2'>
-                      <div className='pl-2 w-4/6 md:w-5/6 my-1'>
-                        <h2 className='text-left text-xl mb-1 font-bold'>{project.name}</h2>
-                        <p className='text-left mb-2 text-gray-600'>{project.professor}</p>
-                        <div className='h-1/6'>
+                    <div
+                      key={index}
+                      className="flex flex-row w-full border-2 border-solid bg-white shadow-sm transform transition duration-200 ease-in-out rounded-lg overflow-hidden pb-2 pl-4 pt-2"
+                    >
+                      <div className="pl-2 w-4/6 md:w-5/6 my-1">
+                        <h2 className="text-left text-xl mb-1 font-bold">
+                          {project.name}
+                        </h2>
+                        <p className="text-left mb-2 text-gray-600">
+                          {project.professor}
+                        </p>
+                        <div className="h-1/6">
                           {project.domains.map((domain, idx) => (
-                            <div key={idx} className="rounded-full bg-gray-200 px-3 py-2 text-sm inline-block mr-2 mb-2">{domain}</div>
+                            <div
+                              key={idx}
+                              className="rounded-full bg-gray-200 px-3 py-2 text-sm inline-block mr-2 mb-2"
+                            >
+                              {domain}
+                            </div>
                           ))}
                         </div>
                       </div>
-                      <div className='w-2/6 md:w-1/6 flex justify-center items-center'>
-                        <button onClick={() => applyProjectClick(project)} className='h-8 w-auto text-center bg-[#4D4D29] text-white font-bold px-4 rounded hover:bg-[#535353] mt-2 sm:mt-0'>View</button>
+                      <div className="w-2/6 md:w-1/6 flex justify-center items-center">
+                        <button
+                          onClick={() => applyProjectClick(project)}
+                          className="h-8 w-auto text-center bg-[#4D4D29] text-white font-bold px-4 rounded hover:bg-[#535353] mt-2 sm:mt-0"
+                        >
+                          View
+                        </button>
                       </div>
                     </div>
                   ))}

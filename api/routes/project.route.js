@@ -19,6 +19,7 @@ import { isteamprojectaccept } from '../controller/project.controller.js';
 import { sendemail } from '../controller/project.controller.js';
 import { saveEditProject } from '../controller/project.controller.js';
 import {getProjectSpecs} from '../controller/project.controller.js';
+import { getTeamprojects } from '../controller/project.controller.js';
 
 const router = express.Router();
 
@@ -43,5 +44,6 @@ router.post('/sendemail',sendemail);
 router.post('/saveEditProject',saveEditProject);
 router.post('/saveEditProjectTitle',saveEditProjectTitle);
 router.post('/getprojectspecs',getProjectSpecs);
+router.post('/getteamprojects',getTeamprojects);
 
 export default router;
