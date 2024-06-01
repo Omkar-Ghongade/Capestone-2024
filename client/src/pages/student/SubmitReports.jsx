@@ -30,12 +30,9 @@ export default function SubmitReports() {
         setTeamId(data.teamcode);
         getmyproject(data.teamcode);
         const memberIndex = data.teammembers.findIndex(member => member === rollNumber);
-        data.marks.forEach(row => {
-          if (row[memberIndex] !== undefined) {
-            marks.push(row[memberIndex]);
-          }
-        });
-        console.log(marks);
+        const marksArray = data.marks.map(row => row[memberIndex]).filter(mark => mark !== undefined);
+        setMarks(marksArray);
+        console.log(marksArray);
       }
     } catch (error) {
       console.log(error);
@@ -144,9 +141,11 @@ export default function SubmitReports() {
                           <p className='text-center'>Report {index + 1}</p>
                         </a>
                       </div>
-                      <div className="bg-gray-200 text-black rounded-lg shadow-md border-solid border-2 p-2">
-                        <p className='text-center'>Mark: {marks[index]}</p>
-                      </div>
+                      {marks[index] !== undefined && (
+                        <div className="bg-gray-200 text-black rounded-lg shadow-md border-solid border-2 p-2">
+                          <p className='text-center'>Mark: {marks[index]}</p>
+                        </div>
+                      )}
                     </div>
                   ))}
                 </div>

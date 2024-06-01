@@ -150,9 +150,21 @@ export default function ViewReports() {
     setTeamMarks(newMarks);
   };
 
-  const handleFormSubmit = (e) => {
+  const handleFormSubmit = async (e) => {
     e.preventDefault();
     console.log('Team Marks:', teamMarks);
+    try{
+      const teamcode = viewReport.teamcode;
+      const res = await fetch(`${api}/api/team/teammarks`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ teamcode: teamcode, marks: teamMarks})
+      });
+    }catch(err){
+      console.error(err);
+    }
     handleModalClose();
   };
 
