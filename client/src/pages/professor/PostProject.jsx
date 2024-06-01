@@ -16,6 +16,7 @@ export default function PostProject() {
   const [errorMessage, setErrorMessage] = useState('');
   const [maxProfessorProjects, setMaxProfessorProjects] = useState(0);
   const [professorProjectCount, setProfessorProjectCount] = useState(0);
+  const [limits , setLimits] = useState(null);
 
   const api = import.meta.env.VITE_backend;
 
@@ -41,6 +42,7 @@ export default function PostProject() {
       try {
         const res = await fetch(`${api}/api/admin/getlimits`);
         const data = await res.json();
+        setLimits(data);
         setMaxProfessorProjects(data.maxprofessorproject);
       } catch (err) {
         console.log(err);
@@ -175,7 +177,7 @@ export default function PostProject() {
                 onChange={(e) => setMinTeamSize(e.target.value)}
                 className="border rounded-md border-gray-300 px-2 py-1 w-full"
                 required
-                min="1" max="4"
+                min={limits.minteamsize} max={limits.maxteamsize}
               />
             </div>
             <div className="mb-4">
@@ -186,7 +188,7 @@ export default function PostProject() {
                 onChange={(e) => setMaxTeamSize(e.target.value)}
                 className="border rounded-md border-gray-300 px-2 py-1 w-full"
                 required
-                min="1" max="4"
+                min={limits.minteamsize} max={limits.maxteamsize}
               />
             </div>
           </div>
