@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { FaFilter } from "react-icons/fa";
 import "./Navbar.css";
+import { set } from 'mongoose';
 
 export default function ViewReports() {
   const [reports, setReports] = useState([]);
@@ -15,6 +16,7 @@ export default function ViewReports() {
   const [teamMarks, setTeamMarks] = useState([]);
   const [teammembers, setTeammembers] = useState([]);
   const [clickedReport, setClickedReport] = useState(0);
+  const [team, setTeam] = useState([]);
   const api = import.meta.env.VITE_backend;
 
   useEffect(() => {
@@ -102,6 +104,7 @@ export default function ViewReports() {
         body: JSON.stringify({ teamcode: team })
       });
       const data = await res.json();
+      setTeam(data);
       setTeamlen(data.teammembers.length);
       setTeammembers(data.teammembers);
       setTeamMarks(Array(data.teammembers.length).fill(''));
@@ -162,6 +165,7 @@ export default function ViewReports() {
         },
         body: JSON.stringify({ teamcode: teamcode, marks: teamMarks})
       });
+      window.location.reload();
     }catch(err){
       console.error(err);
     }
@@ -225,7 +229,15 @@ export default function ViewReports() {
                                 <p className='text-center'>Report {index + 1}</p>
                               </a>
                             </div>
-                            <button className="ml-4 text-[#272715] font-bold hover:text-gray-500 underline rounded" onClick={(e)=> handleMarksClick(index+1)}>Marks</button>
+                            {team.marks && team.marks[index] && team.marks[index].length > 0 ? (
+                              <div className="ml-4">
+                                {team.marks[index].map((mark, i) => (
+                                  <p key={i} className="text-[#272715] font-bold">{teammembers[i]}: {mark}</p>
+                                ))}
+                              </div>
+                            ) : (
+                              <button className="ml-4 text-[#272715] font-bold hover:text-gray-500 underline rounded" onClick={(e)=> handleMarksClick(index+1)}>Mark This Report</button>
+                            )}
                           </div>
                         ))}
                       </div>
